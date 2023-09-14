@@ -1,0 +1,33 @@
+- 加载查询页面
+	-
+	  ```
+ https https://vip.lyouoa.com/366820/Regulate/RegulateList Classify==1  Cookie:ASP.NET_SessionId=my55l3ojrxzbpalqrmxjbdgw
+	  ```
+- 查询团好列表
+	-
+	  ```
+ https https://vip.lyouoa.com/366820/Regulate/QueryRegulateLayPage  Cookie:'ASP.NET_SessionId=my55l3ojrxzbpalqrmxjbdgw;companyuid=366820;usercode=Qww; companyuid_sso=366820;'  Classify==1 EndTime==2023-09-30 GroupTimeKey==GroupStartTime RegulateStatus=='0,3' page==1 limit==20 GroupClassify==1 StartTime== BusinessClassify==0 searchKey==GroupCode searchValue== OrgID==0 OrgName==选择部门 Category1==0 category2==0 category3==0 fields=='EID,GroupCode,GroupStartTimeFormatMMdd,GroupEndTimeFormatMMdd,CustomerName,LineName,PersonCountDisplay,PersonCountDisplay,PersonConfirmDisplay,MeetingPlate,RegulateName,ExternalName,RegulateOperatorName,StatusText,RegulateGuideNames,RegulateFoodSumPrice,RegulateTicketSumPrice,RegulateHotelSumPrice,RegulateVehicleSumPrice,RegulateTrafficTicketSumPrice,RegulateInsuranceSumPrice,RegulateShoppingNames,RegulateSelfShoppingNames,RegulateIncomeSumPrice,RegulateOutgoSumPrice,RegulateConnectionNames,RegulateTeamSync,RegulateStatus,IsActive,IsGuideChecked,IsFoodChecked,IsTicketChecked,IsHotelChecked,IsVehicleChecked,IsTrafficTicketChecked,IsInsuranceChecked,IsShoppingChecked,IsSelfShoppingChecked,IsIncomeChecked,IsOutgoChecked,IsConnectionChecked,InsertUserID,IsConnectionOpen,RegulateOperatorID,IsGuideProcess,IsTicketProcess,IsHotelProcess,IsFoodProcess,IsVehicleProcess,IsTrafficTicketProcess,IsInsuranceProcess,IsShoppingProcess,IsSelfShoppingProcess,IsIncomeProcess,IsOutgoProcess,IsConnectionProcess,IsTeamSyncChecked,IsTeamSyncProcess,AdultCount,ChildrenCount,CompanionCount,SignUpAdultCountConfirm,SignUpChildrenCountConfirm,SignUpCompanionCountConfirm,SignUpAdultCountTransfer,SignUpChildrenCountTransfer,SignUpCompanionCountTransfer,GroupStatus,IsCancel,InsertLastLogDay,UpdateLastLogDay'
+	  ```
+- 查看单个团号操作记录
+-
+  ```
+https://vip.lyouoa.com/366820/Group/RegulateLogList RegulateClassify==6 GroupEID==A8A9A6B965AB1E3E
+  ```
+-
+- 统计
+	- 行数据
+		- 团号，酒店，房间类型，新建人(保存记录里查找,新建类型记录)，其他字段
+	- 导出详细表格
+	- 统计
+-
+  ```
+https://vip.lyouoa.com/366820/Regulate/Regulate_Hotel?Classify=1&GroupEID=2459711EF42C15F8&Index=0&GroupClassify=&RegulateStatus=0%2c3&StartTime=2022-05-18&EndTime=2023-09-30&SearchKey=GroupCode&SearchValue=&OrgID=0&OrgName=%e9%80%89%e6%8b%a9%e9%83%a8%e9%97%a8&HasChange=false
+  ```
+-
+- 住宿
+-
+  ```
+https://vip.lyouoa.com/366820/Regulate/RegulateSheet?Classify=1&GroupEID=DACC1C2052D22629&Index=4&GroupClassify=&RegulateStatus=0,3&StartTime=2022-05-18&EndTime=2023-09-30&SearchKey=GroupCode&SearchValue=&OrgID=0&OrgName=%E9%80%89%E6%8B%A9%E9%83%A8%E9%97%A8&HasChange=false
+  ```
+-
+

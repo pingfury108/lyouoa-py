@@ -1,0 +1,2498 @@
+
+
+
+
+<!DOCTYPE html>
+<html class="html-bg-white">
+<head>
+    <meta charset="utf-8" />
+    <title>住宿计调</title>
+    <link href="/Content/layui/layui/css/layui.css?v=20230914001" rel="stylesheet"/>
+<link href="/Content/layui/style/admin.css?v=20230914001" rel="stylesheet"/>
+<link href="/Content/default/layuicommon.css?v=20230914001" rel="stylesheet"/>
+<link href="/Content/default/layuiedit.css?v=20230914001" rel="stylesheet"/>
+<link href="/Content/iconfont/iconfont.css?v=20230914001" rel="stylesheet"/>
+
+    <link href="/Content/default/uploadlist.css" rel="stylesheet" />
+    <link href="/Content/default/checkbox.css?v=20230914001" rel="stylesheet" />
+    <style>
+        .xianfu {
+            background-color: #D0FFA7
+        }
+        .layui-tab {
+            margin: 5px 0px;
+        }
+
+        .layui-tab-title {
+            height: 30px;
+            border-bottom: 0px;
+        }
+
+            .layui-tab-title li {
+                font-size: 12px;
+                line-height: 30px;
+                padding: 0px 5px;
+                min-width: 50px;
+            }
+
+        .layui-tab-bar {
+            line-height: 28px;
+            height: 28px;
+        }
+
+        .layui-tab-title .layui-this:after {
+            height: 31px;
+        }
+
+        .layui-table[lay-size=modedit] td,
+        .layui-table[lay-size=modedit] th {
+            padding: 0px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #e6e6e6;
+            height: 39px;
+        }
+
+        .layui-card-header .layui-icon {
+            line-height: unset;
+        }
+
+        .layui-input, .layui-textarea {
+            padding-left: 0px;
+        }
+
+        .layui-anim {
+            -webkit-animation-fill-mode: unset;
+            animation-fill-mode: unset;
+        }
+
+        .layui-input.mod-from-textarea {
+            min-height: 20px;
+        }
+
+        .layui-card.mod-modify .layui-table[lay-even] tr:nth-child(2n) input {
+            background-color: transparent !important
+        }
+
+        .layui-card.mod-modify .layui-card-header {
+            height: unset;
+        }
+    </style>
+</head>
+<body>
+    <div class="groupstamp" style="position: absolute; right: 15px;top:0px; width: 120px; height: 120px;z-index:9999;">
+    </div>
+    <div class="layui-form">
+        <div class="layui-fluid" style="padding-top:5px">
+            <div class="layui-collapse">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">线路信息&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;团号：T-220807-H-BX 2日照&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="btnOpLog" class="layui-btn  layui-btn-sm layui-anim layui-btn-primary mod-form-wrap-btn layui-hide" data-groupeid="DACC1C2052D22629" data-groupclassify="1" type="button" data-anim="layui-anim-scale">最新调整</button></h2>
+                    <div class="layui-colla-content" style="padding:unset; padding:0px 10px;">
+                            <table class="layui-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:80px">日期</th>
+                                        <th style="width:80px">交通</th>
+                                        <th>行程</th>
+                                        <th style="width:40px">早餐</th>
+                                        <th style="width:40px">午餐</th>
+                                        <th style="width:40px">晚餐</th>
+                                        <th style="width:120px">酒店</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                            <td>2022-08-08</td>
+                                            <td>汽车</td>
+                                            <td style="text-align:left;">西宁接站后送往酒店入住，抵达酒店后办理入住手续，您可以自行去品尝当地特色美食。</td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-close mod-color-red"></i>                                            </td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-close mod-color-red"></i>                                            </td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-close mod-color-red"></i>                                            </td>
+                                            <td>西宁/大通/平安</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2022-08-09</td>
+                                            <td>汽车</td>
+                                            <td style="text-align:left;">茶卡-共和/茶卡/青海湖<br>●【茶卡盐湖天空一号】或者【茶卡盐湖天空之境】（游览时间约2.5小时，含门票，电瓶车40元自理+30摆渡车自理）<br>游览结束后，前往共和 酒店入住休息！！！</td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-ok mod-color-lightgreen"></i>                                            </td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-ok mod-color-lightgreen"></i>                                            </td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-ok mod-color-lightgreen"></i>                                            </td>
+                                            <td>共和 </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2022-08-10</td>
+                                            <td>汽车</td>
+                                            <td style="text-align:left;">青海湖/共和-藏寨-青海湖-西宁<br>早餐后乘车车赴景区游览；<br>●【青藏高原藏族村寨】（游览约2小时）村寨完整地保持了藏族传统村寨布局、建筑风格、习俗、文化和信仰的寨子。<br>●【青海湖二郎剑】（游览时间约2.5小时，含门票，电瓶车20元及游船140元起自理），青海湖藏语名为“措温布”（意为“青色的海”）。<br>游览结束后，晚餐享用独家赠送【藏王宴】（赠送特色餐不吃，无费用可退）结束后前往西宁入住五星酒店休息！！！</td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-ok mod-color-lightgreen"></i>                                            </td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-ok mod-color-lightgreen"></i>                                            </td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-ok mod-color-lightgreen"></i>                                            </td>
+                                            <td>西宁/大通/平安</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2022-08-11</td>
+                                            <td>汽车</td>
+                                            <td style="text-align:left;">西宁-贵德地质公园-贵德/西宁<br>●【昆仑玉展览馆】（游览时间约3小时），<br>●【塔尔寺】（游览约 2.5 小时，含门票，电瓶车35元及讲解费15元起自理），<br>●【天珠店】（游览约2=小时<br></td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-ok mod-color-lightgreen"></i>                                            </td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-ok mod-color-lightgreen"></i>                                            </td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-ok mod-color-lightgreen"></i>                                            </td>
+                                            <td>西宁/大通/平安</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2022-08-12</td>
+                                            <td>汽车</td>
+                                            <td style="text-align:left;">西宁-塔尔寺-兰州<br>●【贵德国家地质公园】（游览约2小时，含门票，电瓶车及讲解费60元自理）贵德国家地质公园是以自然地貌景观和地质遗迹为主要特征，<br>●【中国藏文化馆】（游览约2=小时）<br>结束西宁送火车！</td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-ok mod-color-lightgreen"></i>                                            </td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-ok mod-color-lightgreen"></i>                                            </td>
+                                            <td style="text-align:center;">
+<i class="layui-icon layui-icon-ok mod-color-lightgreen"></i>                                            </td>
+                                            <td>不住</td>
+                                        </tr>
+                                </tbody>
+                            </table>
+                        <label class="layui-form-label" style="padding-left:0px !important;">
+                            <i class="jj-iconfont icon-quanbudingdan2" style="font-size: 12px;color: #3286CF;"></i>&nbsp;备注信息：
+                        </label>
+                        <table class="layui-table">
+                            <tbody>
+                                <tr>
+                                    <td style="width:80px;background-color:#f2f2f2">服务标准:</td>
+                                    <td style="text-align:left;">费用包含：<div>
+</div><div>【景点】	全程含景区首道大门票：青海湖（不含景区游船）、塔尔寺（不含讲解费区间车）、茶卡盐湖天空一号（不含景区电瓶车）、贵德地质公园（不含区间车）；
+</div><div>重要提醒：行程所列景区门票已是综合优惠打包价，任何优惠证件门票均不退还，如遇恶劣天气、泥石流、塌方等原因导致未游览景点均不退还门票，请周知
+</div><div>【住宿】	全程四星酒店+升级2晚五星酒店，不含单房差；如儿童不占床，需自理早餐费，如遇满房，我社有权调整至同等级酒店
+</div><div>1.所预定酒店没有3人标准间，如不愿与其他客人拼住，请自行当地现补单房差，并写证明于导游。
+</div><div>2.西北经济条件有限，比较落后，同档次酒店要比内地酒店低一档次，请勿拿内地酒店来衡量。
+</div><div>3.由于青海湖特殊地区，住宿条件有限，我们将根据情况安排青海湖沿线酒店，请您理解。
+</div><div>【用餐】	全程5早8正（早餐酒店含早，正餐30元/人/餐，八菜一汤，十人一桌，自愿放弃不吃不退）。
+</div><div>【交通】	当地有营运资质的空调旅游车，按人数安排车型，每人确保正座；</div><div>【儿童】	儿童价格不含门票，不占床，小孩不含早餐，正餐为半餐，其它标准同成人。</div><div>费用不含：</div><div>1.单房差；
+</div><div>2.个人消费（如酒店内洗衣、电话及未提到的其他服务）；
+</div><div>3.塔尔寺电瓶车35元/人；塔尔寺讲解费15元/人起；茶卡天空一号电瓶车40元/人+30元/人摆渡车；贵德国家地质公园电瓶车及讲解费30元/人
+</div><div>4.行程之外自由活动期间的餐食费用及交通费用
+</div><div>5.因交通延误、取消等意外事件或战争、罢工、自然灾害等不可抗力导致的额外费用
+</div><div>6.行程不包含的自费项目；</div></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:80px;background-color:#f2f2f2">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注:</td>
+                                    <td style="text-align:left;"><br></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:80px;background-color:#f2f2f2">内部备注:</td>
+                                    <td style="text-align:left;"><br></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card mod-modify">
+                <div class="layui-card-header layuiadmin-card-header-auto mod-modify">
+                    <div class="layui-form-item">
+                        <div class="layui-row">
+                            <div class="layui-col-xs11 layui-col-md11 layui-col-sm11">
+                                <label class="layui-form-label">
+                                    <i class="jj-iconfont icon-quanbudingdan2"></i>&nbsp;住宿信息：
+                                </label>
+                                <div class="layui-btn-group">
+                                        <button type="button" class="layui-btn layui-btn-sm layui-anim layui-btn-primary" data-type="addNew"><i class="layui-icon layui-icon-add-1"></i>新建</button>
+                                        <button type="button" class="layui-btn layui-btn-sm layui-anim layui-btn-primary" data-type="fastAdd"><i class="layui-icon layui-icon-add-1"></i>快速新建</button>
+                                        <button type="button" class="layui-btn layui-btn-sm layui-anim layui-btn-primary" data-type="chooseTemplet"><i class="layui-icon layui-icon-templeate-1"></i>选择模板新建住宿</button>
+
+                                    <button type="button" class="layui-btn layui-btn-sm layui-anim layui-btn-primary" data-type="sendMessage" data-value="DACC1C2052D22629"><i class="layui-icon layui-icon-print"></i>订房通知单</button>
+                                    <button type="button" class="layui-btn layui-btn-sm layui-anim layui-btn-primary" data-type="saveLog"><i class="layui-icon layui-icon-form"></i>保存记录</button>
+                                    <button type="button" class="layui-btn layui-btn-sm layui-anim layui-btn-primary" data-type="saveTemplet"><i class="layui-icon layui-icon-template-1"></i>将下面住宿保存成模板</button>
+                                    <button type="button" class="layui-btn layui-btn-sm layui-anim layui-btn-primary" data-value="DACC1C2052D22629" data-type="roomList"><i class="layui-icon layui-icon-list"></i>房间安排表</button>
+                                                                        <button type="button" class="layui-btn layui-btn-sm layui-anim layui-btn-primary" data-value="DACC1C2052D22629" data-type="searchStock"><i class="layui-icon layui-icon-home" style="color:red"></i>库存查询</button>
+
+                                                                            <button type="button" class="layui-btn layui-btn-sm layui-anim layui-btn-primary" id="btnFinanceUpdate" data-value="DACC1C2052D22629"><i class="layui-icon layui-icon-rmb" style="color:red;"></i>发起财务调整申请</button>
+
+                                    <button type="button" class="layui-btn layui-btn-sm layui-anim layui-btn-primary layui-hide" disabled style="color:red"><i class="layui-icon layui-icon-about"></i>注：本团安排酒店代收 0元，请安排代收</button>
+                                </div>
+                            </div>
+                            <div class="layui-col-xs1 layui-col-md1 layui-col-sm1" style=" text-align:right">
+                                <div class="layui-row layui-col-space5 layui-layout-right">
+                                    <div class="layui-input-inline">
+                                        <div class="layui-btn-group">
+                                            <button class="layui-btn layui-btn-sm layui-anim mod-btn-about"
+                                                    data-title="住宿操作"
+                                                    data-info="<div>1、酒店信息删除时，将把此条酒店的报账删除；</div><div>2、酒店信息有付款后，不能修改与删除；</div><div>3、计调审核中或通过后，不能修改与删除；</div>"
+                                                    data-help="10001"
+                                                    data-video="http://image.lyouoa.com/upload/HelpVideo/%E3%80%90%E8%BF%9B%E9%98%B6%E7%AF%87%E3%80%9110-%E4%BD%8F%E5%AE%BF%E6%93%8D%E4%BD%9C.swf">
+                                                <i class="jj-iconfont icon-guanyu"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table" id="TabHotel" lay-size="modedit" lay-even="">
+                        <thead>
+                            <tr>
+                                <th style="width:40px;">序号</th>
+                                <th style="width:60px;display:none;">分团</th>
+                                <th style="width:240px;">酒店名称</th>
+                                <th style="width:100px;">房间类型</th>
+                                <th style="width:90px;">入住日期</th>
+                                <th style="width:90px;">离开日期</th>
+                                <th style="width:60px;">入住天数</th>
+                                <th style="width:60px;">单价</th>
+                                <th style="width:60px;">房间数</th>
+                                <th style="width:60px;">免房数</th>
+                                <th style="width:60px;">免金额</th>
+                                <th style="width:60px;">金额</th>
+                                <th style="width:100px;">付款方式</th>
+                                <th style="width:60px;display:none;">酒店代收</th>
+                                <th style="width:70px;display:none;">费用类别</th>
+                                <th style="width:200px;">客人名称</th>
+                                <th style="min-width:100px;">备注</th>
+                                    <th style="width:40px;">审核</th>
+                                                                    <th style="width:40px;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <tr CustomerID="1065402" GroupColumn="0" GroupEID="DACC1C2052D22629" HotelID="2549910" UUID="aa78bc68-15c2-4a9e-b559-4f13c58c2b27" RenderPrice="2160.00" Status="2">
+                                    <td>1</td>
+                                    <td class="groupColumn" style="display: none;">
+                                        <div class="layui-form-select pulldown" data-value="GroupColumnList" refresh="refreshGroupColumn">
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" readonly="readonly" value="A团" data-id="0" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="select-customer">
+                                        <div class="layui-form-select mod-line-select">
+                                            <input type="text" class="layui-input layui-unselect layui-search-customer customer mod-border-none" classify="5" onsearchchange="inputRefreshHotelPrice" autocomplete="off" placeholder="请输入选择" data-value="1065402" value="喆啡酒店(西宁柴达木路西钢店)" >
+                                            <dl class="layui-anim layui-anim-upbit"></dl>
+                                        </div>
+                                        <i class="layui-icon layui-icon-add-1 mod-form-showfavorites" style="top: 8px; visibility:hidden;"></i>
+                                    </td>
+                                    <td class="roomTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="ClassifyList" refresh="refreshRoomType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="标准间" readonly="readonly" data-id="43" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><input type="text" class="layui-input hotelStartTime mod-border-none" value="2022-08-08" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelEndTime mod-border-none" value="2022-08-09" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelDay mod-border-none" value="1" regex="float" ></td>
+                                    <td><input type="text" class="layui-input price mod-border-none" value="180" regex="float" ></td>
+                                    <td><input type="text" class="layui-input amount mod-border-none" value="12" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeCount mod-border-none" value="0" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeAmount mod-border-none" value="0" regex="float" ></td>
+                                    <td class="sumPrice">2160</td>
+                                    <td class="payTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="PayTypeList" refresh="refreshPayType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="现付" readonly="readonly" data-id="122" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="display:none;"><input type="text" class="layui-input hotelAgency mod-border-none" value="0" regex="float" ></td>
+                                    <td style="display:none;cursor: pointer;" class="chargeClassify" GroupID="3078370" chargeclassify="0" signupidliststring="" onclick="selectSignUpChargeClassify(this)">
+                                        公摊
+                                    </td>
+                                    <td style="cursor: pointer;" class="memberList" GroupEID="DACC1C2052D22629" data-value="[]" onclick="hotelMembers(this)">
+                                        请选择
+                                    </td>
+                                    <td><div class="layui-input mod-from-textarea modedit-remark" contenteditable='true'>含早含票 导游核房提醒房间水果 欢迎卡  LED欢迎词（ 欢迎日照平安人寿VIP客户下榻酒店)，</div></td>
+                                        <td>
+                                            <label class="container">
+                                                <input type="checkbox" lay-ignore  disabled="disabled" />
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </td>
+                                                                            <td>
+                                            <button class="layui-btn layui-anim layui-btn-primary btndelete mod-btn-remove" style="visibility: visible;color:black;" lay-tips='已有报账款' onclick='delData(this)'>
+                                                <i class="layui-icon layui-icon-delete"></i>
+                                            </button>
+                                        </td>
+                                </tr>
+                                <tr CustomerID="1065402" GroupColumn="0" GroupEID="DACC1C2052D22629" HotelID="2549911" UUID="6c1600a3-2c87-4d0e-becb-07bfbfb9b1f9" RenderPrice="240.00" Status="2">
+                                    <td>1</td>
+                                    <td class="groupColumn" style="display: none;">
+                                        <div class="layui-form-select pulldown" data-value="GroupColumnList" refresh="refreshGroupColumn">
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" readonly="readonly" value="A团" data-id="0" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="select-customer">
+                                        <div class="layui-form-select mod-line-select">
+                                            <input type="text" class="layui-input layui-unselect layui-search-customer customer mod-border-none" classify="5" onsearchchange="inputRefreshHotelPrice" autocomplete="off" placeholder="请输入选择" data-value="1065402" value="喆啡酒店(西宁柴达木路西钢店)" >
+                                            <dl class="layui-anim layui-anim-upbit"></dl>
+                                        </div>
+                                        <i class="layui-icon layui-icon-add-1 mod-form-showfavorites" style="top: 8px; visibility:hidden;"></i>
+                                    </td>
+                                    <td class="roomTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="ClassifyList" refresh="refreshRoomType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="司陪" readonly="readonly" data-id="48" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><input type="text" class="layui-input hotelStartTime mod-border-none" value="2022-08-08" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelEndTime mod-border-none" value="2022-08-09" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelDay mod-border-none" value="1" regex="float" ></td>
+                                    <td><input type="text" class="layui-input price mod-border-none" value="80" regex="float" ></td>
+                                    <td><input type="text" class="layui-input amount mod-border-none" value="3" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeCount mod-border-none" value="0" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeAmount mod-border-none" value="0" regex="float" ></td>
+                                    <td class="sumPrice">240</td>
+                                    <td class="payTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="PayTypeList" refresh="refreshPayType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="现付" readonly="readonly" data-id="122" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="display:none;"><input type="text" class="layui-input hotelAgency mod-border-none" value="0" regex="float" ></td>
+                                    <td style="display:none;cursor: pointer;" class="chargeClassify" GroupID="3078370" chargeclassify="0" signupidliststring="" onclick="selectSignUpChargeClassify(this)">
+                                        公摊
+                                    </td>
+                                    <td style="cursor: pointer;" class="memberList" GroupEID="DACC1C2052D22629" data-value="[]" onclick="hotelMembers(this)">
+                                        请选择
+                                    </td>
+                                    <td><div class="layui-input mod-from-textarea modedit-remark" contenteditable='true'>80/人</div></td>
+                                        <td>
+                                            <label class="container">
+                                                <input type="checkbox" lay-ignore  disabled="disabled" />
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </td>
+                                                                            <td>
+                                            <button class="layui-btn layui-anim layui-btn-primary btndelete mod-btn-remove" style="visibility: visible;color:black;" lay-tips='已有报账款' onclick='delData(this)'>
+                                                <i class="layui-icon layui-icon-delete"></i>
+                                            </button>
+                                        </td>
+                                </tr>
+                                <tr CustomerID="1064373" GroupColumn="0" GroupEID="DACC1C2052D22629" HotelID="2549912" UUID="320bdc6a-6a80-4424-98b3-7e8a018a6682" RenderPrice="2160.00" Status="2">
+                                    <td>1</td>
+                                    <td class="groupColumn" style="display: none;">
+                                        <div class="layui-form-select pulldown" data-value="GroupColumnList" refresh="refreshGroupColumn">
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" readonly="readonly" value="A团" data-id="0" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="select-customer">
+                                        <div class="layui-form-select mod-line-select">
+                                            <input type="text" class="layui-input layui-unselect layui-search-customer customer mod-border-none" classify="5" onsearchchange="inputRefreshHotelPrice" autocomplete="off" placeholder="请输入选择" data-value="1064373" value="青海湖西南大酒店" >
+                                            <dl class="layui-anim layui-anim-upbit"></dl>
+                                        </div>
+                                        <i class="layui-icon layui-icon-add-1 mod-form-showfavorites" style="top: 8px; visibility:hidden;"></i>
+                                    </td>
+                                    <td class="roomTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="ClassifyList" refresh="refreshRoomType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="标准间" readonly="readonly" data-id="43" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><input type="text" class="layui-input hotelStartTime mod-border-none" value="2022-08-09" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelEndTime mod-border-none" value="2022-08-10" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelDay mod-border-none" value="1" regex="float" ></td>
+                                    <td><input type="text" class="layui-input price mod-border-none" value="180" regex="float" ></td>
+                                    <td><input type="text" class="layui-input amount mod-border-none" value="12" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeCount mod-border-none" value="0" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeAmount mod-border-none" value="0" regex="float" ></td>
+                                    <td class="sumPrice">2160</td>
+                                    <td class="payTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="PayTypeList" refresh="refreshPayType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="现付" readonly="readonly" data-id="122" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="display:none;"><input type="text" class="layui-input hotelAgency mod-border-none" value="0" regex="float" ></td>
+                                    <td style="display:none;cursor: pointer;" class="chargeClassify" GroupID="3078370" chargeclassify="0" signupidliststring="" onclick="selectSignUpChargeClassify(this)">
+                                        公摊
+                                    </td>
+                                    <td style="cursor: pointer;" class="memberList" GroupEID="DACC1C2052D22629" data-value="[]" onclick="hotelMembers(this)">
+                                        请选择
+                                    </td>
+                                    <td><div class="layui-input mod-from-textarea modedit-remark" contenteditable='true'>含早含票&nbsp; &nbsp; &nbsp;导游核房提醒 LED欢迎词（ 欢迎日照平安人寿VIP客户下榻酒店)，</div></td>
+                                        <td>
+                                            <label class="container">
+                                                <input type="checkbox" lay-ignore  disabled="disabled" />
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </td>
+                                                                            <td>
+                                            <button class="layui-btn layui-anim layui-btn-primary btndelete mod-btn-remove" style="visibility: visible;color:black;" lay-tips='已有报账款' onclick='delData(this)'>
+                                                <i class="layui-icon layui-icon-delete"></i>
+                                            </button>
+                                        </td>
+                                </tr>
+                                <tr CustomerID="1064373" GroupColumn="0" GroupEID="DACC1C2052D22629" HotelID="2549913" UUID="ef6168a4-e796-45b7-a486-5dd559543586" RenderPrice="150.00" Status="2">
+                                    <td>1</td>
+                                    <td class="groupColumn" style="display: none;">
+                                        <div class="layui-form-select pulldown" data-value="GroupColumnList" refresh="refreshGroupColumn">
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" readonly="readonly" value="A团" data-id="0" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="select-customer">
+                                        <div class="layui-form-select mod-line-select">
+                                            <input type="text" class="layui-input layui-unselect layui-search-customer customer mod-border-none" classify="5" onsearchchange="inputRefreshHotelPrice" autocomplete="off" placeholder="请输入选择" data-value="1064373" value="青海湖西南大酒店" >
+                                            <dl class="layui-anim layui-anim-upbit"></dl>
+                                        </div>
+                                        <i class="layui-icon layui-icon-add-1 mod-form-showfavorites" style="top: 8px; visibility:hidden;"></i>
+                                    </td>
+                                    <td class="roomTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="ClassifyList" refresh="refreshRoomType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="司陪" readonly="readonly" data-id="48" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><input type="text" class="layui-input hotelStartTime mod-border-none" value="2022-08-09" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelEndTime mod-border-none" value="2022-08-10" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelDay mod-border-none" value="1" regex="float" ></td>
+                                    <td><input type="text" class="layui-input price mod-border-none" value="50" regex="float" ></td>
+                                    <td><input type="text" class="layui-input amount mod-border-none" value="3" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeCount mod-border-none" value="0" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeAmount mod-border-none" value="0" regex="float" ></td>
+                                    <td class="sumPrice">150</td>
+                                    <td class="payTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="PayTypeList" refresh="refreshPayType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="现付" readonly="readonly" data-id="122" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="display:none;"><input type="text" class="layui-input hotelAgency mod-border-none" value="0" regex="float" ></td>
+                                    <td style="display:none;cursor: pointer;" class="chargeClassify" GroupID="3078370" chargeclassify="0" signupidliststring="" onclick="selectSignUpChargeClassify(this)">
+                                        公摊
+                                    </td>
+                                    <td style="cursor: pointer;" class="memberList" GroupEID="DACC1C2052D22629" data-value="[]" onclick="hotelMembers(this)">
+                                        请选择
+                                    </td>
+                                    <td><div class="layui-input mod-from-textarea modedit-remark" contenteditable='true'>50/人</div></td>
+                                        <td>
+                                            <label class="container">
+                                                <input type="checkbox" lay-ignore  disabled="disabled" />
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </td>
+                                                                            <td>
+                                            <button class="layui-btn layui-anim layui-btn-primary btndelete mod-btn-remove" style="visibility: visible;color:black;" lay-tips='已有报账款' onclick='delData(this)'>
+                                                <i class="layui-icon layui-icon-delete"></i>
+                                            </button>
+                                        </td>
+                                </tr>
+                                <tr HasPayment="HasPayment" CustomerID="1101903" GroupColumn="0" GroupEID="DACC1C2052D22629" HotelID="2549914" UUID="d18682bf-3e26-4e15-a9c7-920fbaaf4f43" RenderPrice="0.00" Status="2">
+                                    <td>1</td>
+                                    <td class="groupColumn" style="display: none;">
+                                        <div class="layui-form-select pulldown" data-value="GroupColumnList" refresh="refreshGroupColumn">
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" readonly="readonly" value="A团" data-id="0" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="select-customer">
+                                        <div class="layui-form-select mod-line-select">
+                                            <input type="text" class="layui-input layui-unselect layui-search-customer customer mod-border-none" classify="5" onsearchchange="inputRefreshHotelPrice" autocomplete="off" placeholder="请输入选择" data-value="1101903" value="西宁大通假日酒店" disabled=&#39;disabled&#39;>
+                                            <dl class="layui-anim layui-anim-upbit"></dl>
+                                        </div>
+                                        <i class="layui-icon  mod-form-showfavorites" style="top: 8px; visibility:hidden;"></i>
+                                    </td>
+                                    <td class="roomTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="ClassifyList" refresh="refreshRoomType" disabled='disabled'>
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="标准间" readonly="readonly" data-id="43" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><input type="text" class="layui-input hotelStartTime mod-border-none" value="2022-08-10" readonly="readonly" onfocus="eventGetTimes(this)" disabled='disabled'></td>
+                                    <td><input type="text" class="layui-input hotelEndTime mod-border-none" value="2022-08-11" readonly="readonly" onfocus="eventGetTimes(this)" disabled='disabled'></td>
+                                    <td><input type="text" class="layui-input hotelDay mod-border-none" value="1" regex="float" disabled='disabled'></td>
+                                    <td><input type="text" class="layui-input price mod-border-none" value="255" regex="float" disabled='disabled'></td>
+                                    <td><input type="text" class="layui-input amount mod-border-none" value="12" regex="float" disabled='disabled'></td>
+                                    <td><input type="text" class="layui-input freeCount mod-border-none" value="0" regex="float" disabled='disabled'></td>
+                                    <td><input type="text" class="layui-input freeAmount mod-border-none" value="0" regex="float" disabled='disabled'></td>
+                                    <td class="sumPrice">3060</td>
+                                    <td class="payTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="PayTypeList" refresh="refreshPayType" disabled='disabled'>
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="社结" readonly="readonly" data-id="1709" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="display:none;"><input type="text" class="layui-input hotelAgency mod-border-none" value="0" regex="float" disabled='disabled'></td>
+                                    <td style="display:none;cursor: pointer;" class="chargeClassify" GroupID="3078370" chargeclassify="0" signupidliststring="" onclick="selectSignUpChargeClassify(this)">
+                                        公摊
+                                    </td>
+                                    <td style="cursor: pointer;" class="memberList" GroupEID="DACC1C2052D22629" data-value="[]" onclick="hotelMembers(this)">
+                                        请选择
+                                    </td>
+                                    <td><div class="layui-input mod-from-textarea modedit-remark" contenteditable='true'>含早含票&nbsp; &nbsp; &nbsp;导游核房提醒 LED欢迎词（ 欢迎日照平安人寿VIP客户下榻酒店)，</div></td>
+                                        <td>
+                                            <label class="container">
+                                                <input type="checkbox" lay-ignore  disabled="disabled" />
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </td>
+                                                                            <td>
+                                            <button class="layui-btn layui-anim layui-btn-primary btndelete mod-btn-remove" style="visibility: visible;color:black;" lay-tips='已有付款' onclick='delData(this)'>
+                                                <i class="layui-icon layui-icon-delete"></i>
+                                            </button>
+                                        </td>
+                                </tr>
+                                <tr CustomerID="1101903" GroupColumn="0" GroupEID="DACC1C2052D22629" HotelID="2549915" UUID="004d66eb-6e0e-49de-b291-5d1e73568550" RenderPrice="240.00" Status="2">
+                                    <td>1</td>
+                                    <td class="groupColumn" style="display: none;">
+                                        <div class="layui-form-select pulldown" data-value="GroupColumnList" refresh="refreshGroupColumn">
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" readonly="readonly" value="A团" data-id="0" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="select-customer">
+                                        <div class="layui-form-select mod-line-select">
+                                            <input type="text" class="layui-input layui-unselect layui-search-customer customer mod-border-none" classify="5" onsearchchange="inputRefreshHotelPrice" autocomplete="off" placeholder="请输入选择" data-value="1101903" value="西宁大通假日酒店" >
+                                            <dl class="layui-anim layui-anim-upbit"></dl>
+                                        </div>
+                                        <i class="layui-icon layui-icon-add-1 mod-form-showfavorites" style="top: 8px; visibility:hidden;"></i>
+                                    </td>
+                                    <td class="roomTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="ClassifyList" refresh="refreshRoomType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="司陪" readonly="readonly" data-id="48" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><input type="text" class="layui-input hotelStartTime mod-border-none" value="2022-08-10" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelEndTime mod-border-none" value="2022-08-11" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelDay mod-border-none" value="1" regex="float" ></td>
+                                    <td><input type="text" class="layui-input price mod-border-none" value="80" regex="float" ></td>
+                                    <td><input type="text" class="layui-input amount mod-border-none" value="3" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeCount mod-border-none" value="0" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeAmount mod-border-none" value="0" regex="float" ></td>
+                                    <td class="sumPrice">240</td>
+                                    <td class="payTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="PayTypeList" refresh="refreshPayType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="现付" readonly="readonly" data-id="122" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="display:none;"><input type="text" class="layui-input hotelAgency mod-border-none" value="0" regex="float" ></td>
+                                    <td style="display:none;cursor: pointer;" class="chargeClassify" GroupID="3078370" chargeclassify="0" signupidliststring="" onclick="selectSignUpChargeClassify(this)">
+                                        公摊
+                                    </td>
+                                    <td style="cursor: pointer;" class="memberList" GroupEID="DACC1C2052D22629" data-value="[]" onclick="hotelMembers(this)">
+                                        请选择
+                                    </td>
+                                    <td><div class="layui-input mod-from-textarea modedit-remark" contenteditable='true'>80/人的标准 自己定</div></td>
+                                        <td>
+                                            <label class="container">
+                                                <input type="checkbox" lay-ignore  disabled="disabled" />
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </td>
+                                                                            <td>
+                                            <button class="layui-btn layui-anim layui-btn-primary btndelete mod-btn-remove" style="visibility: visible;color:black;" lay-tips='已有报账款' onclick='delData(this)'>
+                                                <i class="layui-icon layui-icon-delete"></i>
+                                            </button>
+                                        </td>
+                                </tr>
+                                <tr CustomerID="1065366" GroupColumn="0" GroupEID="DACC1C2052D22629" HotelID="2549916" UUID="ed9c5759-c888-4a36-845e-358afc518277" RenderPrice="1920.00" Status="2">
+                                    <td>1</td>
+                                    <td class="groupColumn" style="display: none;">
+                                        <div class="layui-form-select pulldown" data-value="GroupColumnList" refresh="refreshGroupColumn">
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" readonly="readonly" value="A团" data-id="0" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="select-customer">
+                                        <div class="layui-form-select mod-line-select">
+                                            <input type="text" class="layui-input layui-unselect layui-search-customer customer mod-border-none" classify="5" onsearchchange="inputRefreshHotelPrice" autocomplete="off" placeholder="请输入选择" data-value="1065366" value="西宁金安大酒店" >
+                                            <dl class="layui-anim layui-anim-upbit"></dl>
+                                        </div>
+                                        <i class="layui-icon layui-icon-add-1 mod-form-showfavorites" style="top: 8px; visibility:hidden;"></i>
+                                    </td>
+                                    <td class="roomTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="ClassifyList" refresh="refreshRoomType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="标准间" readonly="readonly" data-id="43" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><input type="text" class="layui-input hotelStartTime mod-border-none" value="2022-08-11" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelEndTime mod-border-none" value="2022-08-12" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelDay mod-border-none" value="1" regex="float" ></td>
+                                    <td><input type="text" class="layui-input price mod-border-none" value="160" regex="float" ></td>
+                                    <td><input type="text" class="layui-input amount mod-border-none" value="12" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeCount mod-border-none" value="0" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeAmount mod-border-none" value="0" regex="float" ></td>
+                                    <td class="sumPrice">1920</td>
+                                    <td class="payTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="PayTypeList" refresh="refreshPayType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="现付" readonly="readonly" data-id="122" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="display:none;"><input type="text" class="layui-input hotelAgency mod-border-none" value="0" regex="float" ></td>
+                                    <td style="display:none;cursor: pointer;" class="chargeClassify" GroupID="3078370" chargeclassify="0" signupidliststring="" onclick="selectSignUpChargeClassify(this)">
+                                        公摊
+                                    </td>
+                                    <td style="cursor: pointer;" class="memberList" GroupEID="DACC1C2052D22629" data-value="[]" onclick="hotelMembers(this)">
+                                        请选择
+                                    </td>
+                                    <td><div class="layui-input mod-from-textarea modedit-remark" contenteditable='true'>含早含票&nbsp; &nbsp; &nbsp;导游核房提醒 LED欢迎词（ 欢迎日照平安人寿VIP客户下榻酒店)，</div></td>
+                                        <td>
+                                            <label class="container">
+                                                <input type="checkbox" lay-ignore  disabled="disabled" />
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </td>
+                                                                            <td>
+                                            <button class="layui-btn layui-anim layui-btn-primary btndelete mod-btn-remove" style="visibility: visible;color:black;" lay-tips='已有报账款' onclick='delData(this)'>
+                                                <i class="layui-icon layui-icon-delete"></i>
+                                            </button>
+                                        </td>
+                                </tr>
+                                <tr CustomerID="1065366" GroupColumn="0" GroupEID="DACC1C2052D22629" HotelID="2549917" UUID="41a80342-03aa-49db-a9da-00c9b24651b7" RenderPrice="150.00" Status="2">
+                                    <td>1</td>
+                                    <td class="groupColumn" style="display: none;">
+                                        <div class="layui-form-select pulldown" data-value="GroupColumnList" refresh="refreshGroupColumn">
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" readonly="readonly" value="A团" data-id="0" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="select-customer">
+                                        <div class="layui-form-select mod-line-select">
+                                            <input type="text" class="layui-input layui-unselect layui-search-customer customer mod-border-none" classify="5" onsearchchange="inputRefreshHotelPrice" autocomplete="off" placeholder="请输入选择" data-value="1065366" value="西宁金安大酒店" >
+                                            <dl class="layui-anim layui-anim-upbit"></dl>
+                                        </div>
+                                        <i class="layui-icon layui-icon-add-1 mod-form-showfavorites" style="top: 8px; visibility:hidden;"></i>
+                                    </td>
+                                    <td class="roomTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="ClassifyList" refresh="refreshRoomType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="司陪" readonly="readonly" data-id="48" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><input type="text" class="layui-input hotelStartTime mod-border-none" value="2022-08-11" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelEndTime mod-border-none" value="2022-08-12" readonly="readonly" onfocus="eventGetTimes(this)" ></td>
+                                    <td><input type="text" class="layui-input hotelDay mod-border-none" value="1" regex="float" ></td>
+                                    <td><input type="text" class="layui-input price mod-border-none" value="50" regex="float" ></td>
+                                    <td><input type="text" class="layui-input amount mod-border-none" value="3" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeCount mod-border-none" value="0" regex="float" ></td>
+                                    <td><input type="text" class="layui-input freeAmount mod-border-none" value="0" regex="float" ></td>
+                                    <td class="sumPrice">150</td>
+                                    <td class="payTypeProperty">
+                                        <div class="layui-form-select pulldown" data-value="PayTypeList" refresh="refreshPayType" >
+                                            <div class="layui-select-title">
+                                                <input type="text" placeholder="请选择" value="现付" readonly="readonly" data-id="122" class="layui-input mod-border-none">
+                                                <i class="layui-edge"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="display:none;"><input type="text" class="layui-input hotelAgency mod-border-none" value="0" regex="float" ></td>
+                                    <td style="display:none;cursor: pointer;" class="chargeClassify" GroupID="3078370" chargeclassify="0" signupidliststring="" onclick="selectSignUpChargeClassify(this)">
+                                        公摊
+                                    </td>
+                                    <td style="cursor: pointer;" class="memberList" GroupEID="DACC1C2052D22629" data-value="[]" onclick="hotelMembers(this)">
+                                        请选择
+                                    </td>
+                                    <td><div class="layui-input mod-from-textarea modedit-remark" contenteditable='true'>50/人</div></td>
+                                        <td>
+                                            <label class="container">
+                                                <input type="checkbox" lay-ignore  disabled="disabled" />
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </td>
+                                                                            <td>
+                                            <button class="layui-btn layui-anim layui-btn-primary btndelete mod-btn-remove" style="visibility: visible;color:black;" lay-tips='已有报账款' onclick='delData(this)'>
+                                                <i class="layui-icon layui-icon-delete"></i>
+                                            </button>
+                                        </td>
+                                </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="10">合计:</td>
+                                <td></td>
+                                <td></td>
+                                <td style="display:none;"></td>
+                                <td style="display:none;"></td>
+                                <td></td>
+                                <td></td>
+                                    <td></td>
+                                                                    <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="layui-card mod-modify ">
+                <div class="layui-card-header">
+                    <div class="layui-form-item">
+                        <div class="layui-row">
+                            <div class="layui-col-xs1 layui-col-md1 layui-col-sm1">
+                                <label class="layui-form-label">
+                                    <i class="jj-iconfont icon-quanbudingdan2"></i>&nbsp;报账信息
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+
+                    <table class="layui-table" id="TabAccount" lay-size="modedit" lay-even="">
+                        <thead>
+                            <tr>
+                                <th style="width:40px;">序号</th>
+                                <th style="width:60px;display:none;">分团</th>
+                                <th style="width:240px;">酒店名称</th>
+                                <th style="width:100px;">房间类型</th>
+                                <th style="width:90px;">入住日期</th>
+                                <th style="width:90px;">金额</th>
+
+                                        <th class='renderAccountGroupColumn' GroupColumn=0>詹岩岩（李）</th>
+                                        <th class='renderAccountGroupColumn' style="width:50px;" GroupColumn=0>票据</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                    <tr HotelID="2549910" GroupColumn="0">
+                                        <td>1</td>
+                                        <td style="display:none;">A团</td>
+                                        <td class="customer">喆啡酒店(西宁柴达木路西钢店)</td>
+                                        <td>标准间</td>
+                                        <td>2022-08-08</td>
+                                        <td>2160</td>
+                                                <td class='renderAccount renderAccountGroupColumn' UserID="83518" GroupColumn=0><input type="text" value="2160" class="layui-input" style="border:0px;" regex='float'  HasPayment="False" onblur="changeDelete(this)" /></td>
+                                                <td class="renderAccountGroupColumn" GroupColumn=0>
+                                                    <input class="renderAcountHasBill" UserID="83518" GroupColumn=0 type="checkbox" lay-skin="primary" lay-filter="renderAcountHasBill"   />
+                                                </td>
+                                    </tr>
+                                    <tr HotelID="2549911" GroupColumn="0">
+                                        <td>2</td>
+                                        <td style="display:none;">A团</td>
+                                        <td class="customer">喆啡酒店(西宁柴达木路西钢店)</td>
+                                        <td>司陪</td>
+                                        <td>2022-08-08</td>
+                                        <td>240</td>
+                                                <td class='renderAccount renderAccountGroupColumn' UserID="83518" GroupColumn=0><input type="text" value="240" class="layui-input" style="border:0px;" regex='float'  HasPayment="False" onblur="changeDelete(this)" /></td>
+                                                <td class="renderAccountGroupColumn" GroupColumn=0>
+                                                    <input class="renderAcountHasBill" UserID="83518" GroupColumn=0 type="checkbox" lay-skin="primary" lay-filter="renderAcountHasBill"   />
+                                                </td>
+                                    </tr>
+                                    <tr HotelID="2549912" GroupColumn="0">
+                                        <td>3</td>
+                                        <td style="display:none;">A团</td>
+                                        <td class="customer">青海湖西南大酒店</td>
+                                        <td>标准间</td>
+                                        <td>2022-08-09</td>
+                                        <td>2160</td>
+                                                <td class='renderAccount renderAccountGroupColumn' UserID="83518" GroupColumn=0><input type="text" value="2160" class="layui-input" style="border:0px;" regex='float'  HasPayment="False" onblur="changeDelete(this)" /></td>
+                                                <td class="renderAccountGroupColumn" GroupColumn=0>
+                                                    <input class="renderAcountHasBill" UserID="83518" GroupColumn=0 type="checkbox" lay-skin="primary" lay-filter="renderAcountHasBill"   />
+                                                </td>
+                                    </tr>
+                                    <tr HotelID="2549913" GroupColumn="0">
+                                        <td>4</td>
+                                        <td style="display:none;">A团</td>
+                                        <td class="customer">青海湖西南大酒店</td>
+                                        <td>司陪</td>
+                                        <td>2022-08-09</td>
+                                        <td>150</td>
+                                                <td class='renderAccount renderAccountGroupColumn' UserID="83518" GroupColumn=0><input type="text" value="150" class="layui-input" style="border:0px;" regex='float'  HasPayment="False" onblur="changeDelete(this)" /></td>
+                                                <td class="renderAccountGroupColumn" GroupColumn=0>
+                                                    <input class="renderAcountHasBill" UserID="83518" GroupColumn=0 type="checkbox" lay-skin="primary" lay-filter="renderAcountHasBill"   />
+                                                </td>
+                                    </tr>
+                                    <tr HotelID="2549914" GroupColumn="0">
+                                        <td>5</td>
+                                        <td style="display:none;">A团</td>
+                                        <td class="customer">西宁大通假日酒店</td>
+                                        <td>标准间</td>
+                                        <td>2022-08-10</td>
+                                        <td>3060</td>
+                                                <td class='renderAccount renderAccountGroupColumn' UserID="83518" GroupColumn=0><input type="text" value="0" class="layui-input" style="border:0px;" regex='float'  HasPayment="True" onblur="changeDelete(this)" /></td>
+                                                <td class="renderAccountGroupColumn" GroupColumn=0>
+                                                    <input class="renderAcountHasBill" UserID="83518" GroupColumn=0 type="checkbox" lay-skin="primary" lay-filter="renderAcountHasBill"   />
+                                                </td>
+                                    </tr>
+                                    <tr HotelID="2549915" GroupColumn="0">
+                                        <td>6</td>
+                                        <td style="display:none;">A团</td>
+                                        <td class="customer">西宁大通假日酒店</td>
+                                        <td>司陪</td>
+                                        <td>2022-08-10</td>
+                                        <td>240</td>
+                                                <td class='renderAccount renderAccountGroupColumn' UserID="83518" GroupColumn=0><input type="text" value="240" class="layui-input" style="border:0px;" regex='float'  HasPayment="False" onblur="changeDelete(this)" /></td>
+                                                <td class="renderAccountGroupColumn" GroupColumn=0>
+                                                    <input class="renderAcountHasBill" UserID="83518" GroupColumn=0 type="checkbox" lay-skin="primary" lay-filter="renderAcountHasBill"   />
+                                                </td>
+                                    </tr>
+                                    <tr HotelID="2549916" GroupColumn="0">
+                                        <td>7</td>
+                                        <td style="display:none;">A团</td>
+                                        <td class="customer">西宁金安大酒店</td>
+                                        <td>标准间</td>
+                                        <td>2022-08-11</td>
+                                        <td>1920</td>
+                                                <td class='renderAccount renderAccountGroupColumn' UserID="83518" GroupColumn=0><input type="text" value="1920" class="layui-input" style="border:0px;" regex='float'  HasPayment="False" onblur="changeDelete(this)" /></td>
+                                                <td class="renderAccountGroupColumn" GroupColumn=0>
+                                                    <input class="renderAcountHasBill" UserID="83518" GroupColumn=0 type="checkbox" lay-skin="primary" lay-filter="renderAcountHasBill"   />
+                                                </td>
+                                    </tr>
+                                    <tr HotelID="2549917" GroupColumn="0">
+                                        <td>8</td>
+                                        <td style="display:none;">A团</td>
+                                        <td class="customer">西宁金安大酒店</td>
+                                        <td>司陪</td>
+                                        <td>2022-08-11</td>
+                                        <td>150</td>
+                                                <td class='renderAccount renderAccountGroupColumn' UserID="83518" GroupColumn=0><input type="text" value="150" class="layui-input" style="border:0px;" regex='float'  HasPayment="False" onblur="changeDelete(this)" /></td>
+                                                <td class="renderAccountGroupColumn" GroupColumn=0>
+                                                    <input class="renderAcountHasBill" UserID="83518" GroupColumn=0 type="checkbox" lay-skin="primary" lay-filter="renderAcountHasBill"   />
+                                                </td>
+                                    </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">合计:</td>
+                                <td></td>
+                                        <td class='renderAccountTotal renderAccountGroupColumn' UserID="83518" GroupColumn=0></td>
+                                        <td class='renderAccountGroupColumn' GroupColumn=0>
+                                            <input class="renderAcountHasBillTotal" UserID="83518" type="checkbox" lay-skin="primary" lay-filter="renderAcountHasBillTotal" />
+                                        </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="layui-card mod-modify" id="guideArea">
+                <div class="layui-card-header">
+                    <div class="layui-form-item">
+                        <div class="layui-row">
+                            <div class="layui-col-xs1 layui-col-md1 layui-col-sm1">
+                                <label class="layui-form-label">
+                                    <i class="jj-iconfont icon-quanbudingdan2"></i>&nbsp;导游上传团片
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+                    <div class="layui-form-pane mod-modify">
+                        <div class="layui-form-item">
+                            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                                <div class="layui-elem-quote layui-quote-nm" id="guide_photo">
+                                    <ol class="layui-upload-list guideupload"></ol>
+                                    <div style="clear:both;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-card mod-modify">
+                <div class="layui-card-body">
+                    <div class="layui-form-pane mod-modify">
+                        <div class="layui-form-item ">
+                            <div class="layui-col-xs4 layui-col-sm4 layui-col-md4">
+                                <button type="button" class="layui-btn layui-btn-primary layui-modify-upload" style="font-size:12px;"><i class="jj-iconfont icon-yunchuan"></i> 点击选择图片</button>
+                                <button type="button" class="layui-btn layui-btn-primary layui-modify-uploadQR" style="font-size:12px;"><i class="jj-iconfont icon-saoma1"></i> 扫码传图</button>
+                                <button type="button" id="btnAddDesc" class="layui-btn layui-btn-normal" style="font-size:12px;"><i class="layui-icon">&#xe642;</i>点击编写文字资料</button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" id="fjArea">
+                            <div class="layui-col-xs12 layui-col-sm12 layui-col-md12">
+                                <div class="layui-elem-quote layui-quote-nm layui-modify-display">
+                                    <ol class="layui-upload-list fjupload"></ol>
+                                    <div style="clear:both;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <!--悬浮框开始-->
+            <div style="height:30px;line-height:30px;"></div>
+            <div class="mod-layout-floatbottom">
+                <div class="layui-col-xs8 layui-col-sm8 layui-col-md8 layui-col-md-offset4">
+                    <div class="mod-layout-right20">
+                                                    <button class="layui-btn  layui-btn-sm layui-anim layui-btn-normal mod-form-wrap-btn layui-btn-disabled" disabled="disabled" type="button" id="btnSaveVersion" onclick="saveEdit(false);"> 保存新版本 </button>
+                            <button class="layui-btn  layui-btn-sm layui-anim layui-btn-normal mod-form-wrap-btn layui-btn-disabled" disabled="disabled" type="button" id="btnSave" onclick="saveEdit(true);">保 存</button>
+                        <button type="button" class="layui-btn  layui-btn-sm layui-anim layui-btn-primary mod-form-wrap-btn" onclick="cancelEdit()">关 闭</button>
+                    </div>
+                </div>
+            </div>
+            <!--悬浮框结束-->
+    </div>
+    <link href="/Scripts/viewer/viewer.css?v=20230914001" rel="stylesheet"/>
+
+    <script src="/Scripts/jquery/jquery-3.3.1.js?v=20230914001"></script>
+<script src="/Scripts/jquery/jquery-migrate-1.2.1.js?v=20230914001"></script>
+<script src="/Scripts/common/utility.js?v=20230914001"></script>
+<script src="/Scripts/plugins/jquery.ifrmdailog.js?v=20230914001"></script>
+<script src="/Content/layui/layui/layui.js?v=20230914001"></script>
+<script src="/Content/layui/global.js?v=20230914001"></script>
+<script src="/Scripts/viewer/viewer.js?v=20230914001"></script>
+<script src="/Scripts/viewer/jquery-viewer.js?v=20230914001"></script>
+
+    <script src="/Scripts/common/pinyinmatch.js?v=20230914001"></script>
+    <script src="/Scripts/regulate/common.js?v=20230914001"></script>
+    <script src="/Scripts/common/customSelect.js?v=20230914001"></script>
+
+    <!--新建-->
+    <script language="javascript" type="text/javascript">
+        var newIndex = 1000;
+        var groupStartTime = '2022-08-08';
+        function addNew(Hotel) {
+            newIndex++;
+            Hotel.GroupColumn = parseInt(Hotel.GroupColumn);
+            if (isNaN(Hotel.GroupColumn) || Hotel.GroupColumn == -1) { Hotel.GroupColumn = 0; }
+            var $tbody = $("#TabHotel tbody");
+            var tr = $("<tr/>");
+            tr.attr("GroupColumn", Hotel.GroupColumn);
+            tr.attr("HotelID", Hotel.ID);
+            tr.attr("SignUpID", Hotel.SignUpID);
+            tr.attr("UUID", Hotel.UUID);
+            tr.attr("CustomerID", Hotel.CustomerID);
+            tr.attr("HasPayment", Hotel.HasPayment);
+            tr.attr("RenderPrice", Hotel.RenderPrice);
+            //序号
+            var td = $("<td/>");
+            td.bind("click", function () {
+                initRegulateTableSelected(td.parent("tr"));
+            });
+            tr.append(td);
+            //分团
+            var tdGroupColumn = $("<td/>");
+            tdGroupColumn.attr("class", "groupColumn");
+            var groupColumnHtml = '<div class="layui-form-select pulldown" data-value="GroupColumnList" refresh="refreshGroupColumn" ' + ((Hotel.Status == 1 || Hotel.HasPayment || !IsEditable) ? 'disabled="disabled"' : "") + '>';
+            groupColumnHtml += '<div class="layui-select-title">';
+            groupColumnHtml += '<input type="text" placeholder="请选择" value="' + getFenTuanCode(Hotel.GroupColumn) + '团" data-id="' + Hotel.GroupColumn + '" class="layui-input mod-border-none">';
+            groupColumnHtml += '<i class="layui-edge"></i></div></div>';
+            tdGroupColumn.append(groupColumnHtml);
+            if (totalGroupColumn == 1) {
+                tdGroupColumn.hide();
+            }
+            tr.append(tdGroupColumn);
+            //酒店名称
+            var td = $("<td/>");
+            var $left = $("<input type='text' class='layui-input layui-unselect layui-search-customer customer' classify='" + CustomerClassify + "' onSearchChange='inputRefreshHotelPrice' autocomplete='off' placeholder='请输入选择' data-value='" + (Hotel.CustomerID == "" ? 0 : Hotel.CustomerID) + "' value='" + Hotel.CustomerName + "'/>");
+            td.append($left);
+            var $right = $("<i class='layui-icon layui-icon-add-1 mod-form-showfavorites' style='visibility:hidden;top:8px;'></i>");
+            if (Hotel.Status == 1 || Hotel.HasPayment || !IsEditable) {
+                $left.attr("disabled", "disabled");
+                $right.addClass("layui-hide");
+            }
+            td.append($right);
+            $right.bind("click", function (event) {
+                $(document).trigger("click");
+                if (Hotel.Status == 1 || Hotel.HasPayment) {
+                    return;
+                }
+                var CustomerID = $td.attr("CustomerID") == undefined ? 0 : $td.attr("CustomerID");
+                selectRegulateCustomer(CustomerID, CustomerClassify, $(this).closest("td"));
+                event.stopPropagation();
+            });
+            tr.append(td);
+            tr.children("td").bind("mouseenter", function () {
+                $(this).find(".layui-icon-add-1").css("visibility", "visible");
+            }).bind("mouseleave", function () {
+                $(this).find(".layui-icon-add-1").css("visibility", "hidden");
+            });
+            //房间类型
+            var td = $("<td/>");
+            td.addClass("roomTypeProperty");
+            if (Hotel.RoomTypePropertyID == undefined || Hotel.RoomTypePropertyID == "" || Hotel.RoomTypePropertyID == 0) {
+                Hotel.RoomTypePropertyID = ClassifyList != null && ClassifyList.length > 0 ? ClassifyList[0].ID : 0;
+                Hotel.RoomTypePropertyName = ClassifyList != null && ClassifyList.length > 0 ? ClassifyList[0].Name : "";
+            }
+            var classifyHtml = '<div class="layui-form-select pulldown" data-value="ClassifyList" refresh="refreshRoomType" ' + ((Hotel.Status == 1 || Hotel.HasPayment) ? 'disabled="disabled"' : "") + '>';
+            classifyHtml += '<div class="layui-select-title">';
+            classifyHtml += '<input type="text" placeholder="请选择" value="' + Hotel.RoomTypePropertyName + '" data-id="' + Hotel.RoomTypePropertyID + '" class="layui-input mod-border-none" readonly="readonly">';
+            classifyHtml += '<i class="layui-edge"></i></div></div>';
+            td.append(classifyHtml);
+            tr.append(td);
+            //入住日期
+            var td = $("<td/>");
+            var $input = $("<input type='text'/>");
+            $input.addClass("layui-input hotelStartTime mod-border-none");
+            $input.attr({ "readonly": "readonly", "value": Hotel.HotelStartTime, "onfocus": "eventGetTimes(this)" });
+            if (Hotel.Status == 1 || Hotel.HasPayment) {
+                $input.attr("disabled", "disabled");
+            }
+            td.append($input);
+            tr.append(td);
+            //离开日期
+            var td = $("<td/>");
+            var $input = $("<input type='text'/>");
+            $input.addClass("layui-input hotelEndTime mod-border-none");
+            $input.attr({ "readonly": "readonly", "value": Hotel.HotelEndTime, "onfocus": "eventGetTimes(this)" });
+            if (Hotel.Status == 1 || Hotel.HasPayment) {
+                $input.attr("disabled", "disabled");
+            }
+            td.append($input);
+            tr.append(td);
+            //入住天数
+            var td = $("<td/>");
+            var $input = $("<input type='text'/>");
+            $input.addClass("layui-input hotelDay mod-border-none");
+            $input.attr({ "value": Hotel.HotelDay == "0" ? 1 : Hotel.HotelDay, "regex": "float" });
+            if (Hotel.Status == 1 || Hotel.HasPayment) {
+                $input.attr("disabled", "disabled");
+            }
+            td.append($input);
+            tr.append(td);
+            //单价
+            var td = $("<td/>");
+            var $input = $("<input type='text'/>");
+            $input.addClass("layui-input price mod-border-none");
+            $input.attr({ "value": parseFloat(Hotel.Price), "regex": "float" });
+            if (Hotel.Status == 1 || Hotel.HasPayment) {
+                $input.attr("disabled", "disabled");
+            }
+            td.append($input);
+            tr.append(td);
+            //房间数
+            var td = $("<td/>");
+            var $input = $("<input type='text'/>");
+            $input.addClass("layui-input amount mod-border-none");
+            $input.attr({ "value": parseFloat(Hotel.Amount), "regex": "float" });
+            if (Hotel.Status == 1 || Hotel.HasPayment) {
+                $input.attr("disabled", "disabled");
+            }
+            td.append($input);
+            tr.append(td);
+            //免房数
+            var td = $("<td/>");
+            var $input = $("<input type='text'/>");
+            $input.addClass("layui-input freeCount mod-border-none");
+            $input.attr({ "value": Hotel.FreeCount, "regex": "float" });
+            if (Hotel.Status == 1 || Hotel.HasPayment) {
+                $input.attr("disabled", "disabled");
+            }
+            $input.attr("regex", "float");
+            td.append($input);
+            tr.append(td);
+            //免金额
+            var td = $("<td/>");
+            if (Hotel.FreeAmount == "" || Hotel.FreeAmount == undefined) {
+                Hotel.FreeAmount = 0;
+            }
+            var $input = $("<input type='text'/>");
+            $input.addClass("layui-input freeAmount mod-border-none");
+            $input.attr({ "value": parseFloat(Hotel.FreeAmount), "regex": "float" });
+            if (Hotel.Status == 1 || Hotel.HasPayment) {
+                $input.attr("disabled", "disabled");
+            }
+            td.append($input);
+            tr.append(td);
+            //金额
+            var td = $("<td/>");
+            td.addClass("sumPrice");
+            if (Hotel.SumPrice == "" || Hotel.SumPrice == undefined) {
+                Hotel.SumPrice = 0;
+            }
+            td.text(Hotel.SumPrice);
+            tr.append(td);
+            //付款方式
+            var td = $("<td/>");
+            td.attr("id", getUUID());
+            td.attr("class", "payTypeProperty");
+            if (Hotel.PayTypePropertyID == "" || Hotel.PayTypePropertyID == null || Hotel.PayTypePropertyID == undefined || Hotel.PayTypePropertyID == 0) {
+                Hotel.PayTypePropertyID = PayTypeList != null && PayTypeList.length > 0 ? PayTypeList[0].ID : "0";
+                Hotel.PayTypePropertyName = PayTypeList != null && PayTypeList.length > 0 ? PayTypeList[0].Name : "";
+            }
+            var classifyHtml = '<div class="layui-form-select pulldown" data-value="PayTypeList" refresh="refreshPayType" ' + ((Hotel.Status == 1 || Hotel.HasPayment) ? 'disabled="disabled"' : "") + '>';
+            classifyHtml += '<div class="layui-select-title">';
+            classifyHtml += '<input type="text" placeholder="请选择" value="' + Hotel.PayTypePropertyName + '" data-id="' + Hotel.PayTypePropertyID + '" class="layui-input mod-border-none" readonly="readonly">';
+            classifyHtml += '<i class="layui-edge"></i></div></div>';
+            td.append(classifyHtml);
+            tr.append(td);
+            //酒店代收
+            var td = $("<td/>");
+            if (Hotel.HotelAgency == "" || Hotel.HotelAgency == undefined) {
+                Hotel.HotelAgency = 0;
+            }
+            var $input = $("<input type='text'/>");
+            $input.addClass("layui-input hotelAgency mod-border-none");
+            $input.attr({ "value": parseFloat(Hotel.HotelAgency), "regex": "float" });
+            if (Hotel.Status == 1 || Hotel.HasPayment) {
+                $input.attr("disabled", "disabled");
+            }
+            if (false) {
+                td.append($input);
+                tr.append(td);
+            }
+            //费用类别
+            var $td = $("<td style='display:none;'/>");
+            $td.attr("class", "chargeClassify");
+            $td.attr("ChargeClassify", Hotel.ChargeClassify);
+            $td.attr("SignUpIDListString", Hotel.SignUpIDListString);
+            $td.attr("GroupID", 3078370);
+            $td.text(getChargeClassifyDisplay(Hotel.ChargeClassify));
+            $td.css("cursor", "pointer");
+            if (Hotel.Status != 1 && IsEditable) {
+                $td.bind("click", function () {
+                    selectSignUpChargeClassify($(this));
+                });
+            }
+            tr.append($td);
+            //客人名称
+            var $td = $("<td/>");
+            $td.attr("class", "memberList");
+            $td.attr("data-value", JSON.stringify(Hotel.RegulateHotelMemberList));
+            $td.text(Hotel.RegulateHotelMemberDisplay == "" ? "请选择" : Hotel.RegulateHotelMemberDisplay);
+            $td.bind("click", function () {
+                hotelMembers($(this));
+            });
+            tr.append($td);
+            //备注
+            var td = $("<td/>");
+            var $div = $('<div class="layui-input mod-from-textarea modedit-remark" style="border: 0px; "/>');
+            if (IsEditable) {
+                $div.attr("contenteditable", "true");
+            }
+            $div.html(Hotel.Remark);
+            td.append($div);
+            customLayuiHigh($div);
+            tr.append(td);
+            //操作
+            var td = $("<td/>");
+            if (IsEditable && Hotel.Status != 1) {
+                var $btn = $("<button/>");
+                $btn.addClass("layui-btn layui-anim layui-btn-primary btndelete mod-btn-remove");
+                $btn.css("visibility", "visible");
+                var $i = $('<i class="layui-icon layui-icon-delete"/>');
+                if (Hotel.HasPayment) {
+                    $btn.attr("lay-tips", "已有付款");
+                    $btn.css("color", "black");
+                } else {
+                    if (Hotel.RenderPrice != 0) {
+                        $btn.attr("lay-tips", "已有报账款");
+                        $btn.css("color", "black");
+                    } else {
+                        $btn.bind("click", function () {
+                            delData($(this));
+                        });
+                    }
+                }
+                $btn.append($i);
+                td.append($btn);
+            }
+            if (!isInit || false) {
+                var tds = $("<td/>");
+                var $lable = $("<label />");
+                $lable.addClass("container");
+                var chk = $("<input type='checkbox' lay-ignore/>");
+                chk.attr("disabled", "disabled");
+                if (Hotel.Status == 1) {
+                    chk.attr("checked", "checked");
+                }
+                var $span = $("<span class='checkmark' />");
+                $lable.append(chk).append($span);
+                tds.append($lable);
+                tr.append(tds);
+            }
+            if (IsEditable) {
+                tr.append(td);
+            }
+            var currentTr = $("#TabHotel tbody tr[selected='selected']");
+            if (currentTr.length == 0) {
+                $tbody.append(tr);
+            } else {
+                currentTr.after(tr);
+            }
+
+            _RefreshTdNumber();
+            pasteFilter();
+
+            initEditInput(tr);
+
+            if ($("#TabHotel tbody tr").length == editCount || editCount == 0) {
+                removeDisabled($("#btnSave"));
+                removeDisabled($("#btnSaveVersion"));
+            }
+            initCustomSelect(tr);
+        }
+
+        function addAccount(CustomerName, roomTypePropertyName, hotelTime, SumPrice, New2GroupColumn) {
+            var tr = $("<tr/>");
+            New2GroupColumn = parseInt(New2GroupColumn);
+            if (isNaN(New2GroupColumn) || New2GroupColumn == -1) { New2GroupColumn = 0; }
+            tr.attr("GroupColumn", New2GroupColumn);
+
+            var td = $("<td/>");
+            tr.append(td);
+
+            var td = $("<td/>");
+            td.text(getFenTuanCode(New2GroupColumn) + "团");
+            if (totalGroupColumn == 1) {
+                td.hide();
+            }
+            tr.append(td);
+
+            var td = $("<td/>");
+            td.attr("class", "customer");
+            td.text(CustomerName);
+            tr.append(td);
+
+            var td = $("<td/>");
+            td.text(roomTypePropertyName);
+            tr.append(td);
+
+            var td = $("<td/>");
+            td.text(hotelTime);
+            tr.append(td);
+
+            var td = $("<td/>");
+            td.text(SumPrice);
+            tr.append(td);
+
+                    
+                    var td = $("<td/>");
+                    td.attr("class", "renderAccount renderAccountGroupColumn");
+                    td.css("width","120px;")
+                    if (GroupColumn != 0 && GroupColumn != -1) {
+                        td.hide();
+                    }
+                    var $input = $("<input type='text'/>");
+                    $input.addClass("layui-input");
+                    $input.attr("value", "0");
+                    $input.css("border", "0px");
+                    $input.attr("regex", "float");
+                    $input.unbind("blur").bind("blur", function () {
+                        changeDelete(this);
+                    })
+                    td.attr("UserID", "83518");
+                    td.attr("GroupColumn", "0");
+                    td.append($input);
+                    tr.append(td);
+
+                    var td = $("<td/>");
+                    td.attr("class", "renderAccountGroupColumn");
+                    if (GroupColumn != 0 && GroupColumn != -1) {
+                        td.hide();
+                    }
+                    var $lable = $("<label />");
+                    $lable.addClass("container");
+                    var chk = $("<input type='checkbox' lay-ignore/>");
+                    chk.attr("class", "renderAcountHasBill");
+                    chk.attr("lay-filter", "renderAcountHasBill");
+                    chk.attr("UserID", "83518");
+                    td.attr("GroupColumn", "0");
+                    var $span = $("<span class='checkmark' />");
+                    $lable.append(chk).append($span);
+                    td.append($lable);
+                    tr.append(td);
+                    
+            var currentTr = $("#TabAccount tbody tr[selected='selected']");
+            if (currentTr.length == 0) {
+                $("#TabAccount tbody").append(tr);
+            } else {
+                currentTr.after(tr);
+            }
+            initEditInput(tr);
+            initCheckboxTrClick(tr);
+        }
+    </script>
+    <script language="javascript" type="text/javascript">
+        function hotelMembers(obj) {
+            var $tr = $(obj).parent("tr");
+            var UUID = $tr.attr("UUID");
+            memberArray = $(obj).attr("data-value");
+            layer.open({
+                type: 2,
+                title: '客人名单',
+                content: '/366820/Regulate/Regulate_HotelMember?GroupEID=DACC1C2052D22629&UUID=' + UUID + '&SignUpEID=' + '&IsEditable=' + IsEditable,
+                maxmin: false,
+                area: ['1100px', '80%'],
+                offset: ['50px'],
+                btn: ['选择', '关闭'],
+                yes: function (index, layero) {
+                    var data = window["layui-layer-iframe" + index].callbackdata();
+                    $(obj).attr("data-value", JSON.stringify(data));
+                    if (data.length > 0) {
+                        var display = setMemberDisplay(data);
+                        $(obj).text(display);
+
+                    } else {
+                        $(obj).text("请选择");
+                    }
+                    layer.close(index);
+                }
+            });
+        }
+        var setMemberDisplay = function (array) {
+            var arrName = array.map((obj, index) => {
+                return obj.MemberName;
+
+            }).join(",").split(',');
+            var display = arrName.slice(0, 3).join(",");
+            if (array.length > 3) {
+                display += "等" + array.length + "人";
+            }
+            return display;
+        }
+        function delData(_this) {
+            var tr = $(_this).parent("td").parent("tr");
+            var index = parseInt(tr.children("td:eq(0)").text());
+            var HasPayment = tr.attr("HasPayment") == "True";
+            var RenderPrice = tr.attr("RenderPrice");
+            var Status = tr.attr("Status");
+            RenderPrice = isNaN(parseFloat(RenderPrice)) ? 0 : parseFloat(RenderPrice);
+            if (HasPayment) {
+                layer.msg("本条信息已有付款，不能删除!", { icon: 2 });
+                return;
+            }
+            if (Status == 1) {
+                layer.msg("本条信息已单团审核通过，不能删除!", { icon: 2 });
+                return;
+            }
+            if (RenderPrice != 0) {
+                layer.msg("本条信息已有报账款，不能删除!", { icon: 2 });
+                return;
+            }
+            $.ajax({
+                url: '/366820/Regulate/QueryRegulateHasPayment',
+                data: {
+                    RegulateID: tr.attr("hotelid"),
+                    GroupEID: 'DACC1C2052D22629',
+                    Classify: 3
+                },
+                type: "post",
+                dataType: "json",
+                success: function (result) {
+                    if (result.IsSuccess) {
+                        if (result.Data == 1) {
+                            layer.msg("本条住宿信息已有付款，不能删除!", { icon: 2 });
+                        } else {
+                            tr.remove();
+                            if (!isNaN(index)) {
+                                $("#TabAccount tbody tr:not(:hidden)").eq(index - 1).remove();
+                            }
+                            _RefreshTdNumber();
+                            _RefreshCollection(undefined, false);
+                        }
+                    } else {
+                        layer.msg(result.Msg, { icon: 2 });
+                    }
+                }
+            });
+        }
+
+        function setHotelMemberData(UUID) {
+            var hotelMemberList = [];
+            if (From == "CentralizedRegulate" && '' != "") {
+                var memberDataList = [];
+                if (memberDataList.length > 0) {
+                    $.each(memberDataList, function (index, item) {
+                        var member = {};
+                        member.GroupID = item.GroupID;
+                        member.SignUpID = item.SignUpID;
+                        member.MemberID = item.ID;
+                        member.MemberName = item.Name;
+                        member.AdultCount = parseInt(item.SignUpAdultCount2);
+                        member.ChildrenCount = parseInt(item.SignUpAdultCount2);
+                        member.Remark = "";
+                        member.UUID = UUID;
+                        hotelMemberList.push(member);
+                    });
+                }
+            }
+            return hotelMemberList;
+        }
+        function NewHotel() {
+            var Hotel = {};
+            Hotel.ID = 0;
+            Hotel.CustomerID = 0;
+            Hotel.CustomerName = "";
+            Hotel.CustomerAreaID = 0;
+            Hotel.CustomerProvinceID = 0;
+            Hotel.CustomerCityID = 0;
+            Hotel.RoomTypePropertyID = 1755;
+            Hotel.RoomTypePropertyName = "标间套房";
+            Hotel.HotelStartTime = GroupStartTime;
+            Hotel.HotelEndTime = GroupEndTime;
+            Hotel.HotelDay = 0;
+            Hotel.Price = 0;
+            Hotel.Amount = 0;
+            Hotel.FreeCount = 0;
+            Hotel.FreeAmount = 0;
+            Hotel.SumPrice = 0;
+            Hotel.Remark = "";
+            Hotel.PayTypePropertyID = 0;
+            Hotel.PayTypePropertyName = "";
+            Hotel.Status = 0;
+            Hotel.HasPayment = false;
+            Hotel.ChargeClassify = 0;
+            Hotel.SignUpIDListString = "";
+            Hotel.UUID = getUUID();
+            Hotel.RegulateHotelMemberList = setHotelMemberData(Hotel.UUID);
+            Hotel.RegulateHotelMemberDisplay = setMemberDisplay(Hotel.RegulateHotelMemberList);
+            Hotel.HotelAgency = 0;
+            Hotel.GroupColumn = GroupColumn;
+            Hotel.RenderPrice = 0;
+            return Hotel;
+        }
+    </script>
+    <script language="javascript" type="text/javascript">
+        var isGroupInfoVisible = false;
+        var isInit = false;
+        var hasSelectCustomerWin = true;
+        var IsEditable = true;
+        var isDriver = false;
+        var From = "";
+        var totalGroupColumn = 1;
+        var hotelCount = 8;
+        var memberArray = [];
+        var CustomerClassify = 5;
+        var Group = {};
+        var GroupColumn = -1;
+        var currentGroupColumnIndex = '';
+        Group.GroupStartTime="2022-08-08";
+        Group.HotelAgency = 0;
+        var GroupEID = "DACC1C2052D22629";
+        var Classify = 1;
+        var WorkFlowID = 0;
+        var ModuleType = 4;
+        var editCount = 8;
+        var ClassifyList = [{"ID":"1755","Name":"标间套房"},{"ID":"1756","Name":"大床套房"},{"ID":"43","Name":"标准间"},{"ID":"44","Name":"大床房"},{"ID":"45","Name":"三人间"},{"ID":"48","Name":"司陪"},{"ID":"437","Name":"亲子间"},{"ID":"1742","Name":"全陪房"},{"ID":"1506","Name":"床位"}];
+        var PayTypeList = [{"ID":"1709","Name":"社结"},{"ID":"123","Name":"签单"},{"ID":"122","Name":"现付"},{"ID":"188","Name":"现付部分"},{"ID":"642","Name":"刷信用卡"},{"ID":"708","Name":"客人代付"},{"ID":"1483","Name":"赠票抵扣"},{"ID":"1484","Name":"房费定金"}];
+        var GroupColumnList = [];
+        var GroupStartTime = '2022-08-08';
+        var GroupEndTime = '2022-08-12';
+        layui.use(['form', 'element', 'moddate', 'upload', "modupload", 'common', 'jquery', 'modtable'], function () {
+            var $ = layui.$,
+                form = layui.form,
+                moddate = layui.moddate,
+                element = layui.element,
+                upload = layui.upload,
+                modupload = layui.modupload,
+                common = layui.common,
+                jquery = layui.jquery;
+
+            $('.layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+            var active = {
+                addNew: function () {
+                    if ($("#TabHotel tbody tr:not(:hidden)").length == 0) {
+                        addNew(NewHotel());
+                        addAccount('', '', '', 0, GroupColumn);
+                    } else {
+                        var currentTr = $("#TabHotel tbody tr[selected='selected']");
+                        if (currentTr.length == 0) {
+                            currentTr = $("#TabHotel tbody tr:not(:hidden):last");
+                        }
+                        var hotel = NewHotel();
+                        hotel.CustomerID = currentTr.find(".customer").data("value");
+                        hotel.CustomerName = currentTr.find(".customer").val();
+                        hotel.RoomTypePropertyID = currentTr.find(".roomTypeProperty").find("input").attr("data-id");
+                        hotel.RoomTypePropertyName = currentTr.find(".roomTypeProperty").find("input").val();
+                        hotel.HotelStartTime = currentTr.find(".hotelStartTime").val();
+                        hotel.HotelEndTime = currentTr.find(".hotelEndTime").val();
+                        hotel.HotelDay = currentTr.find(".hotelDay").val();
+                        hotel.Price = currentTr.find(".price").val();
+                        hotel.Amount = currentTr.find(".amount").val();
+                        hotel.FreeCount = currentTr.find(".freeCount").val();
+                        hotel.FreeAmount = currentTr.find(".freeAmount").val();
+                        hotel.SumPrice = currentTr.find(".sumPrice").text();
+                        hotel.PayTypePropertyID = currentTr.find(".payTypeProperty").find("input").attr("data-id");
+                        hotel.PayTypePropertyName = currentTr.find(".payTypeProperty").find("input").val();
+                        hotel.Remark = currentTr.find(".mod-from-textarea").html();
+                        hotel.GroupColumn = currentTr.find(".groupColumn").find("input").attr("data-id");
+
+                        addNew(hotel);
+                        addAccount(hotel.CustomerName, hotel.HotelStartTime, hotel.RoomTypePropertyName, hotel.SumPrice, 0, hotel.GroupColumn);
+                    }
+                    _RefreshTdNumber();
+                    _RefreshCollection(undefined, false);
+                    _RefreshChkHasBill();
+                },
+                fastAdd: function () {
+                    var top = $(this).offset().top + 30 - $(document).scrollTop();
+                    var left = $(this).offset().left;
+
+                    layer.open({
+                        type: 2,
+                        title: '快速新建住宿',
+                        content: "/" + getCompanyUID() + '/Regulate/RegulateHotelEdit?GroupEID=' + GroupEID,
+                        maxmin: false,
+                        area: ['1000px', '80%'],
+                        offset: [top, left],
+                        btn: [ '保存','关闭'],
+                        yes: function (index, layero) {
+                            var resultList = window["layui-layer-iframe" + index].callbackdata();
+                            if (resultList != null) {
+                                var deleteArray = [];
+                                $("#TabHotel tbody tr").each(function (i) {
+                                    var customerID = parseInt($(this).find(".customer").data("value"));
+                                    customerID = isNaN(customerID) ? 0 : customerID;
+                                    if (customerID == 0) { $(this).remove(); deleteArray.push(i); }
+                                });
+                                $("#TabAccount tbody tr").each(function (i) { if (deleteArray.indexOf(i) > -1) { $(this).remove(); } });
+                                for (var i = 0; i < resultList.length; i++) {
+                                    var ret = resultList[i];
+                                    var hotel = NewHotel();
+
+                                    hotel.CustomerID = ret.CustomerID;
+                                    hotel.CustomerName = ret.CustomerName;
+                                    hotel.RoomTypePropertyID = ret.RoomTypePropertyID;
+                                    hotel.RoomTypePropertyName = ret.RoomTypePropertyName;
+                                    hotel.HotelStartTime = new Date(ret.HotelStartTime.replace(/-/g, "/"));
+                                    var startTime = new Date(ret.HotelStartTime.replace(/-/g, "/"));
+                                    var endTime = common.dateAdd("d", 1, startTime);
+                                    hotel.HotelStartTime = startTime.Format("yyyy-MM-dd");
+                                    hotel.HotelEndTime = endTime.Format("yyyy-MM-dd");
+                                    hotel.HotelDay = 1;
+                                    hotel.Price = ret.Price;
+                                    hotel.Amount = ret.Amount;
+                                    hotel.FreeCount = ret.FreeCount;
+                                    hotel.FreeAmount = ret.FreeAmount;
+                                    hotel.SumPrice = ret.SumPrice;
+                                    hotel.Remark = ret.Remark;
+                                    hotel.PayTypePropertyID = ret.PayTypePropertyID;
+                                    hotel.PayTypePropertyName = ret.PayTypePropertyName;
+                                    hotel.UUID = getUUID();
+
+                                    addNew(hotel)
+                                    addAccount(hotel.CustomerName, hotel.HotelStartTime, hotel.RoomTypePropertyName, hotel.SumPrice, 0);
+                                }
+                                _RefreshTdNumber();
+                                _RefreshCollection(undefined, false);
+                                _RefreshChkHasBill();
+                            }
+                            layer.close(index);
+                        }
+                    });
+                },
+                chooseTemplet: function () {
+                    var top = $(this).offset().top + 30 - $(document).scrollTop();
+                    var left = $(this).offset().left;
+
+                    layer.open({
+                        type: 2,
+                        title: '住宿模板',
+                        content: '/' + getCompanyUID() +'/Regulate/RegulateHotelTempletList',
+                        maxmin: false,
+                        area: ['800px', '80%'],
+                        offset: [top, left],
+                        btn: ['选择', '关闭'],
+                        yes: function (index, layero) {
+                            var retList = window["layui-layer-iframe" + index].callbackdata();
+                            if (retList != null && retList.length > 0) {
+                                $("#TabHotel tbody tr").each(function (i) {
+                                    var tdList = $(this).children("td");
+                                    if (tdList.find(".customer").val() == "") {
+                                        $(this).remove();
+                                    }
+                                });
+                                $("#TabAccount tbody tr").each(function (i) {
+                                    if ($(this).find(".customer").text() == "") {
+                                        $(this).remove();
+                                    }
+                                });
+                                for (var i = 0; i < retList.length; i++) {
+                                    var ret = retList[i];
+                                    var hotel = NewHotel();
+
+                                    hotel.CustomerID = ret.CustomerID;
+                                    hotel.CustomerName = ret.CustomerName;
+
+                                    hotel.HotelStartTime = new Date(hotel.HotelStartTime.replace(/-/g, "/"));
+                                    hotel.HotelEndTime = new Date(hotel.HotelEndTime.replace(/-/g, "/"));
+                                    var hotelStartTime = new Date(hotel.HotelStartTime.setDate(hotel.HotelStartTime.getDate() + ret.TimeOffset));
+                                    hotel.HotelEndTime = new Date(hotelStartTime.setDate(hotelStartTime.getDate() + ret.DayOffset));
+                                    hotel.HotelStartTime = hotel.HotelStartTime.Format("yyyy-MM-dd");
+                                    hotel.HotelEndTime = hotel.HotelEndTime.Format("yyyy-MM-dd");
+                                    hotel.HotelDay = ret.DayOffset;
+                                    hotel.RoomTypePropertyID = ret.RoomTypePropertyID;
+                                    hotel.RoomTypePropertyName = ret.RoomTypePropertyName;
+                                    hotel.Price = ret.Price;
+                                    hotel.PayTypePropertyID = ret.PayTypePropertyID;
+                                    hotel.PayTypePropertyName = ret.PayTypePropertyName;
+
+                                    addNew(hotel);
+                                    addAccount(hotel.CustomerName, hotel.HotelStartTime, hotel.RoomTypePropertyName, hotel.SumPrice, 0);
+                                }
+                                _RefreshTdNumber();
+                                if (!IsEditable) {
+                                    $("input").attr("disabled", "disabled");
+                                }
+                                _RefreshCollection(undefined, false);
+                                _RefreshChkHasBill();
+                            }
+                            layer.close(index);
+                        }
+                    });
+                },
+                sendMessage: function () {
+                    if (hotelCount == 0) {
+                        msgError("无订房信息，如果您添加了门票信息，请保存后操作!", {icon:2});
+                        return;
+                    }
+                    var form = $("<form/>").attr("action", "Regulate_HotelOrder").attr("method", "post").attr("target", "_blank");
+                    form.append("<input type='hidden' name='GroupEID' value='" + GroupEID + "'/>");
+                    form.css("display", "none").appendTo("body").submit();
+                },
+                saveLog: function () {
+                    var top = $(this).offset().top + 30 - $(document).scrollTop();
+                    var left = $(this).offset().left;
+
+                    layer.open({
+                        type: 2,
+                        title: '保存记录',
+                        content: "/" + getCompanyUID() + '/Group/RegulateLogList?RegulateClassify=6&GroupEID=' + GroupEID,
+                        maxmin: false,
+                        area: ['800px', '80%'],
+                        offset: [top, left],
+                        btn: [ '关闭'],
+                        yes: function (index, layero) {
+                            layer.close(index);
+                        }
+                    });
+                },
+                saveTemplet: function () {
+                    SaveRegulateHotelTempletList();
+                },
+                searchStock: function () {
+                    var $tr = $("#TabHotel tbody tr:first");
+                    var CustomerID = parseInt($tr.find(".customer").data("value"));
+                    CustomerID = isNaN(CustomerID) ? 0 : CustomerID;
+                    var Year = $tr.find(".hotelStartTime").val().split("-")[0];
+                    var Month = $tr.find(".hotelStartTime").val().split("-")[1];
+                    var top = $(this).offset().top + 30 - $(document).scrollTop();
+
+                    layer.open({
+                        type: 2,
+                        title: '库存信息',
+                        content: "/" + getCompanyUID() + '/Customer/HotelCalendar?CustomerClassify=' + CustomerClassify + '&CustomerID=' + CustomerID + '&Year=' + Year + '&Month=' + Month + '&GroupEID=' + GroupEID + '&GroupStartTime=' + Group.GroupStartTime,
+                        maxmin: false,
+                        area: ['1055px', '80%'],
+                        offset: [top],
+                        btn: ['关闭'],
+                        yes: function (index, layero) {
+                            layer.close(index);
+                        }
+                    });
+                },
+                gotoAppoint: function () {
+                    window.open("/" + getCompanyUID() + '/Regulate/Regulate_HotelAppoint?GroupEID=' + GroupEID);
+
+                },
+                complain: function () {
+                    window.open("/" + getCompanyUID() +"/Regulate/RegulateComplainEdit?ID=" + $(this).data("value") + "&From=Regulate");
+                },
+                roomList: function () {
+                    if ("False" == "True") {
+                        window.open("/" + getCompanyUID() + "/Group/Member2Room2Print?GroupEID=" + GroupEID);
+                    } else {
+                        window.open("/" + getCompanyUID() + "/Group/Member2RoomPrint?GroupEID=" + GroupEID);
+                    }
+                }
+            }
+
+            window.refreshGroupColumn = function (option) {
+                var $tr = $(option).closest("tr");
+                var trIndex = $("#TabHotel tbody tr").index($tr);
+                var td2List = $("#TabAccount tbody tr").not(":hidden").eq(trIndex).children("td").not(":hidden");
+                td2List.eq(1).text($(option).val());
+            }
+
+            window.refreshRoomType = function (option) {
+                var $tr = $(option).closest("tr");
+                var trIndex = $("#TabHotel tbody tr").index($tr);
+                var td2List = $("#TabAccount tbody tr").not(":hidden").eq(trIndex).children("td").not(":hidden");
+                var index = totalGroupColumn != 1 ? 3 : 2;
+                td2List.eq(index).text($(option).val());
+                _RefreshHotelPrice($(option), true);
+            }
+
+            window.refreshPayType = function (option) {
+                var $tr = $(option).closest("tr");
+                var trIndex = $("#TabHotel tbody tr").index($tr);
+                if ($(option).val().indexOf("现付") > -1) {
+                    $("#TabAccount tbody tr").eq(trIndex).addClass("payCash");
+                } else {
+                    $("#TabAccount tbody tr").eq(trIndex).removeClass("payCash");
+                }
+            }
+
+            window.eventGetTimes = function (that) {
+                moddate.render({
+                    elem: that,
+                    format: 'yyyy-MM-dd',
+                    type: 'date',
+                    trigger: 'click',
+                    showBottom: false,
+                    done: function (value, date) {
+                        _RefreshHotelDay(that);
+                    }
+                });
+            }
+            form.on("checkbox(renderAcountHasBillTotal)", function (data) {
+                var userID = $(this).attr("UserID");
+                if ($(this).is(":checked")) {
+                    $("#TabAccount tbody tr:not(:hidden) .renderAcountHasBill[UserID='" + userID + "']").prop("checked", true);
+                } else {
+                    $("#TabAccount tbody tr:not(:hidden) .renderAcountHasBill[UserID='" + userID + "']").prop("checked", false);
+                }
+                form.render("checkbox", $(this).closest("table").attr("lay-filter"));
+            })
+            form.on("checkbox(renderAcountHasBill)", function (data) {
+                var UserID = $(this).attr("UserID");
+                var chkLength = $("#TabAccount tbody tr:not(:hidden) .renderAcountHasBill[UserID='" + UserID + "']").length;
+                var chkCheckedLength = $("#TabAccount tbody tr:not(:hidden) .renderAcountHasBill[UserID='" + UserID + "']:checked").length;
+                if (chkLength == chkCheckedLength) {
+                    $(".renderAcountHasBillTotal[UserID='" + UserID + "']").prop("checked", true);
+                } else {
+                    $(".renderAcountHasBillTotal[UserID='" + UserID + "']").prop("checked", false);
+                }
+                form.render("checkbox", $(this).closest("table").attr("lay-filter"));
+            })
+            element.on('tab(GroupTabChanage)', function (obj) {
+                GroupColumn = $(this).attr("GroupColumn");
+                $("#TabHotel tbody tr").hide();
+                $("#TabAccount tbody tr").hide();
+                $("#TabAccount").find(".renderAccountGroupColumn").hide();
+
+                if (GroupColumn == -1) {
+                    $("#TabHotel tbody tr").show();
+                    $("#TabAccount tbody tr").show();
+                    $("#TabAccount").find(".renderAccountGroupColumn").show();
+                } else {
+
+                    $("#TabHotel tbody tr[GroupColumn=" + GroupColumn + "]").show();
+                    $("#TabAccount tbody tr[GroupColumn=" + GroupColumn + "]").show();
+                    $("#TabAccount").find(".renderAccountGroupColumn[GroupColumn=" + GroupColumn + "]").show();
+                }
+                _RefreshTdNumber();
+                _RefreshCollection(undefined, false);
+                _RefreshChkHasBill();
+            });
+
+            var optionEnclosureGudie = {
+                dom: ".guideupload"
+                , url:"/366820/SysManage/GetTourOAEnclosureMainDataKeyList"
+                , companyuid: "366820"
+                , datakey: "19E44FEF79794F76F145E20D659FCA5595B969E7120367426361C6082A5DF95D93B04E21A0B91D943C7611149EB676F0889168BCE600882317B0FE32432F711C"
+                , source: 31
+                , domain: "https://imageoa.lyouoa.com/"
+                , readonly: true
+            }
+            modupload.load(optionEnclosureGudie, function (res) {
+                var Info = res.Data;
+                (Info && Info.length > 0) ? $("#guideArea").show() : $("#guideArea").hide();
+                $(optionEnclosureGudie.dom).viewer({
+                    url: 'originalSrc'
+                });
+            });
+
+            var optionEnclosure = {
+                dom: ".fjupload"
+                , pcBtn:".layui-modify-upload"
+                , companyuid: "366820"
+                , datakey: "DACC1C2052D22629"
+                , source: 11
+                , domain: "https://imageoa.lyouoa.com/"
+                , qrBtn: ".layui-modify-uploadQR"
+                , qrPCEnd: "refEnclosure"
+                , addContextBtn: "#btnAddDesc"
+                , readonly:false
+                , allDoneEnd: function (obj) {
+                    if (obj.successful > 0) {
+                        $("#fjArea").show()
+                    }
+                    $(optionEnclosure.dom).viewer("update");
+                }
+            }
+            modupload.render(optionEnclosure);
+            modupload.load(optionEnclosure, function (res) {
+                var Info = res.Data;
+                (Info && Info.length) > 0 ? $("#fjArea").show() : $("#fjArea").hide();
+                $(optionEnclosure.dom).viewer({
+                    url: 'originalSrc'
+                });
+            });
+
+            window.callback = {
+                "refEnclosure": function () {
+                    modupload.reload(optionEnclosure, function (res) {
+                        var Info = res.Data;
+                        (Info && Info.length) > 0 ? $("#fjArea").show() : $("#fjArea").hide();
+                        $(optionEnclosure.dom).viewer("update");
+                    });
+                }
+            }
+
+
+            var oDate1 = GroupStartTime.split("-");
+            var oDate2 = GroupEndTime.split("-");
+            var startTime = new Date(oDate1[0], oDate1[1] - 1, oDate1[2]);
+            var endTime = new Date(oDate2[0], oDate2[1] - 1, oDate2[2]);
+            $("#TabHotel tbody tr").each(function (i) {
+                var obj = {};
+                obj.HotelStartTime = $(this).find(".hotelStartTime").val();
+                obj.HotelEndTime = $(this).find(".hotelEndTime").val();
+                var oDate1 = obj.HotelStartTime.split("-");
+                var strDateS = new Date(oDate1[0], oDate1[1] - 1, oDate1[2]);
+
+                if (strDateS - startTime < 0 || strDateS - endTime > 0) {
+                    $(this).find(".hotelStartTime").attr("value", obj.HotelStartTime);
+                    $(this).find(".hotelStartTime").css("color", "red");
+                }
+                var oDate2 = obj.HotelEndTime.split("-");
+                var endDateS = new Date(oDate2[0], oDate2[1] - 1, oDate2[2]);
+                if (endDateS - startTime < 0 || endDateS - endTime > 0) {
+                    $(this).find(".hotelEndTime").attr("value", obj.HotelEndTime);
+                    $(this).find(".hotelEndTime").css("color", "red");
+                }
+                $(this).find("td:eq(0)").unbind("click").bind("click", function () {
+                    initRegulateTableSelected($(this).parents("tr"));
+                })
+            });
+            for (var i = 0; i < totalGroupColumn; i++) {
+                GroupColumnList.push({ ID: i, Name: getFenTuanCode(i) + "团" });
+            }
+            var trList = $("#TabHotel tbody tr");
+            if (trList.length == 0) {
+                var t = (endTime - startTime) / (1000 * 60 * 60 * 24);
+                for (var i = 0; i < t + 1; i++) {
+                    var hotel = NewHotel();
+                    var sDate = startTime;
+                    sDate.setDate(sDate.getDate());
+                    hotel.HotelStartTime = sDate.Format("yyyy-MM-dd");
+                    sDate.setDate(sDate.getDate() + 1);
+                    hotel.HotelEndTime = sDate.Format("yyyy-MM-dd");
+                    addNew(hotel);
+                    addAccount('', '', '', 0);
+                }
+            } else {
+                if ($("#TabHotel tbody tr").length == editCount || editCount == 0) {
+                    removeDisabled($("#btnSave"));
+                    removeDisabled($("#btnSaveVersion"));
+                }
+                $(".mod-form-showfavorites").bind("click", function () {
+                    $(document).trigger("click");
+                    var $td = $(this).closest("td");
+                    var $tr = $(this).closest("tr");
+                    var HasPayment = $tr.attr("HasPayment") == "true";
+                    var Status = $tr.attr("Status");
+                    if (Status == 1 || HasPayment) {
+                        return;
+                    }
+                    var CustomerID = $td.attr("CustomerID") == undefined ? 0 : $td.attr("CustomerID");
+                    selectRegulateCustomer(CustomerID, CustomerClassify, $(this).closest("td"));
+                });
+            }
+
+
+            _RefreshTdNumber();
+            _RefreshCollection(undefined, false);
+            initCheckboxParentClick($("#TabAccount"));
+            pasteFilter();
+            initEditInput($("#TabHotel"));
+            initEditInput($("#TabAccount"));
+            initCustomSelect($("#TabHotel"));
+
+            if (!IsEditable) {
+                $("input,select").attr("disabled", "disabled");
+            }
+            $(".select-customer").bind("mouseenter", function () {
+                $(this).find(".layui-icon-add-1").css("visibility", "visible");
+            }).bind("mouseleave", function () {
+                $(this).find(".layui-icon-add-1").css("visibility", "hidden");
+            });
+        });
+        var setMemberDisplay = function (array) {
+            var arrName = array.map((obj, index) => {
+                return obj.MemberName;
+
+            }).join(",").split(',');
+            var display = arrName.slice(0, 3).join(",");
+            if (array.length > 3) {
+                display += "等" + array.length + "人";
+            }
+            return display;
+        }
+
+        var groupBy = function (array) {
+            var grouped = {};
+            for (var i = 0; i < array.length; i++) {
+                var groupKey = predicate(array[i]);
+                if (typeof (grouped[groupKey]) === "undefined")
+                    grouped[groupKey] = [];
+                grouped[groupKey].push(array[i]);
+            }
+
+            return grouped;
+        }
+        function changeDelete(input) {
+            var HasPayment = $(input).attr("HasPayment") == "False" || $(input).attr("HasPayment") == undefined ? false : true;
+            if (!HasPayment) {
+                var val = isNaN(parseFloat($(input).val())) ? 0 : parseFloat($(input).val());
+                $(input).val(val);
+                var index = $(input).closest("tr").find("td").eq(0).text();
+                var tr = $(input).closest("tr");
+                var btn = $("#TabHotel tbody tr").eq(index - 1).find(".mod-btn-remove");
+                var money = 0;
+                for (var i = 0; i < tr.find(".renderAccount").length; i++) {
+                    var inputVal = $(tr.find(".renderAccount")[i]).find("input").val();
+                    inputVal = isNaN(parseFloat(inputVal)) ? 0 : parseFloat(inputVal);
+                    money = parseFloat(money) + parseFloat(inputVal);
+                }
+                if (val != 0) {
+                    btn.css("color", "black");
+                    btn.attr("lay-tips", "已有报账款");
+                    var $tr = btn.closest("tr");
+                    $tr.attr("RenderPrice", val)
+                    btn.unbind("click");
+                } else {
+                    if (money == 0) {
+                        btn.css("color", "red");
+                        btn.removeAttr("lay-tips");
+                        btn.bind("click", function () {
+                            var tr = $(this).parent("td").parent("tr");
+                            var index = parseInt(tr.children("td:eq(0)").text());
+                            tr.remove();
+                            if (!isNaN(index)) {
+                                $("#TabAccount tbody tr:not(:hidden)").eq(index - 1).remove();
+                            }
+                            _RefreshTdNumber();
+                            _RefreshCollection(undefined, false);
+                        });
+                    }
+                }
+            }
+        }
+        function _RefreshHotelDay(that) {
+            var $tr = $(that).closest("tr");
+            var hotelEndTime = $tr.find(".hotelEndTime").val();
+            var hotelStartTime = $tr.find(".hotelStartTime").val();
+            var day = compareTime(hotelStartTime, hotelEndTime);
+            if (day > 0) {
+                $tr.find(".hotelDay").attr("value", day);
+            } else {
+                $tr.find(".hotelDay").attr("value", "1");
+            }
+            console.log(new Date()+":"+$tr.find(".hotelDay").val());
+            _RefreshHotelPrice(that, true);
+        }
+        function _RefreshChkHasBill() {
+            $(".renderAcountHasBillTotal").each(function () {
+                var UserID = $(this).attr("UserID");
+                var chkLength = $("#TabAccount tbody tr:not(:hidden) .renderAcountHasBill[UserID='" + UserID + "']").length;
+                var chkCheckedLength = $("#TabAccount tbody tr:not(:hidden) .renderAcountHasBill[UserID='" + UserID + "']:checked").length;
+                if (chkLength == chkCheckedLength) {
+                    $(this).prop("checked", true);
+                } else {
+                    $(this).prop("checked", false);
+                }
+                var chkDisabledLength = $("#TabAccount tbody tr:not(:hidden) .renderAcountHasBill[UserID='" + UserID + "']:disabled").length;
+                if (chkDisabledLength > 0) {
+                    $(this).attr("disabled", "disabled");
+                }
+            });
+        }
+        function _RefreshCollection_Row($tr, IsModifyFreeAmount) {
+            var $tab = $tr.closest("table");
+            if ($tab.attr("id") == "TabAccount") {
+                return;
+            }
+            var price = parseFloat($tr.find(".price").val());
+            var amount = parseFloat($tr.find(".amount").val());
+            var freeCount = parseFloat($tr.find(".freeCount").val());
+            var freeAmount = parseFloat($tr.find(".freeAmount").val());
+            var day = parseFloat($tr.find(".hotelDay").val());
+            if (IsModifyFreeAmount) {
+                freeAmount = (Math.round(price * 100) / 100) * (Math.round(freeCount * 100) / 100);
+                if (day > 0) { freeAmount = freeAmount * day; }
+                $tr.find(".freeAmount").val(freeAmount);
+            }
+
+            var totalPrice = (Math.round(price * 100) / 100) * (Math.round(amount * 100) / 100);
+            if (day > 0) { totalPrice = totalPrice * day; }
+            totalPrice = totalPrice - freeAmount;
+            if (!isNaN(totalPrice)) {
+                totalPrice = parseFloat(totalPrice.toFixed(2));
+                $tr.find(".sumPrice").text(totalPrice);
+            } else {
+                $tr.find(".sumPrice").text(0);
+            }
+            var i = $tr.index();
+            var td2List = $("#TabAccount tbody tr").eq(i).children("td").not(":hidden");
+            var index = 1;
+            if (totalGroupColumn != 1) {
+                td2List.eq(index++).text($tr.find(".groupColumn").find("input").val());
+            }
+            td2List.eq(index++).text($tr.find(".customer").val());
+            td2List.eq(index++).text($tr.find(".roomTypeProperty").find("input").val());
+            td2List.eq(index++).text($tr.find(".hotelStartTime").val());
+            td2List.eq(index++).text($tr.find(".sumPrice").text());
+        }
+        function _RefreshCollection($obj, IsModifyFreeAmount) {
+            IsModifyFreeAmount = IsModifyFreeAmount == undefined ? false : IsModifyFreeAmount;
+            if ($obj != undefined) {
+                var clazz = $obj.attr("class");
+                if (clazz.indexOf("freeAmount") > -1) {
+                    isModifyFreeAmount = false;
+                } else if (clazz.indexOf("freeCount") > -1) {
+                    IsModifyFreeAmount = true;
+                }
+            }
+            if ($obj != undefined) {
+                var clazz = $obj.attr("class");
+                var $tr = $obj.closest("tr");
+                if (clazz.indexOf("renderAccount") == -1) {
+                    _RefreshCollection_Row($tr, IsModifyFreeAmount);
+                }
+            } else {
+                $("#TabHotel tbody tr").not(":hidden").each(function () {
+                    _RefreshCollection_Row($(this), IsModifyFreeAmount);
+                });
+            }
+
+            var total = 0;
+            $("#TabHotel tbody tr").not(":hidden").each(function (i) {
+                var $td = $(this).children(".sumPrice");
+                var totalPrice = parseFloat($td.text());
+                if (!isNaN(totalPrice)) {
+                    total += totalPrice;
+                }
+            });
+            total = Math.round(total * 100) / 100;
+            $("#TabHotel tfoot tr td:eq(1)").text(total);
+            $("#TabAccount tfoot tr td:eq(1)").text(total);
+
+            //门票代收汇总
+            var totalTicketAgency = 0;
+            $("#TabHotel tbody tr").not(":hidden").each(function () {
+                var ticketagency = parseFloat($(this).find(".hotelAgency").val());
+                ticketagency = isNaN(ticketagency) ? 0 : ticketagency;
+                totalTicketAgency += ticketagency;
+            });
+
+            $("#TabHotel tfoot tr td:eq(3)").text(totalTicketAgency);
+
+            $("#TabAccount tbody tr").not(":hidden").each(function () {
+                var td2List = $(this).children("td").not(":hidden");
+                var totalRenderAccountMoney = parseFloat(td2List.eq(totalGroupColumn == 1 ? 4 : 5).text());
+                var totalRenderAccount = 0;
+
+                var renderAccountList = $(this).find(".renderAccount");
+                renderAccountList.each(function () {
+                    var renderAccount = parseFloat($(this).find("input").val());
+                    if (!isNaN(renderAccount)) {
+                        totalRenderAccount += renderAccount;
+                    }
+                });
+
+                if (totalRenderAccount * totalRenderAccountMoney > 0 &&
+                    Math.abs(totalRenderAccount) > Math.abs(totalRenderAccountMoney)) {
+                    renderAccountList.find("input").css("color", "red");
+                } else {
+                    renderAccountList.find("input").css("color", "black");
+                }
+            });
+            $(".renderAccountTotal").each(function () {
+                var userID = $(this).attr("UserID");
+                var totalRenderAccount = 0;
+                $(".renderAccount[UserID='" + userID + "']").each(function () {
+                    if ($(this).parent().is(':hidden')) {
+                        return;
+                    }
+                    var renderAccount = parseFloat($(this).find("input").val());
+                    if (!isNaN(renderAccount)) {
+                        totalRenderAccount += renderAccount;
+                    }
+                });
+                $(this).text(parseFloat(totalRenderAccount.toFixed(2)));
+            });
+            $("#TabAccount tbody tr").each(function (i) {
+                var PayTypePropertyName = $("#TabHotel tbody tr").eq(i).find(".payTypeProperty").find("input").val();
+                //是否是现付
+                if (PayTypePropertyName.indexOf("现付") > -1) {
+                    $(this).addClass("payCash");
+                } else {
+                    $(this).removeClass("payCash");
+                }
+            });
+            var chkHasBillLength = $("#TabAccount tbody tr:not(:hidden) .renderAcountHasBill").length;
+            var chkHasBillCheckedLength = $("#TabAccount tbody tr:not(:hidden) .renderAcountHasBill:checked").length;
+            if (chkHasBillLength == chkHasBillCheckedLength) {
+                $(".renderAcountHasBillTotal").prop("checked", true);
+            } else {
+                $(".renderAcountHasBillTotal").prop("checked", false);
+            }
+        }
+        function _RefreshTdNumber() {
+            var trList = $("#TabHotel tbody tr").not(":hidden");
+            for (var i = 0; i < trList.length; i++) {
+                $(trList[i]).children("td").eq(0).text(i + 1);
+            }
+
+            var trList = $("#TabAccount tbody tr").not(":hidden");
+            for (var i = 0; i < trList.length; i++) {
+                $(trList[i]).children("td").eq(0).text(i + 1);
+            }
+        }
+        function inputRefreshHotelPrice(that) {
+            _RefreshHotelPrice(that, true);
+        }
+        function _RefreshHotelPrice(that, isRefreshCollection) {
+            $this = $(that);
+            var $tr = $this.parents("tr");
+            var customerID = $tr.find(".customer").data("value");
+            if (customerID != undefined && customerID != 0) {
+                var roomTypePropertyID = $tr.find(".roomTypeProperty").find("input").attr("data-id");
+                var hotelStartTime = $tr.find(".hotelStartTime").val();
+                $.ajax({
+                    url: "/366820/DataAPI/RefreshHotelPrice",
+                    data: {
+                        "CustomerID": customerID,
+                        "StartDate": hotelStartTime,
+                        "RoomTypePropertyID": roomTypePropertyID
+                    },
+                    type: "post",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.IsSuccess) {
+                            if (result.Data != null) {
+                                var hotelStartTime = $tr.find(".hotelStartTime").val();
+                                var hotelEndTime = $tr.find(".hotelEndTime").val();
+                                var day = compareTime(hotelStartTime, hotelEndTime);
+                                $tr.find(".price").attr("value", result.Data);
+                                if (day > 0) {
+                                    $tr.find(".sumPrice").attr("value", parseFloat(result.Data) * day);
+                                } else {
+                                    $tr.find(".sumPrice").attr("value", result.Data);
+                                }
+                            }
+                        }
+                        if (isRefreshCollection) {
+                            _RefreshCollection(undefined, false);
+                        }
+                    }
+                });
+            } else {
+                _RefreshCollection(undefined, false);
+            }
+        }
+        function compareTime(HotelStartTime, HotelEndTime) {
+            var oDate1 = HotelStartTime.split("-");
+            var strDateS = new Date(oDate1[0], oDate1[1] - 1, oDate1[2]);
+
+            var oDate2 = HotelEndTime.split("-");
+            var endDateS = new Date(oDate2[0], oDate2[1] - 1, oDate2[2]);
+
+            if (endDateS - strDateS < 0) {
+                return -1;
+            } else {
+                var day = parseInt(Math.abs(endDateS - strDateS) / 1000 / 60 / 60 / 24);
+                return day;
+            }
+        }
+    </script>
+    <!--保存-->
+    <script>
+        window.saveEdit = function (isSave) {
+            $(document).trigger("click");
+            if (isSave) { addDisabled($("#btnSave")); } else { addDisabled($("#btnSaveVersion")); }
+            var oDate1 = GroupStartTime.split("-");
+            var oDate2 = GroupEndTime.split("-");
+
+            var startTime = new Date(oDate1[0], oDate1[1] - 1, oDate1[2]);
+            var endTime = new Date(oDate2[0], oDate2[1] - 1, oDate2[2]);
+
+            var hasError = false;
+            var hasRenderAccountError = false;
+            var hasRoomTypePropertyIsNull = false;
+            var hasErrorDay = false;
+            var sumHotelAgency = 0;
+
+            var objList = [];
+            $("#TabHotel tbody tr").each(function (i) {
+                var obj = {};
+                obj.ID = $(this).attr("HotelID");
+                obj.CustomerID = $(this).find(".customer").data("value");
+                if (isNaN(parseInt(obj.CustomerID)) || obj.CustomerID == 0) {
+                    return;
+                }
+                obj.UUID = $(this).attr("UUID");
+                obj.GroupColumn = $(this).find(".groupColumn").find("input").attr("data-id");
+                obj.RoomTypePropertyID = $(this).find(".roomTypeProperty").find("input").attr("data-id");
+                if (isNaN(parseInt(obj.RoomTypePropertyID)) || obj.RoomTypePropertyID == 0) {
+                    hasRoomTypePropertyIsNull = true;
+                    return;
+                }
+
+                obj.HotelStartTime = $(this).find(".hotelStartTime").val();
+                obj.HotelEndTime = $(this).find(".hotelEndTime").val();
+                var HotelDay = $(this).find(".hotelDay").val();
+                HotelDay = isNaN(parseFloat(HotelDay)) ? 0 : parseFloat(HotelDay);
+                if (HotelDay <= 0) {
+                    $(this).find(".hotelDay").css("color", "red");
+                    hasErrorDay = true;
+                }
+                obj.HotelDay = HotelDay;
+                obj.Price = $(this).find(".price").val();
+                obj.Amount = $(this).find(".amount").val();
+                obj.FreeCount = $(this).find(".freeCount").val();
+                obj.FreeAmount = $(this).find(".freeAmount").val();
+                obj.SumPrice = $(this).find(".sumPrice").text();
+                obj.PayTypePropertyID = $(this).find(".payTypeProperty").find("input").attr("data-id");
+                obj.Remark = $(this).find(".mod-from-textarea").html();
+                obj.SortNumber = i;
+                obj.ChargeClassify = $(this).find(".chargeClassify").attr("ChargeClassify");
+                obj.SignUpIDListString = $(this).find(".chargeClassify").attr("SignUpIDListString");
+                obj.HotelAgency = parseFloat($(this).find(".hotelAgency").val());
+                obj.HotelAgency = isNaN(obj.HotelAgency) ? 0 : obj.HotelAgency;
+                obj.RegulateHotelMemberList = JSON.parse($(this).find(".memberList").attr("data-value"));
+                obj.SignUpID = $(this).attr("SignUpID");
+                sumHotelAgency += obj.HotelAgency;
+
+
+                obj.RenderAccountList = [];
+                var rowRenderAccount = $("#TabAccount tbody tr").eq(i);
+                var renderAccountList = rowRenderAccount.find(".renderAccount");
+                var renderaAcountHasBillList = rowRenderAccount.find(".renderAcountHasBill");
+                var totalRenderAccountMoney = 0;
+                for (var j = 0; j < renderAccountList.length; j++) {
+                    var tdRenderAccount = $(renderAccountList[j]);
+                    var renderAccount = {};
+
+                    renderAccount.IsDriver = isDriver;
+                    renderAccount.RegulateID = obj.ID;
+                    renderAccount.UserID = tdRenderAccount.attr("UserID");
+                    renderAccount.RenderAccountMoney = tdRenderAccount.find("input").val();
+                    renderAccount.HasBill = $(renderaAcountHasBillList[j]).is(":checked");
+
+                    obj.RenderAccountList.push(renderAccount);
+                    totalRenderAccountMoney += parseFloat(renderAccount.RenderAccountMoney);
+                }
+
+                var sumPrice = parseFloat(obj.SumPrice);
+                if (totalRenderAccountMoney * sumPrice > 0 &&
+                    Math.abs(totalRenderAccountMoney) > Math.abs(sumPrice)) {
+                    hasRenderAccountError = true;
+                }
+
+                objList.push(obj);
+
+                var oDate1 = obj.HotelStartTime.split("-");
+                var strDateS = new Date(oDate1[0], oDate1[1] - 1, oDate1[2]);
+
+                if (strDateS - startTime < 0 || strDateS - endTime > 0) {
+                    $(this).find(".hotelStartTime").css("color", "red");
+                    hasError = true;
+                }
+
+
+            });
+
+            if (hasRoomTypePropertyIsNull) {
+                hideLoading();
+                if (isSave) { removeDisabled($("#btnSave")); } else { removeDisabled($("#btnSaveVersion")); }
+                layer.msg("请选择房间类型!", { icon: 2 });
+                return;
+            }
+            if (hasErrorDay) {
+                if (isSave) { removeDisabled($("#btnSave")); } else { removeDisabled($("#btnSaveVersion")); }
+                msgError("入住天数应大于0天!", { icon: 2 }); return;
+            }
+            if (hasRenderAccountError) {
+                if (isSave) { removeDisabled($("#btnSave")); } else { removeDisabled($("#btnSaveVersion")); }
+                msgError("红字报账额超出计调金额范围，不允许保存!", { icon: 2 }); return;
+            }
+            if (sumHotelAgency > Group.HotelAgency) {
+                if (isSave) { removeDisabled($("#btnSave")); } else { removeDisabled($("#btnSaveVersion")); }
+                msgError("酒店代收金额超过团上收款方式安排酒店代收，请返回修改！", { icon: 2 });
+                return;
+            }
+            if (hasError) {
+                layer.confirm("录入日期超出线路日期范围,是否继续保存?", {
+                    btn: ['确认', '关闭'],
+                    success: function () {
+                        this.enterEsc = function (event) {
+                            if (event.keyCode === 13) {
+                                $(".layui-layer-btn0").click();
+                                return false; //阻止系统默认回车事件
+                            } else if (event.keyCode == 27) {
+                                $(".layui-layer-btn1").click();
+                                return false;
+                            }
+                        };
+                        $(document).on('keydown', this.enterEsc); //监听键盘事件，关闭层
+                    },
+                    end: function () {
+                        $(document).off('keydown', this.enterEsc); //解除键盘关闭事件
+                    }
+                }, function (index) {
+                    layer.close(index);
+                    showLoading();
+                    Save(objList, isSave);
+                }, function () {
+                    if (isSave) { removeDisabled($("#btnSave")); } else { removeDisabled($("#btnSaveVersion")); }
+                });
+            } else {
+                layer.load(1, {
+                    shade: [0.1, '#fff'] //0.1透明度的白色背景
+                });
+                Save(objList, isSave);
+            }
+        }
+        function Save(objList,isSave) {
+            $.ajax({
+                url: isSave ? "/366820/Regulate/Regulate_HotelSave" : "/366820/Regulate/Regulate_HotelVersionSave",
+                data: {
+                    "GroupEID": 'DACC1C2052D22629',
+                    "SignUpEID": '',
+                    "ObjList": JSON.stringify(objList)
+                },
+                type: "post",
+                dataType: "json",
+                complete: completeCallback,
+                success: function (result) {
+                    if (result.IsSuccess) {
+                        if (From == "CentralizedRegulate") {
+                            parent.parent.layer.msg("保存成功！", { icon: 1, time: 600 }, function () {
+                                parent.location.reload();
+                            });
+                        }
+                        else {
+                            layer.msg("保存成功!", { icon: 1, time: 600 }, function () {
+                                var search = changeURLPar(window.location.search, "GroupColumn", GroupColumn);
+                                window.location.href = "Regulate_Hotel" + search;
+                            });
+                        }
+                    } else {
+                        removeDisabled($("#btnSave"));
+                        layer.msg(result.Msg, { icon: 2 });
+                        layer.closeAll("loading");
+                    }
+                }
+            });
+        }
+        function completeCallback(xhr, status) {
+            removeDisabled($("#btnSave"));
+        }
+        function SaveRegulateHotelTempletList() {
+            var templetList = [];
+            $("#TabHotel tbody tr").each(function (i) {
+                var templet = {};
+                templet.UUIDName = "8号接火车 年轻人多 保险青一地";
+                templet.CustomerID = $(this).find(".customer").data("value");
+                templet.RoomTypePropertyID = $(this).find(".roomTypeProperty").find("input").data("id");
+                var HotelStartTime = $(this).find(".hotelStartTime").val();
+                var HotelEndTime = $(this).find(".hotelEndTime").val();
+                templet.Price = $(this).find(".price").val();
+                templet.PayTypePropertyID = $(this).find(".payTypeProperty").find("input").data("id");
+
+                HotelStartTime = new Date(HotelStartTime.replace(/-/g, "/"));
+                HotelEndTime = new Date(HotelEndTime.replace(/-/g, "/"));
+                var StartTime = new Date(groupStartTime.replace(/-/g, "/"));
+
+                var days = HotelStartTime.getTime() - StartTime.getTime();
+                templet.TimeOffset = parseInt(days / (1000 * 60 * 60 * 24));
+                days = HotelEndTime.getTime() - HotelStartTime.getTime();
+                templet.DayOffset = parseInt(days / (1000 * 60 * 60 * 24));
+                templetList.push(templet);
+            });
+            $.ajax({
+                url: "/366820/Regulate/RegulateHotelTempletListSave",
+                data: {
+                    "RegulateHotelTempletList":JSON.stringify(templetList)
+                },
+                type: "post",
+                dataType : "json",
+                success: function (result) {
+                    msgSuccess("模板保存成功!", { icon: 1 });
+                }
+            });
+        }
+        document.addEventListener('keydown', function (e) {
+            if (e.keyCode == 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+                e.preventDefault();
+                try {
+                    if (typeof (eval(_RefreshCollection)) == "function") {
+                        _RefreshCollection(undefined, false);
+                    }
+                } catch (e) {
+
+                }
+                if ($("#btnSave").attr("disabled") != "disabled") {
+                    $("#btnSave").trigger("click");
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+ 
+ 
+<script type="text/javascript">
+            var PrivilegesDate = { };
+            PrivilegesDate.StartDate = "";
+            PrivilegesDate.EndDate = "";
+            localStorage.setItem("PrivilegesDate", JSON.stringify(PrivilegesDate));
+
+</script> 
+
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?2be32495d403447c50a25e41f0af30fe";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
