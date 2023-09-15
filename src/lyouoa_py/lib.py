@@ -53,8 +53,17 @@ def find_ower(loglist: list, jiudian_name: str, fj_type: str) -> dict:
     ]
     if len(row) >= 1:
         return {'ower': row[0].get("用户"), 'opt_time': row[0].get("时间")}
-    else:
-        return {}
+
+    return {'ower': '', 'opt_time': ''}
+
+
+def comp_hotel_data(hotel_data: list[dict], loglist: list[dict]) -> list[dict]:
+
+    def com_hotel(row):
+        kw = find_ower(loglist, row.get('酒店名称'), row.get('房间类型'))
+        return {**row, **kw}
+
+    return [com_hotel(x) for x in hotel_data]
 
 
 class LyouoaClient():
@@ -71,7 +80,7 @@ class LyouoaClient():
 
         return {
             "User-Agent":
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
         }
 
     @property
