@@ -1,6 +1,6 @@
 from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import (QMainWindow, QWidget, QPushButton, QVBoxLayout,
-                             QHBoxLayout, QLineEdit, QFormLayout)
+                             QHBoxLayout, QLineEdit, QFormLayout, QSizePolicy)
 
 
 class MainWindow(QMainWindow):
@@ -12,13 +12,17 @@ class MainWindow(QMainWindow):
         #self.setFixedSize(QSize(800, 600))
         self.setWindowTitle("loyouoa 数据统计")
         # loayout
-        main_loayout = QHBoxLayout()
-        main_loayout.addWidget(self.login_ui)
-        main_loayout.addWidget(self.data_show_ui)
-        main_loayout.addWidget(self.option_ui)
+        main_layout = QHBoxLayout()
+        main_layout.addWidget(self.login_ui)
+        main_layout.addWidget(self.data_show_ui)
+        main_layout.addWidget(self.option_ui)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(1)
+        main_layout.setStretch(33, 0)
         # Set the central widget of the Window.
         widget = QWidget()
-        widget.setLayout(main_loayout)
+        widget.setLayout(main_layout)
+
         self.setCentralWidget(widget)
 
         return
@@ -49,6 +53,7 @@ class MainWindow(QMainWindow):
 
         w = QWidget()
         w.setLayout(loayout)
+        w.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         return w
 
@@ -74,6 +79,7 @@ class MainWindow(QMainWindow):
         loayout.addWidget(QPushButton("middle, 2, Press Me!"))
         w = QWidget()
         w.setLayout(loayout)
+        w.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         return w
 
@@ -85,5 +91,6 @@ class MainWindow(QMainWindow):
 
         w = QWidget()
         w.setLayout(loayout)
+        w.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         return w
