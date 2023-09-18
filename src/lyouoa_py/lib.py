@@ -70,8 +70,10 @@ class LyouoaClient():
 
     def __init__(self,
                  company_code: str,
+                 session_id: str,
                  host: str = "http://vip.lyouoa.com") -> None:
         self.host = urljoin(host, f'/{company_code}')
+        self.set_session(session_id)
 
         return
 
@@ -95,9 +97,45 @@ class LyouoaClient():
 
     def get_tanhao(self):
 
-        httpx.get(url=urljoin(self.host, '/Regulate/QueryRegulateLayPage'),
-                  headers=self.headers,
-                  cookies=self.cookies,
-                  params={})
+        r = httpx.post(url=urljoin(self.host, '/Regulate/QueryRegulateLayPage'),
+                       headers=self.headers,
+                       cookies=self.cookies,
+                       params={
+                           'page': ['1'],
+                           'limit': ['20'],
+                           'RegulateStatus': ['0,3'],
+                            'Classify': ['1'],
+                           'EndTime': ['2023-09-30'],
+                           'BusinessClassify': ['0'],
+                           'searchKey': ['GroupCode'],
+                           'OrgID': ['0'],
+                           'OrgName': ['选择部门'],
+                           'GroupTimeKey': ['GroupStartTime'],
+                           'Category1': ['0'],
+                           'Category2': ['0'],
+                           'Category3': ['0'],
+                           'fields': ['EID,GroupCode,GroupStartTimeFormatMMdd,GroupEndTimeFormatMMdd,CustomerName,LineName,PersonCountDisplay,PersonCountDisplay,PersonConfirmDisplay,MeetingPlate,RegulateName,ExternalName,RegulateOperatorName,StatusText,RegulateGuideNames,RegulateFoodSumPrice,RegulateTicketSumPrice,RegulateHotelSumPrice,RegulateVehicleSumPrice,RegulateTrafficTicketSumPrice,RegulateInsuranceSumPrice,RegulateShoppingNames,RegulateSelfShoppingNames,RegulateIncomeSumPrice,RegulateOutgoSumPrice,RegulateConnectionNames,RegulateTeamSync,RegulateStatus,IsActive,IsGuideChecked,IsFoodChecked,IsTicketChecked,IsHotelChecked,IsVehicleChecked,IsTrafficTicketChecked,IsInsuranceChecked,IsShoppingChecked,IsSelfShoppingChecked,IsIncomeChecked,IsOutgoChecked,IsConnectionChecked,InsertUserID,IsConnectionOpen,RegulateOperatorID,IsGuideProcess,IsTicketProcess,IsHotelProcess,IsFoodProcess,IsVehicleProcess,IsTrafficTicketProcess,IsInsuranceProcess,IsShoppingProcess,IsSelfShoppingProcess,IsIncomeProcess,IsOutgoProcess,IsConnectionProcess,IsTeamSyncChecked,IsTeamSyncProcess,AdultCount,ChildrenCount,CompanionCount,SignUpAdultCountConfirm,SignUpChildrenCountConfirm,SignUpCompanionCountConfirm,SignUpAdultCountTransfer,SignUpChildrenCountTransfer,SignUpCompanionCountTransfer,GroupStatus,IsCancel,InsertLastLogDay,UpdateLastLogDay']})
 
-        return
+        return r.json()
+
+    def get_Regulate_Hotel(self, groupEID: str):
+        r = httpx.get(url=urljoin(self.host, '/Regulate/Regulate_Hotel'),
+                      headers=self.headers,
+                      cookies=self.cookies,
+                      params={'Classify': ['1'],
+                              'GroupEID': [groupEID],
+                              'Index': ['4'],
+                              'RegulateStatus': ['0,3'],
+                              'StartTime': ['2022-05-18'],
+                              'EndTime': ['2023-09-30'],
+                              'SearchKey': ['GroupCode'],
+                              'OrgID': ['0'],
+                              'OrgName': ['选择部门'],
+                              'HasChange': ['false']})
+
+        return r.text
+
+    def get_RegulateLogList(self, groupEID: str):
+        r = httpx.get(url=urljoin(self.host, '/Group/RegulateLogList'),headers=self.headers, cookies=self.cookies ,params={'RegulateClassify': ['6'], 'GroupEID': [groupEID]})
+
+        return r.text
