@@ -1,6 +1,36 @@
-from PyQt5.QtCore import QSize
-from PyQt5.QtWidgets import (QMainWindow, QWidget, QPushButton, QVBoxLayout,
-                             QHBoxLayout, QLineEdit, QFormLayout, QSizePolicy)
+import pandas as pd
+from PyQt5.QtCore import QSize, QAbstractTableModel, Qt
+from PyQt5.QtWidgets import (QComboBox, QDateTimeEdit, QMainWindow,
+                             QPushButton, QToolBar, QWidget, QVBoxLayout,
+                             QHBoxLayout, QLineEdit, QFormLayout, QSizePolicy,
+                             QTableView)
+
+
+class TableModel(QAbstractTableModel):
+
+    def __init__(self, data):
+        super(TableModel, self).__init__()
+        self._data = data
+
+    def data(self, index, role):
+        if role == Qt.DisplayRole:
+            value = self._data.iloc[index.row(), index.column()]
+            return str(value)
+
+    def rowCount(self, index):
+        return self._data.shape[0]
+
+    def columnCount(self, index):
+        return self._data.shape[1]
+
+    def headerData(self, section, orientation, role):
+        # section is the index of the column/row.
+        if role == Qt.DisplayRole:
+            if orientation == Qt.Horizontal:
+                return str(self._data.columns[section])
+
+            if orientation == Qt.Vertical:
+                return str(self._data.index[section])
 
 
 class MainWindow(QMainWindow):
@@ -11,14 +41,11 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(QSize(800, 600))
         #self.setFixedSize(QSize(800, 600))
         self.setWindowTitle("loyouoa 数据统计")
-        # loayout
-        main_layout = QHBoxLayout()
-        main_layout.addWidget(self.login_ui)
-        main_layout.addWidget(self.data_show_ui)
+        # layout
+        main_layout = QVBoxLayout()
         main_layout.addWidget(self.option_ui)
-        main_layout.setContentsMargins(0, 0, 0, 0)
-        main_layout.setSpacing(1)
-        main_layout.setStretch(33, 0)
+        # data layout
+        main_layout.addWidget(self.data_show_ui)
         # Set the central widget of the Window.
         widget = QWidget()
         widget.setLayout(main_layout)
@@ -28,67 +55,83 @@ class MainWindow(QMainWindow):
         return
 
     @property
-    def login_ui(self, ) -> QWidget:
+    def option_ui(self, ) -> QWidget:
 
         # system address
-        host_edit = QLineEdit()
-        host_edit.setText("https://vip.lyouoa.com")
-        host_edit.textChanged.connect(self.host_changed)
+        self.host_edit = QLineEdit()
+        self.host_edit.setText("https://vip.lyouoa.com")
 
         # Company code
-        comp_code_edit = QLineEdit()
-        comp_code_edit.textChanged.connect(self.comp_code_changed)
+        self.comp_code_edit = QLineEdit()
 
         # http client session id
-        session_id_edit = QLineEdit()
-        session_id_edit.textChanged.connect(self.client_session_changed)
+        self.session_id_edit = QLineEdit()
 
-        formLayout = QFormLayout()
-        formLayout.addRow("系统地址:", host_edit)
-        formLayout.addRow("公司代码:", comp_code_edit)
-        formLayout.addRow("会话ID:", session_id_edit)
+        # time
+        self.start_time_edit = QDateTimeEdit()
+        self.end_time_edit = QDateTimeEdit()
 
-        loayout = QVBoxLayout()
-        loayout.addLayout(formLayout)
+        # owner
+        self.owner_edit = QComboBox()
+        self.owner_edit.insertItems(1, ["张三", "李四"])
+        self.owner_edit.insertItems(0, ["王五", "想想"])
+
+        # type
+        self.room_type_edit = QComboBox()
+        self.room_type_edit.insertItems(0, ["标准", "司陪"])
+
+        # parser data
+        self.refresh_data_button = QPushButton("刷新数据")
+        self.filter_data_button = QPushButton("过滤数据")
+        self.export_data_button = QPushButton("导出数据")
+
+        login_option_layout = QFormLayout()
+        login_option_layout.addRow("系统地址:", self.host_edit)
+        login_option_layout.addRow("公司代码:", self.comp_code_edit)
+        login_option_layout.addRow("会话ID:", self.session_id_edit)
+
+        filter_option_layout = QFormLayout()
+        filter_option_layout.addRow("开始时间:", self.start_time_edit)
+        filter_option_layout.addRow("结束时间:", self.end_time_edit)
+        filter_option_layout.addRow("姓名:", self.owner_edit)
+        filter_option_layout.addRow("房间类型:", self.room_type_edit)
+
+        action_layout = QFormLayout()
+        action_layout.addWidget(self.refresh_data_button)
+        action_layout.addWidget(self.filter_data_button)
+        action_layout.addWidget(self.export_data_button)
+
+        loayout = QHBoxLayout()
+        loayout.addLayout(login_option_layout)
+        loayout.addLayout(filter_option_layout)
+        loayout.addLayout(action_layout)
 
         w = QWidget()
         w.setLayout(loayout)
-        w.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        w.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        #w.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         return w
-
-    def host_changed(self, t):
-        self.host = t
-
-        return
-
-    def comp_code_changed(self, t):
-        self.company_code = t
-
-        return
-
-    def client_session_changed(self, t):
-        self.client_session = t
-
-        return
 
     @property
     def data_show_ui(self, ) -> QWidget:
         loayout = QVBoxLayout()
-        loayout.addWidget(QPushButton("data show, 1, Press Me!"))
-        loayout.addWidget(QPushButton("middle, 2, Press Me!"))
-        w = QWidget()
-        w.setLayout(loayout)
-        w.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.table = QTableView()
 
-        return w
+        self.data = pd.DataFrame(
+            [
+                [1, 9, 2],
+                [1, 0, -1],
+                [3, 5, 2],
+                [3, 3, 2],
+                [5, 8, 9],
+            ],
+            columns=['A', 'B', 'C'],
+            index=['Row 1', 'Row 2', 'Row 3', 'Row 4', 'Row 5'])
 
-    @property
-    def option_ui(self, ) -> QWidget:
-        loayout = QVBoxLayout()
-        loayout.addWidget(QPushButton("option, 1, Press Me!"))
-        loayout.addWidget(QPushButton("right, 2, Press Me!"))
-
+        self.model = TableModel(self.data)
+        self.table.setModel(self.model)
+        loayout.addWidget(self.table)
         w = QWidget()
         w.setLayout(loayout)
         w.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)

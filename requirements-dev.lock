@@ -6,9 +6,10 @@
 #   features: []
 #   all-features: false
 
+--trusted-host =
+--trusted-host mirrors.aliyun.com
 -e file:.
 anyio==4.0.0
-appnope==0.1.3
 argon2-cffi==23.1.0
 argon2-cffi-bindings==21.2.0
 arrow==1.2.3
@@ -59,8 +60,10 @@ nbconvert==7.8.0
 nbformat==5.9.2
 nest-asyncio==1.5.8
 notebook-shim==0.2.3
+numpy==1.26.0
 overrides==7.4.0
 packaging==23.1
+pandas==2.1.1
 pandocfilters==1.5.0
 parso==0.8.3
 pexpect==4.8.0
@@ -78,6 +81,7 @@ pyqt5-qt5==5.15.2
 pyqt5-sip==12.12.2
 python-dateutil==2.8.2
 python-json-logger==2.0.7
+pytz==2023.3.post1
 pyyaml==6.0.1
 pyzmq==25.1.1
 referencing==0.30.2
@@ -94,6 +98,7 @@ terminado==0.17.1
 tinycss2==1.2.1
 tornado==6.3.3
 traitlets==5.10.0
+tzdata==2023.3
 uri-template==1.3.0
 urllib3==2.0.4
 wcwidth==0.2.6
