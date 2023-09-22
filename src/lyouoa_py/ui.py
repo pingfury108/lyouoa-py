@@ -1,9 +1,9 @@
 import pandas as pd
 from PyQt5.QtCore import QSize, QAbstractTableModel, Qt
 from PyQt5.QtWidgets import (QComboBox, QDateTimeEdit, QMainWindow,
-                             QPushButton, QToolBar, QWidget, QVBoxLayout,
-                             QHBoxLayout, QLineEdit, QFormLayout, QSizePolicy,
-                             QTableView)
+                             QMessageBox, QPushButton, QToolBar, QWidget,
+                             QVBoxLayout, QHBoxLayout, QLineEdit, QFormLayout,
+                             QSizePolicy, QTableView)
 
 
 class TableModel(QAbstractTableModel):
@@ -68,8 +68,8 @@ class MainWindow(QMainWindow):
         self.session_id_edit = QLineEdit()
 
         # time
-        self.start_time_edit = QDateTimeEdit()
-        self.end_time_edit = QDateTimeEdit()
+        self.start_time_edit = QDateTimeEdit(self)
+        self.end_time_edit = QDateTimeEdit(self)
 
         # owner
         self.owner_edit = QComboBox()
@@ -82,6 +82,7 @@ class MainWindow(QMainWindow):
 
         # parser data
         self.refresh_data_button = QPushButton("刷新数据")
+        self.refresh_data_button.clicked.connect(self.refresh_data)
         self.filter_data_button = QPushButton("过滤数据")
         self.export_data_button = QPushButton("导出数据")
 
@@ -102,6 +103,7 @@ class MainWindow(QMainWindow):
         action_layout.addWidget(self.export_data_button)
 
         loayout = QHBoxLayout()
+        loayout.setSpacing(10)
         loayout.addLayout(login_option_layout)
         loayout.addLayout(filter_option_layout)
         loayout.addLayout(action_layout)
@@ -137,3 +139,9 @@ class MainWindow(QMainWindow):
         w.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         return w
+
+    def refresh_data(self, ):
+        print("refresh")
+        msg = QMessageBox()
+        msg.exec()
+        return
