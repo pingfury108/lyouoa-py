@@ -1,9 +1,10 @@
 import pandas as pd
 from PyQt5.QtCore import QSize, QAbstractTableModel, Qt
 from PyQt5.QtWidgets import (QComboBox, QDateTimeEdit, QMainWindow,
-                             QMessageBox, QPushButton, QToolBar, QWidget,
+                             QMessageBox, QPushButton, QWidget,
                              QVBoxLayout, QHBoxLayout, QLineEdit, QFormLayout,
                              QSizePolicy, QTableView)
+import lyouoa_py.lib as ly_lib
 
 
 class TableModel(QAbstractTableModel):
@@ -11,6 +12,7 @@ class TableModel(QAbstractTableModel):
     def __init__(self, data):
         super(TableModel, self).__init__()
         self._data = data
+        return
 
     def data(self, index, role):
         if role == Qt.DisplayRole:
@@ -63,6 +65,7 @@ class MainWindow(QMainWindow):
 
         # Company code
         self.comp_code_edit = QLineEdit()
+        self.comp_code_edit.setText("366820")
 
         # http client session id
         self.session_id_edit = QLineEdit()
@@ -120,16 +123,7 @@ class MainWindow(QMainWindow):
         loayout = QVBoxLayout()
         self.table = QTableView()
 
-        self.data = pd.DataFrame(
-            [
-                [1, 9, 2],
-                [1, 0, -1],
-                [3, 5, 2],
-                [3, 3, 2],
-                [5, 8, 9],
-            ],
-            columns=['A', 'B', 'C'],
-            index=['Row 1', 'Row 2', 'Row 3', 'Row 4', 'Row 5'])
+        self.data = pd.DataFrame()
 
         self.model = TableModel(self.data)
         self.table.setModel(self.model)
@@ -142,6 +136,18 @@ class MainWindow(QMainWindow):
 
     def refresh_data(self, ):
         print("refresh")
+        cc = ly_lib.LyouoaClient(host=self.host_edit.text(),
+                                 session_id=self.session_id_edit.text(),
+                                 company_code=self.comp_code_edit.text())
         msg = QMessageBox()
+        msg.setText("数据刷新成功")
+        try:
+            count = cc.get_eid_count()
+            data = cc.get_tanhao(limit=count)
+            print(count, len(data))
+            self.table.setModel(TableModel(pd.DataFrame(data, columns=["EID"])))
+        except ly_lib.LyouoaException as e:
+            msg.setText(str(e))
+
         msg.exec()
         return
