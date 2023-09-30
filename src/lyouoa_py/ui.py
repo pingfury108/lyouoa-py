@@ -145,7 +145,16 @@ class MainWindow(QMainWindow):
             count = cc.get_eid_count()
             data = cc.get_tanhao(limit=count)
             print(count, len(data))
-            self.table.setModel(TableModel(pd.DataFrame(data, columns=["EID"])))
+            all_data = []
+            for eid in data:
+                hotel_data = cc.get_Regulate_Hotel(groupEID=eid)
+                log_data = cc.get_RegulateLogList(groupEID=eid)
+
+                dd = ly_lib.comp_hotel_data(ly_lib.parser_hotel_data(hotel_data),
+                                            ly_lib.parser_loglist(log_data))
+                all_data = [*all_data, *dd]
+
+            self.table.setModel(TableModel(pd.DataFrame(all_data, )))
         except ly_lib.LyouoaException as e:
             msg.setText(str(e))
 

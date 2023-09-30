@@ -47,10 +47,7 @@ def parser_loglist(html_text) -> list[dict]:
 
 
 def find_ower(loglist: list, jiudian_name: str, fj_type: str) -> dict:
-    row = [
-        x for x in filter(lambda r: re.search(jiudian_name, r['操作']), loglist)
-        if re.search(fj_type, x['操作'])
-    ]
+    row = [x for x in filter(lambda r: re.search(jiudian_name, r['操作']), loglist) if re.search(fj_type, x['操作'])]
     if len(row) >= 1:
         return {'ower': row[0].get("用户"), 'opt_time': row[0].get("时间")}
 
@@ -60,7 +57,7 @@ def find_ower(loglist: list, jiudian_name: str, fj_type: str) -> dict:
 def comp_hotel_data(hotel_data: list[dict], loglist: list[dict]) -> list[dict]:
 
     def com_hotel(row):
-        kw = find_ower(loglist, row.get('酒店名称'), row.get('房间类型'))
+        kw = find_ower(loglist, row.get('酒店名称', '').replace('(', '.*').replace(')', '.*'), row.get('房间类型'))
         return {**row, **kw}
 
     return [com_hotel(x) for x in hotel_data]
@@ -113,6 +110,10 @@ class LyouoaClient():
 
         return
 
+    @property
+    def fields(self):
+        return 'EID,GroupCode,GroupStartTimeFormatMMdd,GroupEndTimeFormatMMdd,CustomerName,LineName,PersonCountDisplay,PersonCountDisplay,PersonConfirmDisplay,MeetingPlate,RegulateName,ExternalName,RegulateOperatorName,StatusText,RegulateGuideNames,RegulateFoodSumPrice,RegulateTicketSumPrice,RegulateHotelSumPrice,RegulateVehicleSumPrice,RegulateTrafficTicketSumPrice,RegulateInsuranceSumPrice,RegulateShoppingNames,RegulateSelfShoppingNames,RegulateIncomeSumPrice,RegulateOutgoSumPrice,RegulateConnectionNames,RegulateTeamSync,RegulateStatus,IsActive,IsGuideChecked,IsFoodChecked,IsTicketChecked,IsHotelChecked,IsVehicleChecked,IsTrafficTicketChecked,IsInsuranceChecked,IsShoppingChecked,IsSelfShoppingChecked,IsIncomeChecked,IsOutgoChecked,IsConnectionChecked,InsertUserID,IsConnectionOpen,RegulateOperatorID,IsGuideProcess,IsTicketProcess,IsHotelProcess,IsFoodProcess,IsVehicleProcess,IsTrafficTicketProcess,IsInsuranceProcess,IsShoppingProcess,IsSelfShoppingProcess,IsIncomeProcess,IsOutgoProcess,IsConnectionProcess,IsTeamSyncChecked,IsTeamSyncProcess,AdultCount,ChildrenCount,CompanionCount,SignUpAdultCountConfirm,SignUpChildrenCountConfirm,SignUpCompanionCountConfirm,SignUpAdultCountTransfer,SignUpChildrenCountTransfer,SignUpCompanionCountTransfer,GroupStatus,IsCancel,InsertLastLogDay,UpdateLastLogDay'
+
     def get_eid_count(self):
 
          u = urljoin(self._host, f'/{self._company_code}/Regulate/QueryRegulateLayPage')
@@ -133,9 +134,7 @@ class LyouoaClient():
                             'Category1': ['0'],
                             'Category2': ['0'],
                             'Category3': ['0'],
-                            'fields': [
-                                'EID,GroupCode,GroupStartTimeFormatMMdd,GroupEndTimeFormatMMdd,CustomerName,LineName,PersonCountDisplay,PersonCountDisplay,PersonConfirmDisplay,MeetingPlate,RegulateName,ExternalName,RegulateOperatorName,StatusText,RegulateGuideNames,RegulateFoodSumPrice,RegulateTicketSumPrice,RegulateHotelSumPrice,RegulateVehicleSumPrice,RegulateTrafficTicketSumPrice,RegulateInsuranceSumPrice,RegulateShoppingNames,RegulateSelfShoppingNames,RegulateIncomeSumPrice,RegulateOutgoSumPrice,RegulateConnectionNames,RegulateTeamSync,RegulateStatus,IsActive,IsGuideChecked,IsFoodChecked,IsTicketChecked,IsHotelChecked,IsVehicleChecked,IsTrafficTicketChecked,IsInsuranceChecked,IsShoppingChecked,IsSelfShoppingChecked,IsIncomeChecked,IsOutgoChecked,IsConnectionChecked,InsertUserID,IsConnectionOpen,RegulateOperatorID,IsGuideProcess,IsTicketProcess,IsHotelProcess,IsFoodProcess,IsVehicleProcess,IsTrafficTicketProcess,IsInsuranceProcess,IsShoppingProcess,IsSelfShoppingProcess,IsIncomeProcess,IsOutgoProcess,IsConnectionProcess,IsTeamSyncChecked,IsTeamSyncProcess,AdultCount,ChildrenCount,CompanionCount,SignUpAdultCountConfirm,SignUpChildrenCountConfirm,SignUpCompanionCountConfirm,SignUpAdultCountTransfer,SignUpChildrenCountTransfer,SignUpCompanionCountTransfer,GroupStatus,IsCancel,InsertLastLogDay,UpdateLastLogDay'
-                            ]})
+                            'fields': [self.fields]})
 
          if r.status_code != 200:
              raise LyouoaException(code=r.status_code, msg=r.text)
@@ -167,9 +166,7 @@ class LyouoaClient():
                            'Category1': ['0'],
                            'Category2': ['0'],
                            'Category3': ['0'],
-                           'fields': [
-                               'EID,GroupCode,GroupStartTimeFormatMMdd,GroupEndTimeFormatMMdd,CustomerName,LineName,PersonCountDisplay,PersonCountDisplay,PersonConfirmDisplay,MeetingPlate,RegulateName,ExternalName,RegulateOperatorName,StatusText,RegulateGuideNames,RegulateFoodSumPrice,RegulateTicketSumPrice,RegulateHotelSumPrice,RegulateVehicleSumPrice,RegulateTrafficTicketSumPrice,RegulateInsuranceSumPrice,RegulateShoppingNames,RegulateSelfShoppingNames,RegulateIncomeSumPrice,RegulateOutgoSumPrice,RegulateConnectionNames,RegulateTeamSync,RegulateStatus,IsActive,IsGuideChecked,IsFoodChecked,IsTicketChecked,IsHotelChecked,IsVehicleChecked,IsTrafficTicketChecked,IsInsuranceChecked,IsShoppingChecked,IsSelfShoppingChecked,IsIncomeChecked,IsOutgoChecked,IsConnectionChecked,InsertUserID,IsConnectionOpen,RegulateOperatorID,IsGuideProcess,IsTicketProcess,IsHotelProcess,IsFoodProcess,IsVehicleProcess,IsTrafficTicketProcess,IsInsuranceProcess,IsShoppingProcess,IsSelfShoppingProcess,IsIncomeProcess,IsOutgoProcess,IsConnectionProcess,IsTeamSyncChecked,IsTeamSyncProcess,AdultCount,ChildrenCount,CompanionCount,SignUpAdultCountConfirm,SignUpChildrenCountConfirm,SignUpCompanionCountConfirm,SignUpAdultCountTransfer,SignUpChildrenCountTransfer,SignUpCompanionCountTransfer,GroupStatus,IsCancel,InsertLastLogDay,UpdateLastLogDay'
-                           ]})
+                           'fields': [self.fields]})
 
         if r.status_code != 200:
             raise LyouoaException(code=r.status_code, msg=r.text)
@@ -178,11 +175,12 @@ class LyouoaClient():
             data = r.json().get("data",[])
             return [d["EID"] for d in data]
         except Exception:
-                     raise LyouoaException(code=r.status_code, msg=r.text)
+            raise LyouoaException(code=r.status_code, msg=r.text)
 
 
     def get_Regulate_Hotel(self, groupEID: str):
-        r = httpx.get(url=urljoin(self.host, '/Regulate/Regulate_Hotel'),
+        u = urljoin(self._host, f'/{self._company_code}/Regulate/Regulate_Hotel')
+        r = httpx.get(url=u,
                       headers=self.headers,
                       cookies=self.cookies,
                       params={'Classify': ['1'],
@@ -195,6 +193,9 @@ class LyouoaClient():
                               'OrgID': ['0'],
                               'OrgName': ['选择部门'],
                               'HasChange': ['false']})
+
+        if r.status_code != 200:
+            raise LyouoaException(code=r.status_code, msg=r.text)
 
         return r.text
 
@@ -209,5 +210,8 @@ class LyouoaClient():
                 'GroupEID': [groupEID]
             }
         )
+
+        if r.status_code != 200:
+            raise LyouoaException(code=r.status_code, msg=r.text)
 
         return r.text
