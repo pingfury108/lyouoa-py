@@ -1,3 +1,4 @@
+import json
 import pandas as pd
 from PyQt5.QtCore import QSize, QAbstractTableModel, Qt
 from PyQt5.QtWidgets import (QComboBox, QDateTimeEdit, QMainWindow,
@@ -36,6 +37,7 @@ class TableModel(QAbstractTableModel):
 
 
 class MainWindow(QMainWindow):
+    _cache_data_file = "./lyouoa_data.json"
 
     def __init__(self):
         super().__init__()
@@ -76,9 +78,6 @@ class MainWindow(QMainWindow):
 
         # owner
         self.owner_edit = QComboBox()
-        self.owner_edit.insertItems(1, ["张三", "李四"])
-        self.owner_edit.insertItems(0, ["王五", "想想"])
-
         # type
         self.room_type_edit = QComboBox()
         self.room_type_edit.insertItems(0, ["标准", "司陪"])
@@ -86,7 +85,10 @@ class MainWindow(QMainWindow):
         # parser data
         self.refresh_data_button = QPushButton("刷新数据")
         self.refresh_data_button.clicked.connect(self.refresh_data)
+
         self.filter_data_button = QPushButton("过滤数据")
+        self.filter_data_button.clicked.connect(self.filter_data)
+
         self.export_data_button = QPushButton("导出数据")
 
         login_option_layout = QFormLayout()
@@ -118,14 +120,32 @@ class MainWindow(QMainWindow):
 
         return w
 
+    def reload_cache(self):
+
+        try:
+            self.data = pd.read_json(self._cache_data_file)
+        except Exception:
+            self.data = pd.DataFrame()
+
+        self.update_owners()
+        self.update_room_type()
+        self.update_filter_data()
+        return
+
+    def update_owners(self):
+        self.owner_edit.addItems(list(set(self.data["ower"].to_list())))
+        return
+
+    def update_room_type(self):
+        self.room_type_edit.addItems(list(set(self.data["房间类型"].to_list())))
+        return
+
     @property
     def data_show_ui(self, ) -> QWidget:
+        self.reload_cache()
         loayout = QVBoxLayout()
         self.table = QTableView()
-
-        self.data = pd.DataFrame()
-
-        self.model = TableModel(self.data)
+        self.model = TableModel(pd.DataFrame(self._filtered_data))
         self.table.setModel(self.model)
         loayout.addWidget(self.table)
         w = QWidget()
@@ -133,6 +153,11 @@ class MainWindow(QMainWindow):
         w.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         return w
+
+    def set_table_model(self):
+        self.table.setModel(TableModel(pd.DataFrame(self._filtered_data)))
+
+        return
 
     def refresh_data(self, ):
         print("refresh")
@@ -146,7 +171,7 @@ class MainWindow(QMainWindow):
             data = cc.get_tanhao(limit=count)
             print(count, len(data))
             all_data = []
-            for eid in data:
+            for eid in data[:100]:
                 hotel_data = cc.get_Regulate_Hotel(groupEID=eid)
                 log_data = cc.get_RegulateLogList(groupEID=eid)
 
@@ -154,9 +179,26 @@ class MainWindow(QMainWindow):
                                             ly_lib.parser_loglist(log_data))
                 all_data = [*all_data, *dd]
 
-            self.table.setModel(TableModel(pd.DataFrame(all_data, )))
+            self.data = pd.DataFrame(all_data)
+            with open(self._cache_data_file, 'w') as f:
+                json.dump(all_data, f)
+
+            self.update_owners()
+            self.update_room_type()
+            self.filter_data()
         except ly_lib.LyouoaException as e:
             msg.setText(str(e))
 
         msg.exec()
+        return
+
+    def update_filter_data(self):
+        self._filtered_data = self.data[self.data["ower"] == self.owner_edit.currentText()]
+        return
+
+    def filter_data(self):
+        print(self.owner_edit.currentText())
+        self.update_filter_data()
+        self.set_table_model()
+
         return
