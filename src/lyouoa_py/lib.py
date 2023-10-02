@@ -47,7 +47,7 @@ def parser_loglist(html_text) -> list[dict]:
 
 
 def find_ower(loglist: list, jiudian_name: str, fj_type: str) -> dict:
-    row = [x for x in filter(lambda r: re.search(jiudian_name, r['操作']), loglist) if re.search(fj_type, x['操作'])]
+    row = [x for x in filter(lambda r: re.search(re.escape(jiudian_name), r['操作']), loglist) if re.search(re.escape(fj_type), x['操作'])]
     if len(row) >= 1:
         return {'ower': row[0].get("用户"), 'opt_time': row[0].get("时间")}
 
@@ -57,7 +57,7 @@ def find_ower(loglist: list, jiudian_name: str, fj_type: str) -> dict:
 def comp_hotel_data(hotel_data: list[dict], loglist: list[dict]) -> list[dict]:
 
     def com_hotel(row):
-        kw = find_ower(loglist, row.get('酒店名称', '').replace('(', '.*').replace(')', '.*'), row.get('房间类型'))
+        kw = find_ower(loglist, row.get('酒店名称'), row.get('房间类型'))
         return {**row, **kw}
 
     return [com_hotel(x) for x in hotel_data]

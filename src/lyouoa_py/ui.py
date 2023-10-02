@@ -4,7 +4,7 @@ from PyQt5.QtCore import QSize, QAbstractTableModel, Qt
 from PyQt5.QtWidgets import (QComboBox, QDateTimeEdit, QMainWindow,
                              QMessageBox, QPushButton, QWidget,
                              QVBoxLayout, QHBoxLayout, QLineEdit, QFormLayout,
-                             QSizePolicy, QTableView)
+                             QSizePolicy, QTableView, QProgressDialog)
 import lyouoa_py.lib as ly_lib
 
 
@@ -90,6 +90,7 @@ class MainWindow(QMainWindow):
         self.filter_data_button.clicked.connect(self.filter_data)
 
         self.export_data_button = QPushButton("导出数据")
+        self.export_data_button.clicked.connect(self.show_progress_dialog)
 
         login_option_layout = QFormLayout()
         login_option_layout.addRow("系统地址:", self.host_edit)
@@ -160,12 +161,9 @@ class MainWindow(QMainWindow):
         return
 
     def refresh_data(self, ):
-        print("refresh")
         cc = ly_lib.LyouoaClient(host=self.host_edit.text(),
                                  session_id=self.session_id_edit.text(),
                                  company_code=self.comp_code_edit.text())
-        msg = QMessageBox()
-        msg.setText("数据刷新成功")
         try:
             count = cc.get_eid_count()
             data = cc.get_tanhao(limit=count)
@@ -186,10 +184,20 @@ class MainWindow(QMainWindow):
             self.update_owners()
             self.update_room_type()
             self.filter_data()
-        except ly_lib.LyouoaException as e:
-            msg.setText(str(e))
 
+            self.show_message(text="数据刷新成功")
+        except ly_lib.LyouoaException as e:
+            self.show_message(text=str(e))
+
+    def show_message(self, text: str):
+        msg = QMessageBox()
+        msg.setText(text)
         msg.exec()
+        return
+
+    def show_progress_dialog(self):
+        dialog = QProgressDialog()
+        dialog.exec()
         return
 
     def update_filter_data(self):
