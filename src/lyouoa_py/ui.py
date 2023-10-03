@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 from PyQt5.QtCore import QSize, QAbstractTableModel, Qt
-from PyQt5.QtWidgets import (QComboBox, QDateTimeEdit, QMainWindow,
+from PyQt5.QtWidgets import (QComboBox, QDateTimeEdit, QErrorMessage, QMainWindow,
                              QMessageBox, QPushButton, QWidget,
                              QVBoxLayout, QHBoxLayout, QLineEdit, QFormLayout,
                              QSizePolicy, QTableView, QProgressDialog)
@@ -125,7 +125,8 @@ class MainWindow(QMainWindow):
 
         try:
             self.data = pd.read_json(self._cache_data_file)
-        except Exception:
+        except Exception as e:
+            self.show_error_message(str(e))
             self.data = pd.DataFrame()
 
         self.update_owners()
@@ -134,11 +135,19 @@ class MainWindow(QMainWindow):
         return
 
     def update_owners(self):
-        self.owner_edit.addItems(list(set(self.data["ower"].to_list())))
+        if len(self.data) == 0:
+            return
+        ower_data = self.data["ower"]
+        self.owner_edit.clear()
+        self.owner_edit.addItems(list(set(ower_data.to_list())))
         return
 
     def update_room_type(self):
-        self.room_type_edit.addItems(list(set(self.data["房间类型"].to_list())))
+        if len(self.data) == 0:
+            return
+        room_type_data = self.data["房间类型"]
+        self.room_type_edit.clear()
+        self.room_type_edit.addItems(list(set(room_type_data.to_list())))
         return
 
     @property
@@ -168,26 +177,34 @@ class MainWindow(QMainWindow):
             count = cc.get_eid_count()
             data = cc.get_tanhao(limit=count)
             print(count, len(data))
+            p_dialog =  QProgressDialog("解析网站数据", "取消数据解析", 0, len(data), self)
+            p_dialog.show()
             all_data = []
-            for eid in data[:100]:
+            for i, eid in enumerate(data[:100]):
+                print(i, eid)
+                p_dialog.setValue(i)
+                if p_dialog.wasCanceled():
+                    break
                 hotel_data = cc.get_Regulate_Hotel(groupEID=eid)
                 log_data = cc.get_RegulateLogList(groupEID=eid)
-
                 dd = ly_lib.comp_hotel_data(ly_lib.parser_hotel_data(hotel_data),
                                             ly_lib.parser_loglist(log_data))
                 all_data = [*all_data, *dd]
 
-            self.data = pd.DataFrame(all_data)
-            with open(self._cache_data_file, 'w') as f:
-                json.dump(all_data, f)
+            p_dialog.setValue(len(data))
+            if len(all_data) > 0:
+                self.data = pd.DataFrame(all_data)
+                with open(self._cache_data_file, 'w') as f:
+                    json.dump(all_data, f)
+                self.update_owners()
+                self.update_room_type()
+                self.filter_data()
 
-            self.update_owners()
-            self.update_room_type()
-            self.filter_data()
-
-            self.show_message(text="数据刷新成功")
+                self.show_message(text="数据刷新成功")
+            else:
+                self.show_message(text="无刷新")
         except ly_lib.LyouoaException as e:
-            self.show_message(text=str(e))
+            self.show_error_message(text=str(e))
 
     def show_message(self, text: str):
         msg = QMessageBox()
@@ -195,13 +212,27 @@ class MainWindow(QMainWindow):
         msg.exec()
         return
 
+    def show_error_message(self, text: str):
+        msg = QErrorMessage()
+        msg.showMessage(text)
+        msg.exec()
+        return
+
     def show_progress_dialog(self):
-        dialog = QProgressDialog()
+        dialog = QProgressDialog("解析网站数据", "取消数据解析", 0, 20)
         dialog.exec()
         return
 
     def update_filter_data(self):
-        self._filtered_data = self.data[self.data["ower"] == self.owner_edit.currentText()]
+        if len(self.data) == 0:
+            self._filtered_data = self.data
+            return
+        ower = self.data["ower"]
+        select_ower = self.owner_edit.currentText()
+        if len(select_ower) == 0:
+            self._filtered_data = self.data
+            return
+        self._filtered_data = self.data[ower == select_ower]
         return
 
     def filter_data(self):
