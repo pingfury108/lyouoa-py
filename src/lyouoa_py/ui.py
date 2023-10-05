@@ -1,8 +1,8 @@
 import json
 import pandas as pd
 from PyQt5.QtCore import QSize, QAbstractTableModel, Qt, QTimer
-from PyQt5.QtWidgets import (QComboBox, QDateTimeEdit, QErrorMessage, QMainWindow,
-                              QMessageBox, QPushButton, QWidget,
+from PyQt5.QtWidgets import (QComboBox, QDateTimeEdit, QErrorMessage, QFileDialog, QMainWindow,
+                             QMessageBox, QPushButton, QWidget,
                              QVBoxLayout, QHBoxLayout, QLineEdit, QFormLayout,
                              QSizePolicy, QTableView, QProgressDialog,)
 import lyouoa_py.lib as ly_lib
@@ -132,7 +132,7 @@ class MainWindow(QMainWindow):
         self.filter_data_button.clicked.connect(self.filter_data)
 
         self.export_data_button = QPushButton("导出数据")
-        #self.export_data_button.clicked.connect(self.show_progress_dialo)
+        self.export_data_button.clicked.connect(self.export_data)
 
         login_option_layout = QFormLayout()
         login_option_layout.addRow("系统地址:", self.host_edit)
@@ -267,3 +267,13 @@ class MainWindow(QMainWindow):
         self.set_table_model()
 
         return
+
+    def export_data(self):
+        file, check = QFileDialog.getSaveFileName(self, "选择导出为的文件", "", "Microsoft Excel 2007-(*.xlsx);;", "Microsoft Excel 2007-(*.xlsx)")
+
+        if check:
+            print(file)
+            try:
+                self._filtered_data.to_excel(file)
+            except Exception as e:
+                self.show_error_message(str(e))
