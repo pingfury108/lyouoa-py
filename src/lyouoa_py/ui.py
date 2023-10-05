@@ -283,9 +283,9 @@ class MainWindow(QMainWindow):
 
     def filter_data(self):
         self.update_filter_data()
-                                           self.set_table_model()
+        self.set_table_model()
 
-                                           return
+        return
 
     def analyze_info(self):
         #print(self.start_time_edit.date().toPyDate(), self.end_time_edit.date())
