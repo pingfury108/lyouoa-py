@@ -1,3 +1,4 @@
+from datetime import datetime
 import httpx
 import re
 
@@ -114,39 +115,39 @@ class LyouoaClient():
     def fields(self):
         return 'EID,GroupCode,GroupStartTimeFormatMMdd,GroupEndTimeFormatMMdd,CustomerName,LineName,PersonCountDisplay,PersonCountDisplay,PersonConfirmDisplay,MeetingPlate,RegulateName,ExternalName,RegulateOperatorName,StatusText,RegulateGuideNames,RegulateFoodSumPrice,RegulateTicketSumPrice,RegulateHotelSumPrice,RegulateVehicleSumPrice,RegulateTrafficTicketSumPrice,RegulateInsuranceSumPrice,RegulateShoppingNames,RegulateSelfShoppingNames,RegulateIncomeSumPrice,RegulateOutgoSumPrice,RegulateConnectionNames,RegulateTeamSync,RegulateStatus,IsActive,IsGuideChecked,IsFoodChecked,IsTicketChecked,IsHotelChecked,IsVehicleChecked,IsTrafficTicketChecked,IsInsuranceChecked,IsShoppingChecked,IsSelfShoppingChecked,IsIncomeChecked,IsOutgoChecked,IsConnectionChecked,InsertUserID,IsConnectionOpen,RegulateOperatorID,IsGuideProcess,IsTicketProcess,IsHotelProcess,IsFoodProcess,IsVehicleProcess,IsTrafficTicketProcess,IsInsuranceProcess,IsShoppingProcess,IsSelfShoppingProcess,IsIncomeProcess,IsOutgoProcess,IsConnectionProcess,IsTeamSyncChecked,IsTeamSyncProcess,AdultCount,ChildrenCount,CompanionCount,SignUpAdultCountConfirm,SignUpChildrenCountConfirm,SignUpCompanionCountConfirm,SignUpAdultCountTransfer,SignUpChildrenCountTransfer,SignUpCompanionCountTransfer,GroupStatus,IsCancel,InsertLastLogDay,UpdateLastLogDay'
 
-    def get_eid_count(self):
+    def get_eid_count(self, end_time: str = datetime.now().strftime("%Y-%m-%d")):
 
-         u = urljoin(self._host, f'/{self._company_code}/Regulate/QueryRegulateLayPage')
-         r = httpx.post(url=u,
-                        headers=self.headers,
-                        cookies=self.cookies,
-                        params={
-                            'page': ['1'],
-                            'limit': ['20'],
-                            'RegulateStatus': ['0,3'],
-                            'Classify': ['1'],
-                            'EndTime': ['2023-09-30'],
-                            'BusinessClassify': ['0'],
-                            'searchKey': ['GroupCode'],
-                            'OrgID': ['0'],
-                            'OrgName': ['选择部门'],
-                            'GroupTimeKey': ['GroupStartTime'],
-                            'Category1': ['0'],
-                            'Category2': ['0'],
-                            'Category3': ['0'],
-                            'fields': [self.fields]})
+        u = urljoin(self._host, f'/{self._company_code}/Regulate/QueryRegulateLayPage')
+        r = httpx.post(url=u,
+                       headers=self.headers,
+                       cookies=self.cookies,
+                       params={
+                           'page': ['1'],
+                           'limit': ['20'],
+                           'RegulateStatus': ['0,3'],
+                           'Classify': ['1'],
+                           'EndTime': [end_time],
+                           'BusinessClassify': ['0'],
+                           'searchKey': ['GroupCode'],
+                           'OrgID': ['0'],
+                           'OrgName': ['选择部门'],
+                           'GroupTimeKey': ['GroupStartTime'],
+                           'Category1': ['0'],
+                           'Category2': ['0'],
+                           'Category3': ['0'],
+                           'fields': [self.fields]})
 
-         if r.status_code != 200:
+        if r.status_code != 200:
              raise LyouoaException(code=r.status_code, msg=r.text)
 
-         try:
-             count = r.json().get("count",0)
-             return count
-         except Exception:
-             raise LyouoaException(code=r.status_code, msg=r.text)
+        try:
+            count = r.json().get("count",0)
+            return count
+        except Exception:
+            raise LyouoaException(code=r.status_code, msg=r.text)
 
 
-    def get_tanhao(self, limit: str = '20'):
+    def get_tanhao(self, limit: str = '20', end_time: str = datetime.now().strftime("%Y-%m-%d")):
 
         u = urljoin(self._host, f'/{self._company_code}/Regulate/QueryRegulateLayPage')
         r = httpx.post(url=u,
@@ -157,7 +158,7 @@ class LyouoaClient():
                            'limit': [limit],
                            'RegulateStatus': ['0,3'],
                            'Classify': ['1'],
-                           'EndTime': ['2023-09-30'],
+                           'EndTime': [end_time],
                            'BusinessClassify': ['0'],
                            'searchKey': ['GroupCode'],
                            'OrgID': ['0'],

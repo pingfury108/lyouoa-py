@@ -1,7 +1,8 @@
 import json
+from PyQt5.QtGui import QPixmap
 import pandas as pd
-from PyQt5.QtCore import QSize, QAbstractTableModel, Qt, QTimer
-from PyQt5.QtWidgets import (QComboBox, QDateTimeEdit, QErrorMessage, QFileDialog, QMainWindow,
+from PyQt5.QtCore import QDate, QSize, QAbstractTableModel, Qt, QTimer
+from PyQt5.QtWidgets import (QComboBox, QDateEdit, QDateTimeEdit, QDialog, QDialogButtonBox, QErrorMessage, QFileDialog, QLabel, QMainWindow,
                              QMessageBox, QPushButton, QWidget,
                              QVBoxLayout, QHBoxLayout, QLineEdit, QFormLayout,
                              QSizePolicy, QTableView, QProgressDialog,)
@@ -42,8 +43,10 @@ class UpdateDataQProgressDialog():
         self.parent = parent
         self._eid_data = data
         self._cc = cc
+        self.parent._cache_data=[]
 
-        self.pd = QProgressDialog("解析网站数据", "取消数据解析", 0, len(data), self.parent)
+        self.pd = QProgressDialog("正在解析网站数据", "取消", 0, len(data), self.parent)
+        self.pd.setFixedWidth(400)
         self.pd.canceled.connect(self.cancel)
         self.steps = 0
         self.t =  QTimer(self.parent)
@@ -56,25 +59,22 @@ class UpdateDataQProgressDialog():
         return self.pd.exec()
 
     def perform(self):
-        print(self.parent.xx)
         self.pd.setValue(self.steps)
+        if self.steps >= self.pd.maximum():
+            self.t.stop()
+            return
         eid = self._eid_data[self.steps]
         hotel_data = self._cc.get_Regulate_Hotel(groupEID=eid)
         log_data = self._cc.get_RegulateLogList(groupEID=eid)
         dd = ly_lib.comp_hotel_data(ly_lib.parser_hotel_data(hotel_data),
                                     ly_lib.parser_loglist(log_data))
-        self.parent._cache_data=[]
         self.parent._cache_data = [*self.parent._cache_data, *dd]
         self.steps += 1
-        if self.steps > self.pd.maximum():
-            self.t.stop()
 
-            self.parent.xx += 3
-            return
+        return
 
     def cancel(self):
         self.t.stop()
-        #.. cleanup
         return
 
 
@@ -115,8 +115,13 @@ class MainWindow(QMainWindow):
         self.session_id_edit = QLineEdit()
 
         # time
-        self.start_time_edit = QDateTimeEdit(self)
-        self.end_time_edit = QDateTimeEdit(self)
+        self.start_time_edit = QDateEdit(self)
+        self.start_time_edit.setDisplayFormat("2010-1-1")
+        self.start_time_edit.setMinimumDate(QDate(2010, 1, 1))
+
+        self.end_time_edit = QDateEdit(self)
+        self.end_time_edit.setDisplayFormat("2010-1-1")
+        self.end_time_edit.setMinimumDate(QDate(2022, 1, 1))
 
         # owner
         self.owner_edit = QComboBox()
@@ -225,19 +230,19 @@ class MainWindow(QMainWindow):
         try:
             count = cc.get_eid_count()
             data = cc.get_tanhao(limit=count)
-            print(count, len(data))
+            print(count)
 
-            pg = UpdateDataQProgressDialog(self, cc, data[:100])
+            pg = UpdateDataQProgressDialog(self, cc, data)
             pg.exec()
 
             if len(self._cache_data) > 0:
+                print(len(self._cache_data))
                 self.data = pd.DataFrame(self._cache_data)
                 with open(self._cache_data_file, 'w') as f:
                     json.dump(self._cache_data, f)
-                    self.update_owners()
-                    self.update_room_type()
-                    self.filter_data()
-
+                self.update_owners()
+                self.update_room_type()
+                self.filter_data()
                 self.show_message(text="数据刷新成功")
             else:
                 self.show_message(text="无刷新")
@@ -278,12 +283,17 @@ class MainWindow(QMainWindow):
 
     def filter_data(self):
         self.update_filter_data()
-        self.set_table_model()
+                                           self.set_table_model()
 
-        return
+                                           return
 
     def analyze_info(self):
-        print(self._filtered_data.groupby(["ower", "房间类型"])[["房间数"]].sum())
+        #print(self.start_time_edit.date().toPyDate(), self.end_time_edit.date())
+        gby_data = self._filtered_data.groupby(["ower", "房间类型"])[["房间数"]].sum()
+        msg = QMessageBox()
+        msg.setText(gby_data.to_html())
+        msg.exec()
+
         return
 
     def export_data(self):
