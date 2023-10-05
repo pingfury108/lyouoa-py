@@ -134,6 +134,9 @@ class MainWindow(QMainWindow):
         self.export_data_button = QPushButton("导出数据")
         self.export_data_button.clicked.connect(self.export_data)
 
+        self.analyze_info_button = QPushButton("显示统计信息")
+        self.analyze_info_button.clicked.connect(self.analyze_info)
+
         login_option_layout = QFormLayout()
         login_option_layout.addRow("系统地址:", self.host_edit)
         login_option_layout.addRow("公司代码:", self.comp_code_edit)
@@ -150,11 +153,15 @@ class MainWindow(QMainWindow):
         action_layout.addWidget(self.filter_data_button)
         action_layout.addWidget(self.export_data_button)
 
+        analyze_layout = QFormLayout()
+        analyze_layout.addWidget(self.analyze_info_button)
+
         loayout = QHBoxLayout()
         loayout.setSpacing(10)
         loayout.addLayout(login_option_layout)
         loayout.addLayout(filter_option_layout)
         loayout.addLayout(action_layout)
+        loayout.addLayout(analyze_layout)
 
         w = QWidget()
         w.setLayout(loayout)
@@ -181,7 +188,7 @@ class MainWindow(QMainWindow):
             return
         ower_data = self.data["ower"]
         self.owner_edit.clear()
-        self.owner_edit.addItems(list(set(ower_data.to_list())))
+        self.owner_edit.addItems(["-", *list(set(ower_data.to_list()))])
         return
 
     def update_room_type(self):
@@ -189,7 +196,7 @@ class MainWindow(QMainWindow):
             return
         room_type_data = self.data["房间类型"]
         self.room_type_edit.clear()
-        self.room_type_edit.addItems(list(set(room_type_data.to_list())))
+        self.room_type_edit.addItems(["-", *list(set(room_type_data.to_list()))])
         return
 
     @property
@@ -253,27 +260,37 @@ class MainWindow(QMainWindow):
         if len(self.data) == 0:
             self._filtered_data = self.data
             return
-        ower = self.data["ower"]
         select_ower = self.owner_edit.currentText()
-        if len(select_ower) == 0:
-            self._filtered_data = self.data
-            return
-        self._filtered_data = self.data[ower == select_ower]
+        if select_ower != "-":
+            dd = self.data[self.data["ower"] == select_ower]
+            select_room_type = self.room_type_edit.currentText()
+            if select_room_type != "-":
+                self._filtered_data = dd[dd["房间类型"] == self.room_type_edit.currentText()]
+            else:
+                self._filtered_data = dd
+        else:
+            select_room_type = self.room_type_edit.currentText()
+            if select_room_type != "-":
+                self._filtered_data = self.data[self.data["房间类型"] == self.room_type_edit.currentText()]
+            else:
+                self._filtered_data = self.data
         return
 
     def filter_data(self):
-        print(self.owner_edit.currentText())
         self.update_filter_data()
         self.set_table_model()
 
         return
 
+    def analyze_info(self):
+        print(self._filtered_data.groupby(["ower", "房间类型"])[["房间数"]].sum())
+        return
+
     def export_data(self):
         file, check = QFileDialog.getSaveFileName(self, "选择导出为的文件", "", "Microsoft Excel 2007-(*.xlsx);;", "Microsoft Excel 2007-(*.xlsx)")
-
         if check:
-            print(file)
             try:
-                self._filtered_data.to_excel(file)
+                if file:
+                    self._filtered_data.to_excel(file)
             except Exception as e:
                 self.show_error_message(str(e))
