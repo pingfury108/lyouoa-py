@@ -1,10 +1,10 @@
 import json
 import pandas as pd
-from PyQt5.QtCore import QSize, QAbstractTableModel, Qt
+from PyQt5.QtCore import QSize, QAbstractTableModel, Qt, QTimer
 from PyQt5.QtWidgets import (QComboBox, QDateTimeEdit, QErrorMessage, QMainWindow,
-                             QMessageBox, QPushButton, QWidget,
+                              QMessageBox, QPushButton, QWidget,
                              QVBoxLayout, QHBoxLayout, QLineEdit, QFormLayout,
-                             QSizePolicy, QTableView, QProgressDialog)
+                             QSizePolicy, QTableView, QProgressDialog,)
 import lyouoa_py.lib as ly_lib
 
 
@@ -34,6 +34,48 @@ class TableModel(QAbstractTableModel):
 
             if orientation == Qt.Vertical:
                 return str(self._data.index[section])
+        return
+
+
+class UpdateDataQProgressDialog():
+    def __init__(self, parent, cc: ly_lib.LyouoaClient, data: list) -> None:
+        self.parent = parent
+        self._eid_data = data
+        self._cc = cc
+
+        self.pd = QProgressDialog("解析网站数据", "取消数据解析", 0, len(data), self.parent)
+        self.pd.canceled.connect(self.cancel)
+        self.steps = 0
+        self.t =  QTimer(self.parent)
+        self.t.timeout.connect(self.perform)
+        self.t.start(0)
+
+        return
+
+    def exec(self):
+        return self.pd.exec()
+
+    def perform(self):
+        print(self.parent.xx)
+        self.pd.setValue(self.steps)
+        eid = self._eid_data[self.steps]
+        hotel_data = self._cc.get_Regulate_Hotel(groupEID=eid)
+        log_data = self._cc.get_RegulateLogList(groupEID=eid)
+        dd = ly_lib.comp_hotel_data(ly_lib.parser_hotel_data(hotel_data),
+                                    ly_lib.parser_loglist(log_data))
+        self.parent._cache_data=[]
+        self.parent._cache_data = [*self.parent._cache_data, *dd]
+        self.steps += 1
+        if self.steps > self.pd.maximum():
+            self.t.stop()
+
+            self.parent.xx += 3
+            return
+
+    def cancel(self):
+        self.t.stop()
+        #.. cleanup
+        return
 
 
 class MainWindow(QMainWindow):
@@ -90,7 +132,7 @@ class MainWindow(QMainWindow):
         self.filter_data_button.clicked.connect(self.filter_data)
 
         self.export_data_button = QPushButton("导出数据")
-        self.export_data_button.clicked.connect(self.show_progress_dialog)
+        #self.export_data_button.clicked.connect(self.show_progress_dialo)
 
         login_option_layout = QFormLayout()
         login_option_layout.addRow("系统地址:", self.host_edit)
@@ -177,28 +219,17 @@ class MainWindow(QMainWindow):
             count = cc.get_eid_count()
             data = cc.get_tanhao(limit=count)
             print(count, len(data))
-            p_dialog =  QProgressDialog("解析网站数据", "取消数据解析", 0, len(data), self)
-            p_dialog.show()
-            all_data = []
-            for i, eid in enumerate(data[:100]):
-                print(i, eid)
-                p_dialog.setValue(i)
-                if p_dialog.wasCanceled():
-                    break
-                hotel_data = cc.get_Regulate_Hotel(groupEID=eid)
-                log_data = cc.get_RegulateLogList(groupEID=eid)
-                dd = ly_lib.comp_hotel_data(ly_lib.parser_hotel_data(hotel_data),
-                                            ly_lib.parser_loglist(log_data))
-                all_data = [*all_data, *dd]
 
-            p_dialog.setValue(len(data))
-            if len(all_data) > 0:
-                self.data = pd.DataFrame(all_data)
+            pg = UpdateDataQProgressDialog(self, cc, data[:100])
+            pg.exec()
+
+            if len(self._cache_data) > 0:
+                self.data = pd.DataFrame(self._cache_data)
                 with open(self._cache_data_file, 'w') as f:
-                    json.dump(all_data, f)
-                self.update_owners()
-                self.update_room_type()
-                self.filter_data()
+                    json.dump(self._cache_data, f)
+                    self.update_owners()
+                    self.update_room_type()
+                    self.filter_data()
 
                 self.show_message(text="数据刷新成功")
             else:
@@ -216,11 +247,6 @@ class MainWindow(QMainWindow):
         msg = QErrorMessage()
         msg.showMessage(text)
         msg.exec()
-        return
-
-    def show_progress_dialog(self):
-        dialog = QProgressDialog("解析网站数据", "取消数据解析", 0, 20)
-        dialog.exec()
         return
 
     def update_filter_data(self):
