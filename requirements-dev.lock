@@ -9,6 +9,7 @@
 --trusted-host =
 --trusted-host mirrors.aliyun.com
 -e file:.
+altgraph==0.17.4
 anyio==4.0.0
 argon2-cffi==23.1.0
 argon2-cffi-bindings==21.2.0
@@ -84,6 +85,8 @@ ptyprocess==0.7.0
 pure-eval==0.2.2
 pycparser==2.21
 pygments==2.16.1
+pyinstaller==6.0.0
+pyinstaller-hooks-contrib==2023.9
 pyparsing==3.1.1
 pyqt5==5.15.9
 pyqt5-qt5==5.15.2
@@ -114,3 +117,5 @@ wcwidth==0.2.6
 webcolors==1.13
 webencodings==0.5.1
 websocket-client==1.6.3
+# The following packages are considered to be unsafe in a requirements file:
+setuptools==68.2.2

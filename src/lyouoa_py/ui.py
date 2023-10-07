@@ -1,16 +1,11 @@
 import json
-from PyQt5.QtGui import QPixmap
 import pandas as pd
 from PyQt5.QtCore import QDate, QSize, QAbstractTableModel, Qt, QTimer
 from PyQt5.QtWidgets import (
     QComboBox,
     QDateEdit,
-    QDateTimeEdit,
-    QDialog,
-    QDialogButtonBox,
     QErrorMessage,
     QFileDialog,
-    QLabel,
     QMainWindow,
     QMessageBox,
     QPushButton,
