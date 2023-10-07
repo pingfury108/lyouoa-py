@@ -26,12 +26,8 @@ jobs:
         python-version-file: 'pyproject.toml' 
     - name: Install dependencies
       run: |
-        pip install pyinstaller piptools
-        python -m piptools compile -o requirements.txt pyproject.toml
-        pip install -r requirements.txt
-    - name: cat requirements
-      run: |
-        cat requirements.txt
+        pip install pyinstaller
+        pip install -r requirements.lock
     - name: pyinstaller build
       run: |
         pyinstaller lyouoa.py
