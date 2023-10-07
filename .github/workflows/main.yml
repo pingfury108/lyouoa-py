@@ -15,7 +15,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, Ubuntu-latest, windows-latest]
+        #platform: [macos-latest, Ubuntu-latest, windows-latest]
+        platform: windows-latest
     runs-on: ${{ matrix.platform }}
     
     steps:
@@ -37,6 +38,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        file: dist/lyouoa
+        file: dist/lyouoa/lyouoa.exe
         tags: false
         draft: true
