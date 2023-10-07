@@ -2,10 +2,27 @@ import json
 from PyQt5.QtGui import QPixmap
 import pandas as pd
 from PyQt5.QtCore import QDate, QSize, QAbstractTableModel, Qt, QTimer
-from PyQt5.QtWidgets import (QComboBox, QDateEdit, QDateTimeEdit, QDialog, QDialogButtonBox, QErrorMessage, QFileDialog, QLabel, QMainWindow,
-                             QMessageBox, QPushButton, QWidget,
-                             QVBoxLayout, QHBoxLayout, QLineEdit, QFormLayout,
-                             QSizePolicy, QTableView, QProgressDialog,)
+from PyQt5.QtWidgets import (
+    QComboBox,
+    QDateEdit,
+    QDateTimeEdit,
+    QDialog,
+    QDialogButtonBox,
+    QErrorMessage,
+    QFileDialog,
+    QLabel,
+    QMainWindow,
+    QMessageBox,
+    QPushButton,
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QLineEdit,
+    QFormLayout,
+    QSizePolicy,
+    QTableView,
+    QProgressDialog,
+)
 import lyouoa_py.lib as ly_lib
 
 
@@ -39,17 +56,18 @@ class TableModel(QAbstractTableModel):
 
 
 class UpdateDataQProgressDialog():
+
     def __init__(self, parent, cc: ly_lib.LyouoaClient, data: list) -> None:
         self.parent = parent
         self._eid_data = data
         self._cc = cc
-        self.parent._cache_data=[]
+        self.parent._cache_data = []
 
         self.pd = QProgressDialog("正在解析网站数据", "取消", 0, len(data), self.parent)
         self.pd.setFixedWidth(400)
         self.pd.canceled.connect(self.cancel)
         self.steps = 0
-        self.t =  QTimer(self.parent)
+        self.t = QTimer(self.parent)
         self.t.timeout.connect(self.perform)
         self.t.start(0)
 
@@ -84,7 +102,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setMinimumSize(QSize(800, 600))
+        self.setMinimumSize(QSize(1000, 800))
         #self.setFixedSize(QSize(800, 600))
         self.setWindowTitle("loyouoa 数据统计")
         # layout
@@ -127,7 +145,6 @@ class MainWindow(QMainWindow):
         self.owner_edit = QComboBox()
         # type
         self.room_type_edit = QComboBox()
-        self.room_type_edit.insertItems(0, ["标准", "司陪"])
 
         # parser data
         self.refresh_data_button = QPushButton("刷新数据")
@@ -180,7 +197,7 @@ class MainWindow(QMainWindow):
         try:
             self.data = pd.read_json(self._cache_data_file)
         except Exception as e:
-            self.show_error_message(str(e))
+            #self.show_error_message(str(e))
             self.data = pd.DataFrame()
 
         self.update_owners()
@@ -201,7 +218,8 @@ class MainWindow(QMainWindow):
             return
         room_type_data = self.data["房间类型"]
         self.room_type_edit.clear()
-        self.room_type_edit.addItems(["-", *list(set(room_type_data.to_list()))])
+        self.room_type_edit.addItems(
+            ["-", *list(set(room_type_data.to_list()))])
         return
 
     @property
@@ -270,13 +288,15 @@ class MainWindow(QMainWindow):
             dd = self.data[self.data["ower"] == select_ower]
             select_room_type = self.room_type_edit.currentText()
             if select_room_type != "-":
-                self._filtered_data = dd[dd["房间类型"] == self.room_type_edit.currentText()]
+                self._filtered_data = dd[dd["房间类型"] ==
+                                         self.room_type_edit.currentText()]
             else:
                 self._filtered_data = dd
         else:
             select_room_type = self.room_type_edit.currentText()
             if select_room_type != "-":
-                self._filtered_data = self.data[self.data["房间类型"] == self.room_type_edit.currentText()]
+                self._filtered_data = self.data[
+                    self.data["房间类型"] == self.room_type_edit.currentText()]
             else:
                 self._filtered_data = self.data
         return
@@ -289,15 +309,22 @@ class MainWindow(QMainWindow):
 
     def analyze_info(self):
         #print(self.start_time_edit.date().toPyDate(), self.end_time_edit.date())
-        gby_data = self._filtered_data.groupby(["ower", "房间类型"])[["房间数"]].sum()
         msg = QMessageBox()
-        msg.setText(gby_data.to_html())
+        if len(self._filtered_data) > 0:
+            gby_data = self._filtered_data.groupby(["ower",
+                                                    "房间类型"])[["房间数"]].sum()
+            msg.setText(gby_data.to_html())
+        else:
+            msg.setText("没有数据")
+
         msg.exec()
 
         return
 
     def export_data(self):
-        file, check = QFileDialog.getSaveFileName(self, "选择导出为的文件", "", "Microsoft Excel 2007-(*.xlsx);;", "Microsoft Excel 2007-(*.xlsx)")
+        file, check = QFileDialog.getSaveFileName(
+            self, "选择导出为的文件", "", "Microsoft Excel 2007-(*.xlsx);;",
+            "Microsoft Excel 2007-(*.xlsx)")
         if check:
             try:
                 if file:
