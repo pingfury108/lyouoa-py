@@ -29,12 +29,12 @@ jobs:
     - name: pyinstaller build
       run: |
         pyinstaller -w -F lyouoa.py
-        ls dist/lyouoa
+        ls dist/
     - name: upload to release
       uses: xresloader/upload-to-github-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        file: dist/lyouoa/lyouoa.exe
+        file: dist/lyouoa.exe
         tags: false
         draft: true
