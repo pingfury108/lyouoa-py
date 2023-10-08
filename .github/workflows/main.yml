@@ -21,14 +21,15 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version-file: '.python-version' 
+        python-version-file: '.python-version'
+        cache: 'pip'
     - name: Install dependencies
       run: |
         pip install pyinstaller
         pip install -r requirements.lock
     - name: pyinstaller build
       run: |
-        pyinstaller lyouoa.py
+        pyinstaller -w -F lyouoa.py
         ls dist/lyouoa
     - name: upload to release
       uses: xresloader/upload-to-github-release@v1
