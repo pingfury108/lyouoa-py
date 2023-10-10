@@ -1,11 +1,15 @@
 import json
+from PyQt5.QtGui import QImage, QPixmap
+import httpx
 import pandas as pd
-from PyQt5.QtCore import QDate, QSize, QAbstractTableModel, Qt, QTimer
+from PyQt5.QtCore import QDate, QSize, QAbstractTableModel, Qt, QTimer, pyqtSignal
 from PyQt5.QtWidgets import (
     QComboBox,
     QDateEdit,
+    QDialog,
     QErrorMessage,
     QFileDialog,
+    QLabel,
     QMainWindow,
     QMessageBox,
     QPushButton,
@@ -98,14 +102,72 @@ class UpdateDataQProgressDialog():
         return
 
 
+class LoginDilog(QDialog):
+    accepted = pyqtSignal(dict)
+
+    def __init__(self, parent, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.parent = parent
+        self.user_name_edit = QLineEdit()
+        self.user_pwd_edit = QLineEdit()
+        self.user_pwd_edit.setEchoMode(QLineEdit.Password)
+        self.validate_code_edit = QLineEdit()
+        self.btn = QPushButton('OK')
+        #self.btn.setDisabled(True)
+        self.btn.clicked.connect(self.ok_pressed)
+
+        form = QFormLayout(self)
+        form.addRow('账号:', self.user_name_edit)
+        form.addRow('密码', self.user_pwd_edit)
+        form.addRow('验证码:', self.validate_code_edit)
+        form.addWidget(self.show_login_validate_code())
+        form.addRow(self.btn)
+        return
+
+    def show_login_validate_code(self):
+        label = QLabel()
+        try:
+            r = httpx.get("https://www.lyouoa.com/GetValidateCode?Height=40")
+            if r.status_code == 200:
+                image = QImage()
+                image.loadFromData(r.content)
+                label.setPixmap(QPixmap(image))
+            else:
+                self.show_message(r.text)
+        except Exception as e:
+            self.show_error_message(str(e))
+
+        return label
+
+    def unlock(self, text):
+        if text:
+            self.btn.setEnabled(True)
+        else:
+            self.btn.setDisabled(True)
+
+        return
+
+    def ok_pressed(self):
+        values = {
+            'host': self.parent.host_edit.text(),
+            'comp': self.parent.comp_code_edit.text(),
+            'user_name': self.user_name_edit.text(),
+            'user_pwd': self.user_pwd_edit.text(),
+            'validate_code': self.validate_code_edit.text()
+        }
+        self.accepted.emit(values)
+        self.accept()
+        return
+
+
 class MainWindow(QMainWindow):
     _cache_data_file = "./lyouoa_data.json"
 
     def __init__(self):
         super().__init__()
 
-        self.setMinimumSize(QSize(1000, 800))
-        #self.setFixedSize(QSize(800, 600))
+        #self.setMinimumSize(QSize(1000, 800))
+        self.setFixedSize(QSize(800, 600))
         self.setWindowTitle("loyouoa 数据统计")
         # layout
         main_layout = QVBoxLayout()
@@ -134,14 +196,19 @@ class MainWindow(QMainWindow):
         # http client session id
         self.session_id_edit = QLineEdit()
 
+        # login, name ValidateCode
+        self.login_button = QPushButton("登录&&获取会话ID")
+        self.login_button.clicked.connect(self.login)
+
         # time
         self.start_time_edit = QDateEdit(self)
-        self.start_time_edit.setDisplayFormat("2022-1-1")
         self.start_time_edit.setMinimumDate(QDate(2022, 1, 1))
+        self.start_time_edit.setDisplayFormat("yyyy-MM-dd")
 
-        self.end_time_edit = QDateEdit(self)
-        self.end_time_edit.setDisplayFormat("2023-1-1")
+        self.end_time_edit = QDateEdit()
         self.end_time_edit.setMinimumDate(QDate(2023, 1, 1))
+        self.end_time_edit.setDisplayFormat("yyyy-MM-dd")
+        #self.end_time_edit.setDisplayFormat("2023-1-1")
 
         # owner
         self.owner_edit = QComboBox()
@@ -165,6 +232,7 @@ class MainWindow(QMainWindow):
         login_option_layout.addRow("系统地址:", self.host_edit)
         login_option_layout.addRow("公司代码:", self.comp_code_edit)
         login_option_layout.addRow("会话ID:", self.session_id_edit)
+        login_option_layout.addWidget(self.login_button)
 
         fetch_layout = QFormLayout()
         fetch_layout.addRow("开始时间:", self.start_time_edit)
@@ -175,9 +243,7 @@ class MainWindow(QMainWindow):
         filter_option_layout.addRow("姓名:", self.owner_edit)
         filter_option_layout.addRow("房间类型:", self.room_type_edit)
         filter_option_layout.addWidget(self.filter_data_button)
-
-        action_layout = QFormLayout()
-        action_layout.addWidget(self.export_data_button)
+        filter_option_layout.addWidget(self.export_data_button)
 
         analyze_layout = QFormLayout()
         analyze_layout.addWidget(self.analyze_info_button)
@@ -187,7 +253,6 @@ class MainWindow(QMainWindow):
         loayout.addLayout(login_option_layout)
         loayout.addLayout(fetch_layout)
         loayout.addLayout(filter_option_layout)
-        loayout.addLayout(action_layout)
         loayout.addLayout(analyze_layout)
 
         w = QWidget()
@@ -196,6 +261,15 @@ class MainWindow(QMainWindow):
         #w.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         return w
+
+    def login(self):
+        print("login")
+        dilog = LoginDilog(self)
+        dilog.accepted.connect(
+            lambda values: self.session_id_edit.setText(str(values)))
+        dilog.exec()
+
+        return
 
     def reload_cache(self):
 
@@ -268,10 +342,10 @@ class MainWindow(QMainWindow):
                 self.data = pd.DataFrame(self._cache_data)
                 with open(self._cache_data_file, 'w') as f:
                     json.dump(self._cache_data, f)
-                self.update_owners()
-                self.update_room_type()
-                self.filter_data()
-                self.show_message(text="数据刷新成功")
+                    self.update_owners()
+                    self.update_room_type()
+                    self.filter_data()
+                    self.show_message(text="数据刷新成功")
             else:
                 self.show_message(text="无刷新")
         except ly_lib.LyouoaException as e:
@@ -318,8 +392,6 @@ class MainWindow(QMainWindow):
         return
 
     def analyze_info(self):
-        print(self.start_time_edit.date().toPyDate(),
-              self.end_time_edit.date())
         msg = QMessageBox()
         if len(self._filtered_data) > 0:
             gby_data = self._filtered_data.groupby(["ower",
