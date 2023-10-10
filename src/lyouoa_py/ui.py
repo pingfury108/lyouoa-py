@@ -263,7 +263,6 @@ class MainWindow(QMainWindow):
         return w
 
     def login(self):
-        print("login")
         dilog = LoginDilog(self)
         dilog.accepted.connect(
             lambda values: self.session_id_edit.setText(str(values)))
