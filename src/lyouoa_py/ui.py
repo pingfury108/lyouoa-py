@@ -1,4 +1,5 @@
 import json
+from urllib.parse import urljoin
 from PyQt5.QtGui import QImage, QPixmap
 import httpx
 import pandas as pd
@@ -87,7 +88,7 @@ class UpdateDataQProgressDialog():
         print(start_time, end_time)
 
         hotel_data = self._cc.get_Regulate_Hotel(groupEID=eid,
-                                                 start_time=start_time,
+                                                 #start_time=start_time,
                                                  end_time=end_time)
         log_data = self._cc.get_RegulateLogList(groupEID=eid)
         dd = ly_lib.comp_hotel_data(ly_lib.parser_hotel_data(hotel_data),
@@ -129,6 +130,9 @@ class LoginDilog(QDialog):
         try:
             r = httpx.get("https://www.lyouoa.com/GetValidateCode?Height=40")
             if r.status_code == 200:
+                print(r.cookies)
+                self.parent.session_id_edit.setText(
+                    r.cookies.get("ASP.NET_SessionId", ""))
                 image = QImage()
                 image.loadFromData(r.content)
                 label.setPixmap(QPixmap(image))
@@ -148,15 +152,26 @@ class LoginDilog(QDialog):
         return
 
     def ok_pressed(self):
-        values = {
-            'host': self.parent.host_edit.text(),
-            'comp': self.parent.comp_code_edit.text(),
-            'user_name': self.user_name_edit.text(),
-            'user_pwd': self.user_pwd_edit.text(),
-            'validate_code': self.validate_code_edit.text()
-        }
-        self.accepted.emit(values)
-        self.accept()
+        try:
+            r = httpx.post(
+                url=urljoin(self.parent.host_edit.text(),'/LoginAuth'),
+                cookies={
+                    "ASP.NET_SessionId": self.parent.session_id_edit.text(),
+                },
+                params={
+                    "userid": self.user_name_edit.text(),
+                    "password": self.user_pwd_edit.text(),
+                    "ompanyuid": self.parent.comp_code_edit.text(),
+                    "verifycode": self.validate_code_edit.text()
+                })
+            print(r.request)
+            print(r.status_code, r.text)
+            print(r.cookies)
+            self.accepted.emit(r.cookies)
+            self.accept()
+        except Exception as e:
+            self.parent.show_error_message(str(e))
+
         return
 
 
@@ -324,12 +339,10 @@ class MainWindow(QMainWindow):
                                  session_id=self.session_id_edit.text(),
                                  company_code=self.comp_code_edit.text())
         try:
-            start_time = str(self.start_time_edit.date().toPyDate())
             end_time = str(self.end_time_edit.date().toPyDate())
-            print(start_time, end_time)
-            count = cc.get_eid_count()
+            print(end_time)
+            count = cc.get_eid_count(end_time=end_time)
             data = cc.get_tanhao(limit=count,
-                                 start_time=start_time,
                                  end_time=end_time)
             print(count)
 

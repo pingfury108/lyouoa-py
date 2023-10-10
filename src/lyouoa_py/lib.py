@@ -121,7 +121,6 @@ class LyouoaClient():
         return 'EID,GroupCode,GroupStartTimeFormatMMdd,GroupEndTimeFormatMMdd,CustomerName,LineName,PersonCountDisplay,PersonCountDisplay,PersonConfirmDisplay,MeetingPlate,RegulateName,ExternalName,RegulateOperatorName,StatusText,RegulateGuideNames,RegulateFoodSumPrice,RegulateTicketSumPrice,RegulateHotelSumPrice,RegulateVehicleSumPrice,RegulateTrafficTicketSumPrice,RegulateInsuranceSumPrice,RegulateShoppingNames,RegulateSelfShoppingNames,RegulateIncomeSumPrice,RegulateOutgoSumPrice,RegulateConnectionNames,RegulateTeamSync,RegulateStatus,IsActive,IsGuideChecked,IsFoodChecked,IsTicketChecked,IsHotelChecked,IsVehicleChecked,IsTrafficTicketChecked,IsInsuranceChecked,IsShoppingChecked,IsSelfShoppingChecked,IsIncomeChecked,IsOutgoChecked,IsConnectionChecked,InsertUserID,IsConnectionOpen,RegulateOperatorID,IsGuideProcess,IsTicketProcess,IsHotelProcess,IsFoodProcess,IsVehicleProcess,IsTrafficTicketProcess,IsInsuranceProcess,IsShoppingProcess,IsSelfShoppingProcess,IsIncomeProcess,IsOutgoProcess,IsConnectionProcess,IsTeamSyncChecked,IsTeamSyncProcess,AdultCount,ChildrenCount,CompanionCount,SignUpAdultCountConfirm,SignUpChildrenCountConfirm,SignUpCompanionCountConfirm,SignUpAdultCountTransfer,SignUpChildrenCountTransfer,SignUpCompanionCountTransfer,GroupStatus,IsCancel,InsertLastLogDay,UpdateLastLogDay'
 
     def get_eid_count(self,
-                      start_time: str = datetime.now().strftime("%Y-%m-%d"),
                       end_time: str = datetime.now().strftime("%Y-%m-%d")):
 
         u = urljoin(self._host,
@@ -134,7 +133,6 @@ class LyouoaClient():
                            'limit': ['20'],
                            'RegulateStatus': ['0,3'],
                            'Classify': ['1'],
-                           'StartTime': [start_time],
                            'EndTime': [end_time],
                            'BusinessClassify': ['0'],
                            'searchKey': ['GroupCode'],
@@ -158,7 +156,6 @@ class LyouoaClient():
 
     def get_tanhao(self,
                    limit: str = '20',
-                   start_time: str = datetime.now().strftime("%Y-%m-%d"),
                    end_time: str = datetime.now().strftime("%Y-%m-%d")):
 
         u = urljoin(self._host,
@@ -171,7 +168,6 @@ class LyouoaClient():
                            'limit': [limit],
                            'RegulateStatus': ['0,3'],
                            'Classify': ['1'],
-                           'StartTime': [start_time],
                            'EndTime': [end_time],
                            'BusinessClassify': ['0'],
                            'searchKey': ['GroupCode'],
@@ -196,7 +192,7 @@ class LyouoaClient():
     def get_Regulate_Hotel(
         self,
         groupEID: str,
-        start_time: str = datetime.now().strftime("%Y-%m-%d"),
+        #start_time: str = datetime.now().strftime("%Y-%m-%d"),
         end_time: str = datetime.now().strftime("%Y-%m-%d")):
         u = urljoin(self._host,
                     f'/{self._company_code}/Regulate/Regulate_Hotel')
@@ -208,7 +204,7 @@ class LyouoaClient():
                           'GroupEID': [groupEID],
                           'Index': ['4'],
                           'RegulateStatus': ['0,3'],
-                          'StartTime': [start_time],
+                          #'StartTime': [start_time],
                           'EndTime': [end_time],
                           'SearchKey': ['GroupCode'],
                           'OrgID': ['0'],
