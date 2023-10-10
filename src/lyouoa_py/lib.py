@@ -48,7 +48,11 @@ def parser_loglist(html_text) -> list[dict]:
 
 
 def find_ower(loglist: list, jiudian_name: str, fj_type: str) -> dict:
-    row = [x for x in filter(lambda r: re.search(re.escape(jiudian_name), r['操作']), loglist) if re.search(re.escape(fj_type), x['操作'])]
+    row = [
+        x for x in filter(
+            lambda r: re.search(re.escape(jiudian_name), r['操作']), loglist)
+        if re.search(re.escape(fj_type), x['操作'])
+    ]
     if len(row) >= 1:
         return {'ower': row[0].get("用户"), 'opt_time': row[0].get("时间")}
 
@@ -97,7 +101,8 @@ class LyouoaClient():
     def headers(self):
 
         return {
-            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
+            "User-Agent":
+            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
         }
 
     @property
@@ -115,9 +120,12 @@ class LyouoaClient():
     def fields(self):
         return 'EID,GroupCode,GroupStartTimeFormatMMdd,GroupEndTimeFormatMMdd,CustomerName,LineName,PersonCountDisplay,PersonCountDisplay,PersonConfirmDisplay,MeetingPlate,RegulateName,ExternalName,RegulateOperatorName,StatusText,RegulateGuideNames,RegulateFoodSumPrice,RegulateTicketSumPrice,RegulateHotelSumPrice,RegulateVehicleSumPrice,RegulateTrafficTicketSumPrice,RegulateInsuranceSumPrice,RegulateShoppingNames,RegulateSelfShoppingNames,RegulateIncomeSumPrice,RegulateOutgoSumPrice,RegulateConnectionNames,RegulateTeamSync,RegulateStatus,IsActive,IsGuideChecked,IsFoodChecked,IsTicketChecked,IsHotelChecked,IsVehicleChecked,IsTrafficTicketChecked,IsInsuranceChecked,IsShoppingChecked,IsSelfShoppingChecked,IsIncomeChecked,IsOutgoChecked,IsConnectionChecked,InsertUserID,IsConnectionOpen,RegulateOperatorID,IsGuideProcess,IsTicketProcess,IsHotelProcess,IsFoodProcess,IsVehicleProcess,IsTrafficTicketProcess,IsInsuranceProcess,IsShoppingProcess,IsSelfShoppingProcess,IsIncomeProcess,IsOutgoProcess,IsConnectionProcess,IsTeamSyncChecked,IsTeamSyncProcess,AdultCount,ChildrenCount,CompanionCount,SignUpAdultCountConfirm,SignUpChildrenCountConfirm,SignUpCompanionCountConfirm,SignUpAdultCountTransfer,SignUpChildrenCountTransfer,SignUpCompanionCountTransfer,GroupStatus,IsCancel,InsertLastLogDay,UpdateLastLogDay'
 
-    def get_eid_count(self, end_time: str = datetime.now().strftime("%Y-%m-%d")):
+    def get_eid_count(self,
+                      start_time: str = datetime.now().strftime("%Y-%m-%d"),
+                      end_time: str = datetime.now().strftime("%Y-%m-%d")):
 
-        u = urljoin(self._host, f'/{self._company_code}/Regulate/QueryRegulateLayPage')
+        u = urljoin(self._host,
+                    f'/{self._company_code}/Regulate/QueryRegulateLayPage')
         r = httpx.post(url=u,
                        headers=self.headers,
                        cookies=self.cookies,
@@ -126,6 +134,7 @@ class LyouoaClient():
                            'limit': ['20'],
                            'RegulateStatus': ['0,3'],
                            'Classify': ['1'],
+                           'StartTime': [start_time],
                            'EndTime': [end_time],
                            'BusinessClassify': ['0'],
                            'searchKey': ['GroupCode'],
@@ -135,21 +144,25 @@ class LyouoaClient():
                            'Category1': ['0'],
                            'Category2': ['0'],
                            'Category3': ['0'],
-                           'fields': [self.fields]})
+                           'fields': [self.fields]
+                       })
 
         if r.status_code != 200:
-             raise LyouoaException(code=r.status_code, msg=r.text)
+            raise LyouoaException(code=r.status_code, msg=r.text)
 
         try:
-            count = r.json().get("count",0)
+            count = r.json().get("count", 0)
             return count
         except Exception:
             raise LyouoaException(code=r.status_code, msg=r.text)
 
+    def get_tanhao(self,
+                   limit: str = '20',
+                   start_time: str = datetime.now().strftime("%Y-%m-%d"),
+                   end_time: str = datetime.now().strftime("%Y-%m-%d")):
 
-    def get_tanhao(self, limit: str = '20', end_time: str = datetime.now().strftime("%Y-%m-%d")):
-
-        u = urljoin(self._host, f'/{self._company_code}/Regulate/QueryRegulateLayPage')
+        u = urljoin(self._host,
+                    f'/{self._company_code}/Regulate/QueryRegulateLayPage')
         r = httpx.post(url=u,
                        headers=self.headers,
                        cookies=self.cookies,
@@ -158,6 +171,7 @@ class LyouoaClient():
                            'limit': [limit],
                            'RegulateStatus': ['0,3'],
                            'Classify': ['1'],
+                           'StartTime': [start_time],
                            'EndTime': [end_time],
                            'BusinessClassify': ['0'],
                            'searchKey': ['GroupCode'],
@@ -167,33 +181,40 @@ class LyouoaClient():
                            'Category1': ['0'],
                            'Category2': ['0'],
                            'Category3': ['0'],
-                           'fields': [self.fields]})
+                           'fields': [self.fields]
+                       })
 
         if r.status_code != 200:
             raise LyouoaException(code=r.status_code, msg=r.text)
 
         try:
-            data = r.json().get("data",[])
+            data = r.json().get("data", [])
             return [d["EID"] for d in data]
         except Exception:
             raise LyouoaException(code=r.status_code, msg=r.text)
 
-
-    def get_Regulate_Hotel(self, groupEID: str):
-        u = urljoin(self._host, f'/{self._company_code}/Regulate/Regulate_Hotel')
+    def get_Regulate_Hotel(
+        self,
+        groupEID: str,
+        start_time: str = datetime.now().strftime("%Y-%m-%d"),
+        end_time: str = datetime.now().strftime("%Y-%m-%d")):
+        u = urljoin(self._host,
+                    f'/{self._company_code}/Regulate/Regulate_Hotel')
         r = httpx.get(url=u,
                       headers=self.headers,
                       cookies=self.cookies,
-                      params={'Classify': ['1'],
-                              'GroupEID': [groupEID],
-                              'Index': ['4'],
-                              'RegulateStatus': ['0,3'],
-                              'StartTime': ['2022-05-18'],
-                              'EndTime': ['2023-09-30'],
-                              'SearchKey': ['GroupCode'],
-                              'OrgID': ['0'],
-                              'OrgName': ['选择部门'],
-                              'HasChange': ['false']})
+                      params={
+                          'Classify': ['1'],
+                          'GroupEID': [groupEID],
+                          'Index': ['4'],
+                          'RegulateStatus': ['0,3'],
+                          'StartTime': [start_time],
+                          'EndTime': [end_time],
+                          'SearchKey': ['GroupCode'],
+                          'OrgID': ['0'],
+                          'OrgName': ['选择部门'],
+                          'HasChange': ['false']
+                      })
 
         if r.status_code != 200:
             raise LyouoaException(code=r.status_code, msg=r.text)
@@ -202,15 +223,13 @@ class LyouoaClient():
 
     def get_RegulateLogList(self, groupEID: str):
         u = urljoin(self._host, f'{self._company_code}/Group/RegulateLogList')
-        r = httpx.get(
-            url=u,
-            headers=self.headers,
-            cookies=self.cookies,
-            params={
-                'RegulateClassify': ['6'],
-                'GroupEID': [groupEID]
-            }
-        )
+        r = httpx.get(url=u,
+                      headers=self.headers,
+                      cookies=self.cookies,
+                      params={
+                          'RegulateClassify': ['6'],
+                          'GroupEID': [groupEID]
+                      })
 
         if r.status_code != 200:
             raise LyouoaException(code=r.status_code, msg=r.text)

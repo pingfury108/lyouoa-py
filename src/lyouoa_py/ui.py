@@ -77,7 +77,14 @@ class UpdateDataQProgressDialog():
             self.t.stop()
             return
         eid = self._eid_data[self.steps]
-        hotel_data = self._cc.get_Regulate_Hotel(groupEID=eid)
+
+        start_time = str(self.parent.start_time_edit.date().toPyDate())
+        end_time = str(self.parent.end_time_edit.date().toPyDate())
+        print(start_time, end_time)
+
+        hotel_data = self._cc.get_Regulate_Hotel(groupEID=eid,
+                                                 start_time=start_time,
+                                                 end_time=end_time)
         log_data = self._cc.get_RegulateLogList(groupEID=eid)
         dd = ly_lib.comp_hotel_data(ly_lib.parser_hotel_data(hotel_data),
                                     ly_lib.parser_loglist(log_data))
@@ -129,12 +136,12 @@ class MainWindow(QMainWindow):
 
         # time
         self.start_time_edit = QDateEdit(self)
-        self.start_time_edit.setDisplayFormat("2010-1-1")
-        self.start_time_edit.setMinimumDate(QDate(2010, 1, 1))
+        self.start_time_edit.setDisplayFormat("2022-1-1")
+        self.start_time_edit.setMinimumDate(QDate(2022, 1, 1))
 
         self.end_time_edit = QDateEdit(self)
-        self.end_time_edit.setDisplayFormat("2010-1-1")
-        self.end_time_edit.setMinimumDate(QDate(2022, 1, 1))
+        self.end_time_edit.setDisplayFormat("2023-1-1")
+        self.end_time_edit.setMinimumDate(QDate(2023, 1, 1))
 
         # owner
         self.owner_edit = QComboBox()
@@ -159,15 +166,17 @@ class MainWindow(QMainWindow):
         login_option_layout.addRow("公司代码:", self.comp_code_edit)
         login_option_layout.addRow("会话ID:", self.session_id_edit)
 
+        fetch_layout = QFormLayout()
+        fetch_layout.addRow("开始时间:", self.start_time_edit)
+        fetch_layout.addRow("结束时间:", self.end_time_edit)
+        fetch_layout.addWidget(self.refresh_data_button)
+
         filter_option_layout = QFormLayout()
-        filter_option_layout.addRow("开始时间:", self.start_time_edit)
-        filter_option_layout.addRow("结束时间:", self.end_time_edit)
         filter_option_layout.addRow("姓名:", self.owner_edit)
         filter_option_layout.addRow("房间类型:", self.room_type_edit)
+        filter_option_layout.addWidget(self.filter_data_button)
 
         action_layout = QFormLayout()
-        action_layout.addWidget(self.refresh_data_button)
-        action_layout.addWidget(self.filter_data_button)
         action_layout.addWidget(self.export_data_button)
 
         analyze_layout = QFormLayout()
@@ -176,6 +185,7 @@ class MainWindow(QMainWindow):
         loayout = QHBoxLayout()
         loayout.setSpacing(10)
         loayout.addLayout(login_option_layout)
+        loayout.addLayout(fetch_layout)
         loayout.addLayout(filter_option_layout)
         loayout.addLayout(action_layout)
         loayout.addLayout(analyze_layout)
@@ -241,8 +251,13 @@ class MainWindow(QMainWindow):
                                  session_id=self.session_id_edit.text(),
                                  company_code=self.comp_code_edit.text())
         try:
+            start_time = str(self.start_time_edit.date().toPyDate())
+            end_time = str(self.end_time_edit.date().toPyDate())
+            print(start_time, end_time)
             count = cc.get_eid_count()
-            data = cc.get_tanhao(limit=count)
+            data = cc.get_tanhao(limit=count,
+                                 start_time=start_time,
+                                 end_time=end_time)
             print(count)
 
             pg = UpdateDataQProgressDialog(self, cc, data)
@@ -303,7 +318,8 @@ class MainWindow(QMainWindow):
         return
 
     def analyze_info(self):
-        #print(self.start_time_edit.date().toPyDate(), self.end_time_edit.date())
+        print(self.start_time_edit.date().toPyDate(),
+              self.end_time_edit.date())
         msg = QMessageBox()
         if len(self._filtered_data) > 0:
             gby_data = self._filtered_data.groupby(["ower",
