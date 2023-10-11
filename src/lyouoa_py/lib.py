@@ -1,7 +1,7 @@
-from datetime import datetime
 import httpx
 import re
-
+import calendar
+from datetime import datetime
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 
@@ -120,9 +120,11 @@ class LyouoaClient():
     def fields(self):
         return 'EID,GroupCode,GroupStartTimeFormatMMdd,GroupEndTimeFormatMMdd,CustomerName,LineName,PersonCountDisplay,PersonCountDisplay,PersonConfirmDisplay,MeetingPlate,RegulateName,ExternalName,RegulateOperatorName,StatusText,RegulateGuideNames,RegulateFoodSumPrice,RegulateTicketSumPrice,RegulateHotelSumPrice,RegulateVehicleSumPrice,RegulateTrafficTicketSumPrice,RegulateInsuranceSumPrice,RegulateShoppingNames,RegulateSelfShoppingNames,RegulateIncomeSumPrice,RegulateOutgoSumPrice,RegulateConnectionNames,RegulateTeamSync,RegulateStatus,IsActive,IsGuideChecked,IsFoodChecked,IsTicketChecked,IsHotelChecked,IsVehicleChecked,IsTrafficTicketChecked,IsInsuranceChecked,IsShoppingChecked,IsSelfShoppingChecked,IsIncomeChecked,IsOutgoChecked,IsConnectionChecked,InsertUserID,IsConnectionOpen,RegulateOperatorID,IsGuideProcess,IsTicketProcess,IsHotelProcess,IsFoodProcess,IsVehicleProcess,IsTrafficTicketProcess,IsInsuranceProcess,IsShoppingProcess,IsSelfShoppingProcess,IsIncomeProcess,IsOutgoProcess,IsConnectionProcess,IsTeamSyncChecked,IsTeamSyncProcess,AdultCount,ChildrenCount,CompanionCount,SignUpAdultCountConfirm,SignUpChildrenCountConfirm,SignUpCompanionCountConfirm,SignUpAdultCountTransfer,SignUpChildrenCountTransfer,SignUpCompanionCountTransfer,GroupStatus,IsCancel,InsertLastLogDay,UpdateLastLogDay'
 
-    def get_eid_count(self,
-                      end_time: str = datetime.now().strftime("%Y-%m-%d")):
+    def get_eid_count(self, end_time=None):
 
+        if end_time is None:
+            end_time = self.endTime()
+        #
         u = urljoin(self._host,
                     f'/{self._company_code}/Regulate/QueryRegulateLayPage')
         r = httpx.post(url=u,
@@ -154,10 +156,10 @@ class LyouoaClient():
         except Exception:
             raise LyouoaException(code=r.status_code, msg=r.text)
 
-    def get_tanhao(self,
-                   limit: str = '20',
-                   end_time: str = datetime.now().strftime("%Y-%m-%d")):
+    def get_tanhao(self, limit: str = '20', end_time=None):
 
+        if end_time is None:
+            end_time = self.endTime()
         u = urljoin(self._host,
                     f'/{self._company_code}/Regulate/QueryRegulateLayPage')
         r = httpx.post(url=u,
@@ -189,28 +191,38 @@ class LyouoaClient():
         except Exception:
             raise LyouoaException(code=r.status_code, msg=r.text)
 
+    def endTime(self) -> str:
+        t = datetime.now()
+        _, d = calendar.monthrange(t.year, t.month)
+
+        return f'{t.year-t.month-d}'
+
     def get_Regulate_Hotel(
-        self,
-        groupEID: str,
-        #start_time: str = datetime.now().strftime("%Y-%m-%d"),
-        end_time: str = datetime.now().strftime("%Y-%m-%d")):
+            self,
+            groupEID: str,
+            #start_time: str = datetime.now().strftime("%Y-%m-%d"),
+            end_time=None):
+
+        if end_time is None:
+            end_time = self.endTime()
         u = urljoin(self._host,
                     f'/{self._company_code}/Regulate/Regulate_Hotel')
-        r = httpx.get(url=u,
-                      headers=self.headers,
-                      cookies=self.cookies,
-                      params={
-                          'Classify': ['1'],
-                          'GroupEID': [groupEID],
-                          'Index': ['4'],
-                          'RegulateStatus': ['0,3'],
-                          #'StartTime': [start_time],
-                          'EndTime': [end_time],
-                          'SearchKey': ['GroupCode'],
-                          'OrgID': ['0'],
-                          'OrgName': ['选择部门'],
-                          'HasChange': ['false']
-                      })
+        r = httpx.get(
+            url=u,
+            headers=self.headers,
+            cookies=self.cookies,
+            params={
+                'Classify': ['1'],
+                'GroupEID': [groupEID],
+                'Index': ['4'],
+                'RegulateStatus': ['0,3'],
+                #'StartTime': [start_time],
+                'EndTime': [end_time],
+                'SearchKey': ['GroupCode'],
+                'OrgID': ['0'],
+                'OrgName': ['选择部门'],
+                'HasChange': ['false']
+            })
 
         if r.status_code != 200:
             raise LyouoaException(code=r.status_code, msg=r.text)
