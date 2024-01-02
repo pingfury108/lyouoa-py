@@ -81,12 +81,13 @@ class UpdateDataQProgressDialog():
         if self.steps >= self.pd.maximum():
             self.t.stop()
             return
-        eid = self._eid_data[self.steps]
+        eid, group_code = self._eid_data[self.steps]
 
         hotel_data = self._cc.get_Regulate_Hotel(groupEID=eid)
         log_data = self._cc.get_RegulateLogList(groupEID=eid)
         dd = ly_lib.comp_hotel_data(ly_lib.parser_hotel_data(hotel_data),
                                     ly_lib.parser_loglist(log_data))
+        dd = [{"团号": group_code, **d} for d in dd]
         self.parent._cache_data = [*self.parent._cache_data, *dd]
         self.steps += 1
 
@@ -215,8 +216,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        #self.setMinimumSize(QSize(1000, 800))
-        self.setFixedSize(QSize(800, 600))
+        self.setMinimumSize(QSize(800, 600))
         self.setWindowTitle("loyouoa 数据统计")
         # layout
         main_layout = QVBoxLayout()
@@ -371,8 +371,13 @@ class MainWindow(QMainWindow):
                                  session_id=self.session_id_edit.text(),
                                  company_code=self.comp_code_edit.text())
         try:
-            count = cc.get_eid_count()
-            data = cc.get_tanhao(limit=count)
+            count = cc.get_eid_count(
+                start_time=self.start_time_edit.text(),
+                end_time=self.end_time_edit.text(),
+            )
+            data = cc.get_tanhao(start_time=self.start_time_edit.text(),
+                                 end_time=self.end_time_edit.text(),
+                                 count=count)
 
             pg = UpdateDataQProgressDialog(self, cc, data)
             pg.exec()
