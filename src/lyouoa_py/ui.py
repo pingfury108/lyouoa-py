@@ -146,7 +146,8 @@ class MainWindow(QMainWindow):
             return
         ower_data = self.data["ower"]
         self.owner_edit.clear()
-        self.owner_edit.addItems(["-", *list(set(ower_data.to_list()))])
+        self.owner_edit.addItems(sorted(["-",
+                                         *list(set(ower_data.to_list()))]))
         return
 
     def update_room_type(self):
@@ -155,7 +156,7 @@ class MainWindow(QMainWindow):
         room_type_data = self.data["房间类型"]
         self.room_type_edit.clear()
         self.room_type_edit.addItems(
-            ["-", *list(set(room_type_data.to_list()))])
+            sorted(["-", *list(set(room_type_data.to_list()))]))
         return
 
     @property
@@ -254,10 +255,19 @@ class MainWindow(QMainWindow):
 
     def analyze_info(self):
         msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setWindowTitle("统计信息")
+        msg.setFixedSize(400, 200)
         if len(self._filtered_data) > 0:
+            total = self._filtered_data["房间数"].sum()
             gby_data = self._filtered_data.groupby(["ower",
                                                     "房间类型"])[["房间数"]].sum()
-            msg.setText(gby_data.to_html())
+            no_sipei_data = self._filtered_data[self._filtered_data["房间类型"] !=
+                                                "司陪"]
+            no_sipei_total = no_sipei_data["房间数"].sum()
+            msg.setText(f"""<p>房间总数: { total }</p>
+                <p>房间总数(不含司陪): {no_sipei_total}</p>
+            汇总: { gby_data.to_html()}""")
         else:
             msg.setText("没有数据")
 

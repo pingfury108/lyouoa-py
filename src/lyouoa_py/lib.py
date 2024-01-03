@@ -13,12 +13,7 @@ def parser_hotel_data(html_text) -> list[dict]:
 
     data = []
     for tr in tabhotel.find('tbody').find_all('tr'):
-        row = {
-            'customerid': tr.get('customerid'),
-            'groupeid': tr.get('groupeid'),
-            'hotelid': tr.get('hotelid'),
-            'uuid': tr.get('uuid')
-        }
+        row = {}
         for i, td in enumerate(tr.find_all('td')[1:]):
             ip = td.find('input')
             if ip:
@@ -29,7 +24,12 @@ def parser_hotel_data(html_text) -> list[dict]:
                     row[h_kw[1:][i]] = ""
             else:
                 row[h_kw[i]] = " ".join(td.get_text().split()).strip()
-                data.append(row)
+                data.append({
+                    **row, 'customerid': tr.get('customerid'),
+                    'groupeid': tr.get('groupeid'),
+                    'hotelid': tr.get('hotelid'),
+                    'uuid': tr.get('uuid')
+                })
 
     return data
 
