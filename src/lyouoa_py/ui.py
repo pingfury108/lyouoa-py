@@ -1,16 +1,12 @@
 import json
-from urllib.parse import urljoin
-from PyQt5.QtGui import QImage, QPixmap
-import httpx
 import pandas as pd
-from PyQt5.QtCore import QDate, QSize, QAbstractTableModel, Qt, QTimer, pyqtSignal
+
+from PyQt5.QtCore import QDate, QSize
 from PyQt5.QtWidgets import (
     QComboBox,
     QDateEdit,
-    QDialog,
     QErrorMessage,
     QFileDialog,
-    QLabel,
     QMainWindow,
     QMessageBox,
     QPushButton,
@@ -21,193 +17,11 @@ from PyQt5.QtWidgets import (
     QFormLayout,
     QSizePolicy,
     QTableView,
-    QProgressDialog,
 )
+
 import lyouoa_py.lib as ly_lib
-
-
-class TableModel(QAbstractTableModel):
-
-    def __init__(self, data):
-        super(TableModel, self).__init__()
-        self._data = data
-        return
-
-    def data(self, index, role):
-        if role == Qt.DisplayRole:
-            value = self._data.iloc[index.row(), index.column()]
-            return str(value)
-
-    def rowCount(self, index):
-        return self._data.shape[0]
-
-    def columnCount(self, index):
-        return self._data.shape[1]
-
-    def headerData(self, section, orientation, role):
-        # section is the index of the column/row.
-        if role == Qt.DisplayRole:
-            if orientation == Qt.Horizontal:
-                return str(self._data.columns[section])
-
-            if orientation == Qt.Vertical:
-                return str(self._data.index[section])
-        return
-
-
-class UpdateDataQProgressDialog():
-
-    def __init__(self, parent, cc: ly_lib.LyouoaClient, data: list) -> None:
-        self.parent = parent
-        self._eid_data = data
-        self._cc = cc
-        self.parent._cache_data = []
-
-        self.pd = QProgressDialog("正在解析网站数据", "取消", 0, len(data), self.parent)
-        self.pd.setFixedWidth(400)
-        self.pd.canceled.connect(self.cancel)
-        self.steps = 0
-        self.t = QTimer(self.parent)
-        self.t.timeout.connect(self.perform)
-        self.t.start(0)
-
-        return
-
-    def exec(self):
-        return self.pd.exec()
-
-    def perform(self):
-        self.pd.setValue(self.steps)
-        if self.steps >= self.pd.maximum():
-            self.t.stop()
-            return
-        eid, group_code = self._eid_data[self.steps]
-
-        hotel_data = self._cc.get_Regulate_Hotel(groupEID=eid)
-        log_data = self._cc.get_RegulateLogList(groupEID=eid)
-        dd = ly_lib.comp_hotel_data(ly_lib.parser_hotel_data(hotel_data),
-                                    ly_lib.parser_loglist(log_data))
-        dd = [{"团号": group_code, **d} for d in dd]
-        self.parent._cache_data = [*self.parent._cache_data, *dd]
-        self.steps += 1
-
-        return
-
-    def cancel(self):
-        self.t.stop()
-        return
-
-
-class LoginDilog(QDialog):
-    accepted = pyqtSignal(dict)
-
-    def __init__(self, parent, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.parent = parent
-        self.user_name_edit = QLineEdit()
-        self.user_pwd_edit = QLineEdit()
-        self.user_pwd_edit.setEchoMode(QLineEdit.Password)
-        self.validate_code_edit = QLineEdit()
-        self.btn = QPushButton('登录')
-        #self.btn.setDisabled(True)
-        self.btn.clicked.connect(self.ok_pressed)
-
-        form = QFormLayout(self)
-        form.addRow('账号:', self.user_name_edit)
-        form.addRow('密码', self.user_pwd_edit)
-        form.addRow('验证码:', self.validate_code_edit)
-        form.addWidget(self.show_login_validate_code())
-        form.addRow(self.btn)
-        return
-
-    def show_login_validate_code(self):
-        label = QLabel()
-        try:
-            r = httpx.get(
-                "https://www.lyouoa.com/GetValidateCode?Height=40",
-                headers={
-                    "User-Agent":
-                    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
-                },
-                cookies={
-                    "companyuid": self.parent.comp_code_edit.text(),
-                    "usercode": self.user_name_edit.text(),
-                    "companyuid_sso": "",
-                },
-            )
-            if r.status_code == 200:
-                print(r.cookies)
-                self.parent.session_id_edit.setText(
-                    r.cookies.get("ASP.NET_SessionId", ""))
-                image = QImage()
-                image.loadFromData(r.content)
-                label.setPixmap(QPixmap(image))
-            else:
-                self.show_message(r.text)
-        except Exception as e:
-            self.show_error_message(str(e))
-
-        return label
-
-    def show_error_message(self, text: str):
-        msg = QErrorMessage()
-        msg.showMessage(text)
-        msg.exec()
-        return
-
-    def unlock(self, text):
-        if text:
-            self.btn.setEnabled(True)
-        else:
-            self.btn.setDisabled(True)
-
-        return
-
-    def ok_pressed(self):
-        try:
-            r = httpx.post(
-                url=urljoin(self.parent.host_edit.text(), '/LoginAuth'),
-                headers={
-                    "Referer":
-                    "http://vip.lyouoa.com/default?",
-                    "Accept":
-                    "application/json, text/javascript, */*; q=0.01",
-                    "Origin":
-                    "http://vip.lyouoa.com",
-                    "X-Requested-With":
-                    "XMLHttpRequest",
-                    "Content-Type":
-                    "application/x-www-form-urlencoded; charset=UTF-8",
-                    "User-Agent":
-                    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
-                },
-                cookies={
-                    "ASP.NET_SessionId": self.parent.session_id_edit.text(),
-                    "companyuid": self.parent.comp_code_edit.text(),
-                    "usercode": self.user_name_edit.text(),
-                    "companyuid_sso": "",
-                },
-                data={
-                    "userid": self.user_name_edit.text(),
-                    "password": self.user_pwd_edit.text(),
-                    "ompanyuid": self.parent.comp_code_edit.text(),
-                    "verifycode": self.validate_code_edit.text()
-                })
-            print(r.request)
-            print(r.request.headers)
-            print(r.request.content)
-            print(r.status_code, r.text)
-            print(r.cookies)
-            if r.status_code != 200:
-                self.show_error_message(r.text)
-
-            #
-            self.accepted.emit({})
-            self.accept()
-        except Exception as e:
-            self.show_error_message(str(e))
-
-        return
+from lyouoa_py.login import LoginDilog
+from lyouoa_py.widget import TableModel, UpdateDataQProgressDialog
 
 
 class MainWindow(QMainWindow):
@@ -233,7 +47,6 @@ class MainWindow(QMainWindow):
 
     @property
     def option_ui(self, ) -> QWidget:
-
         # system address
         self.host_edit = QLineEdit()
         self.host_edit.setText("https://vip.lyouoa.com")
@@ -257,7 +70,7 @@ class MainWindow(QMainWindow):
         self.end_time_edit = QDateEdit()
         self.end_time_edit.setMinimumDate(QDate(2023, 1, 1))
         self.end_time_edit.setDisplayFormat("yyyy-MM-dd")
-        #self.end_time_edit.setDisplayFormat("2023-1-1")
+        # self.end_time_edit.setDisplayFormat("2023-1-1")
 
         # owner
         self.owner_edit = QComboBox()
@@ -281,7 +94,7 @@ class MainWindow(QMainWindow):
         login_option_layout.addRow("系统地址:", self.host_edit)
         login_option_layout.addRow("公司代码:", self.comp_code_edit)
         login_option_layout.addRow("会话ID:", self.session_id_edit)
-        #login_option_layout.addWidget(self.login_button)
+        # login_option_layout.addWidget(self.login_button)
 
         fetch_layout = QFormLayout()
         fetch_layout.addRow("开始时间:", self.start_time_edit)
@@ -307,7 +120,6 @@ class MainWindow(QMainWindow):
         w = QWidget()
         w.setLayout(loayout)
         w.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        #w.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
 
         return w
 
@@ -318,11 +130,10 @@ class MainWindow(QMainWindow):
         return
 
     def reload_cache(self):
-
         try:
             self.data = pd.read_json(self._cache_data_file)
         except Exception as e:
-            #self.show_error_message(str(e))
+            # self.show_error_message(str(e))
             self.data = pd.DataFrame()
 
         self.update_owners()
@@ -367,17 +178,21 @@ class MainWindow(QMainWindow):
         return
 
     def refresh_data(self, ):
-        cc = ly_lib.LyouoaClient(host=self.host_edit.text(),
-                                 session_id=self.session_id_edit.text(),
-                                 company_code=self.comp_code_edit.text())
+        cc = ly_lib.LyouoaClient(
+            host=self.host_edit.text(),
+            session_id=self.session_id_edit.text(),
+            company_code=self.comp_code_edit.text(),
+        )
         try:
             count = cc.get_eid_count(
                 start_time=self.start_time_edit.text(),
                 end_time=self.end_time_edit.text(),
             )
-            data = cc.get_tanhao(start_time=self.start_time_edit.text(),
-                                 end_time=self.end_time_edit.text(),
-                                 count=count)
+            data = cc.get_tanhao(
+                start_time=self.start_time_edit.text(),
+                end_time=self.end_time_edit.text(),
+                count=count,
+            )
 
             pg = UpdateDataQProgressDialog(self, cc, data)
             pg.exec()
@@ -385,12 +200,13 @@ class MainWindow(QMainWindow):
             if len(self._cache_data) > 0:
                 self.data = pd.DataFrame()
                 self.data = pd.DataFrame(self._cache_data)
-                with open(self._cache_data_file, 'w') as f:
+                with open(self._cache_data_file, "w") as f:
                     json.dump(self._cache_data, f)
-                self.update_owners()
-                self.update_room_type()
-                self.filter_data()
-                self.show_message(text=f"数据刷新成功,共{len(self._cache_data)}条数据.")
+                    self.update_owners()
+                    self.update_room_type()
+                    self.filter_data()
+                    self.show_message(
+                        text=f"数据刷新成功,共{len(self._cache_data)}条数据.")
             else:
                 self.show_message(text="无刷新")
         except ly_lib.LyouoaException as e:
@@ -451,8 +267,12 @@ class MainWindow(QMainWindow):
 
     def export_data(self):
         file, check = QFileDialog.getSaveFileName(
-            self, "选择导出为的文件", "", "Microsoft Excel 2007-(*.xlsx);;",
-            "Microsoft Excel 2007-(*.xlsx)")
+            self,
+            "选择导出为的文件",
+            "",
+            "Microsoft Excel 2007-(*.xlsx);;",
+            "Microsoft Excel 2007-(*.xlsx)",
+        )
         if check:
             try:
                 if file:
