@@ -86,9 +86,11 @@ class LyouoaClient():
     def __init__(self,
                  company_code: str,
                  session_id: str,
+                 usercode: str,
                  host: str = "http://vip.lyouoa.com"):
         self._host = host
         self._company_code = company_code
+        self._usercode = usercode
         self.set_session(session_id)
 
         return
@@ -102,13 +104,18 @@ class LyouoaClient():
 
         return {
             "User-Agent":
-            "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
+            "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0"
         }
 
     @property
     def cookies(self):
 
-        return {'ASP.NET_SessionId': self.session}
+        return {
+            'ASP.NET_SessionId': self.session,
+            'companyuid_sso': self._company_code,
+            'companyuid': self._company_code,
+            'usercode': self._usercode,
+        }
 
     def set_session(self, session: str):
 

@@ -49,7 +49,7 @@ class MainWindow(QMainWindow):
     def option_ui(self, ) -> QWidget:
         # system address
         self.host_edit = QLineEdit()
-        self.host_edit.setText("https://vip.lyouoa.com")
+        self.host_edit.setText("http://vip.lyouoa.com")
 
         # Company code
         self.comp_code_edit = QLineEdit()
@@ -94,7 +94,7 @@ class MainWindow(QMainWindow):
         login_option_layout.addRow("系统地址:", self.host_edit)
         login_option_layout.addRow("公司代码:", self.comp_code_edit)
         login_option_layout.addRow("会话ID:", self.session_id_edit)
-        # login_option_layout.addWidget(self.login_button)
+        login_option_layout.addWidget(self.login_button)
 
         fetch_layout = QFormLayout()
         fetch_layout.addRow("开始时间:", self.start_time_edit)
@@ -183,6 +183,7 @@ class MainWindow(QMainWindow):
             host=self.host_edit.text(),
             session_id=self.session_id_edit.text(),
             company_code=self.comp_code_edit.text(),
+            usercode=self.usercode,
         )
         try:
             count = cc.get_eid_count(

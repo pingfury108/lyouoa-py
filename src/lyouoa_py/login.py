@@ -17,7 +17,7 @@ class LoginDilog(QDialog):
     accepted = pyqtSignal()
 
     def __init__(self, parent, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(parent, *args, **kwargs)
         self.parent = parent
         self.user_name_edit = QLineEdit()
         self.user_pwd_edit = QLineEdit()
@@ -27,6 +27,14 @@ class LoginDilog(QDialog):
         # self.btn.setDisabled(True)
         self.btn.clicked.connect(self.ok_pressed)
 
+        self.user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0"
+
+        self.session_key = "ASP.NET_SessionId"
+        self.cookies = httpx.Cookies()
+        if self.parent.session_id_edit.text().strip() != "":
+            self.cookies.set(self.session_key,
+                             self.parent.session_id_edit.text())
+        #
         form = QFormLayout(self)
         form.addRow("账号:", self.user_name_edit)
         form.addRow("密码", self.user_pwd_edit)
@@ -37,35 +45,33 @@ class LoginDilog(QDialog):
 
     def show_login_validate_code(self):
         label = QLabel()
+        #
         try:
-            r = httpx.get(
-                "https://www.lyouoa.com/GetValidateCode?Height=40",
-                headers={
-                    "User-Agent":
-                    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36"
-                },
-                cookies={
-                    "companyuid": self.parent.comp_code_edit.text(),
-                    "usercode": self.user_name_edit.text(),
-                    "companyuid_sso": "",
-                },
-            )
+            r = httpx.get(url=urljoin(self.parent.host_edit.text(),
+                                      "GetValidateCode?Height=40"),
+                          headers={"User-Agent": self.user_agent},
+                          cookies=self.cookies)
             if r.status_code == 200:
-                print(r.cookies)
-                self.parent.session_id_edit.setText(
-                    r.cookies.get("ASP.NET_SessionId", ""))
+                if self.cookies.get(self.session_key, "").strip() == "":
+                    session_id = r.cookies.get(self.session_key, "")
+                    self.cookies.set(self.session_key, session_id)
+                    self.parent.session_id_edit.setText(session_id)
+
+                #
                 image = QImage()
                 image.loadFromData(r.content)
                 label.setPixmap(QPixmap(image))
+
             else:
                 self.show_message(r.text)
         except Exception as e:
             self.show_error_message(str(e))
 
+        #
         return label
 
     def show_error_message(self, text: str):
-        msg = QErrorMessage()
+        msg = QErrorMessage(self)
         msg.showMessage(text)
         msg.exec()
         return
@@ -82,45 +88,35 @@ class LoginDilog(QDialog):
         try:
             r = httpx.post(
                 url=urljoin(self.parent.host_edit.text(), "/LoginAuth"),
-                headers={
-                    "Referer":
-                    "http://vip.lyouoa.com/default?",
-                    "Accept":
-                    "application/json, text/javascript, */*; q=0.01",
-                    "Origin":
-                    "http://vip.lyouoa.com",
-                    "X-Requested-With":
-                    "XMLHttpRequest",
-                    "Content-Type":
-                    "application/x-www-form-urlencoded; charset=UTF-8",
-                    "User-Agent":
-                    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
-                },
-                cookies={
-                    "ASP.NET_SessionId": self.parent.session_id_edit.text(),
-                    "companyuid": self.parent.comp_code_edit.text(),
-                    "usercode": self.user_name_edit.text(),
-                    "companyuid_sso": "",
-                },
+                headers={"User-Agent": self.user_agent},
+                cookies=self.cookies,
                 data={
                     "userid": self.user_name_edit.text(),
                     "password": self.user_pwd_edit.text(),
-                    "ompanyuid": self.parent.comp_code_edit.text(),
+                    "companyuid": self.parent.comp_code_edit.text(),
                     "verifycode": self.validate_code_edit.text(),
                 },
             )
-            print(r.request)
-            print(r.request.headers)
-            print(r.request.content)
-            print(r.status_code, r.text)
-            print(r.cookies)
             if r.status_code != 200:
                 self.show_error_message(r.text)
 
             #
-            self.accepted.emit({})
-            self.accept()
+            if not r.json().get("IsSuccess", False):
+                self.show_error_message(r.json().get("Msg", ""))
+            else:
+                rl = httpx.get(r.json().get("Data"),
+                               cookies=self.cookies,
+                               follow_redirects=True)
+                if rl.status_code != 200:
+                    self.show_error_message(r.text)
+
+                #
+                self.parent.usercode = self.user_name_edit.text()
+
+                #
+                self.accepted.emit()
+                self.accept()
         except Exception as e:
             self.show_error_message(str(e))
 
-        return
+            return
