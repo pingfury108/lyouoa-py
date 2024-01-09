@@ -4,7 +4,7 @@
     "beforeBuildCommand": "npm run build",
     "devPath": "http://localhost:1420",
     "distDir": "../dist",
-    "withGlobalTauri": false
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "lyouoa",
@@ -13,9 +13,13 @@
   "tauri": {
     "allowlist": {
       "all": false,
+      "app": {
+        "all": true,
+        "show": true,
+        "hide": true
+      },
       "shell": {
-        "all": false,
-        "open": true
+        "all": true
       }
     },
     "bundle": {
@@ -31,7 +35,17 @@
       ]
     },
     "security": {
-      "csp": null
+      "csp": null,
+      "dangerousRemoteDomainIpcAccess": [
+        {
+          "domain": "vip.lyouoa.com",
+          "windows": [
+            "main",
+            "external"
+          ],
+          "enableTauriAPI": true
+        }
+      ]
     },
     "windows": [
       {
